@@ -6,7 +6,7 @@ import about4 from "../../images/about4.png";
 
 const AboutSection = () => {
   return (
-    <div className="flex flex-col items-center justify-center mx-28 mt-16">
+    <div id="about" className="flex flex-col items-center justify-center mx-28 mt-16">
       <h1 className="mt-6 mb-32 text-3xl font-bold">About Us</h1>
       <div className="flex flex-row items-center justify-between gap-60">
         <div className="flex flex-col max-w-sm justify-center items-center">

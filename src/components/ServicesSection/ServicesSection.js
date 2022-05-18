@@ -4,7 +4,7 @@ import { MdInsertPhoto } from "react-icons/md";
 
 const ServicesSection = () => {
   return (
-    <div className="flex flex-col items-center justify-center mx-28 mt-16">
+    <div id="services" className="flex flex-col items-center justify-center mx-28 mt-16">
       <h1 className="mt-6 mb-20 text-3xl font-bold">Services</h1>
       <div className="flex gap-10">
         <div className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12">

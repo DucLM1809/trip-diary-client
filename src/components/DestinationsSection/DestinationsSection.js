@@ -3,7 +3,7 @@ import destination1 from "../../images/Destination1.png";
 
 const DestinationsSection = () => {
   return (
-    <div className="flex flex-col items-center justify-center mx-28 mt-16">
+    <div id="destinations" className="flex flex-col items-center justify-center mx-28 mt-16">
       <h1 className="mt-6 mb-20 text-3xl font-bold">
         Recommended Destinations
       </h1>

@@ -3,7 +3,7 @@ import banner from "../../images/hero.png";
 
 const HeroSection = () => {
   return (
-    <div className="flex items-center justify-center mx-28 mt-16">
+    <div id="hero" className="flex items-center justify-center mx-28 mt-16">
       <div
         className="w-full h-96 relative 
           after:absolute after:content-[''] 
