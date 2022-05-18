@@ -13,7 +13,7 @@ const NavbarLandingPage = () => {
         </span>
       </div>
       <ul className="flex p-8 text-medium-blue text-lg">
-        <li className="mx-8 text-dark-blue cursor-pointer">
+        <li className="mx-8 cursor-pointer" >
           <LinkR
             to="home"
             smooth={true}
@@ -21,7 +21,7 @@ const NavbarLandingPage = () => {
             spy={true}
             exact="true"
             activeClass="active"
-            className="font-bold"
+            className="hover:text-dark-blue hover:font-bold"
           >
             Home
           </LinkR>
@@ -34,6 +34,7 @@ const NavbarLandingPage = () => {
             spy={true}
             exact="true"
             activeClass="active"
+            className="hover:text-dark-blue hover:font-bold"
           >
             About
           </LinkR>
@@ -46,6 +47,7 @@ const NavbarLandingPage = () => {
             spy={true}
             exact="true"
             activeClass="active"
+            className="hover:text-dark-blue hover:font-bold"
           >
             Services
           </LinkR>
@@ -58,15 +60,16 @@ const NavbarLandingPage = () => {
             spy={true}
             exact="true"
             activeClass="active"
+            className="hover:text-dark-blue hover:font-bold"
           >
             Recommendations
           </LinkR>
         </li>
       </ul>
       <div>
-        <button className="py-1 px-6 bg-light-blue text-white rounded-5">
-          <a href="/sign-in" className="text-sm">
-            Sign in
+        <button className="py-1 px-6 bg-light-blue text-white rounded-5 hover:bg-medium-blue">
+          <a href="/sign-in" className="text-sm ">
+            SIGN IN
           </a>
         </button>
       </div>
