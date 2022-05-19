@@ -10,8 +10,11 @@ module.exports = {
       "aqua": "#F0F8FF",
       "purple": "#4468E2",
       "light-purple": "#D0D8FF",
+      "gray": "#eaebed",
+      "modal": "rgba(0, 0, 0, 0.4)"
     },
     borderRadius: {
+      "3": "3px",
       "5": "5px",
       "10": "10px",
       "20": "20px",
@@ -19,7 +22,19 @@ module.exports = {
     },
     fontFamily: {
       'logo': 'Dancing Script',
-    }
+    },
+    backgroundImage: {
+      'sign-in': "url('/src/images/sign-in.png')"
+    },
+    borderWidth: {
+      '0': '0',
+      "1": '1px',
+      '2': '2px',
+      '3': '3px',
+      '4': '4px',
+      '6': '6px',
+      '8': '8px',
+    },
   },
   plugins: [],
 };

@@ -68,9 +68,9 @@ const NavbarLandingPage = () => {
       </ul>
       <div>
         <button className="py-1 px-6 bg-light-blue text-white rounded-5 hover:bg-medium-blue">
-          <a href="/sign-in" className="text-sm ">
+          <Link to="/sign-in" className="text-sm ">
             SIGN IN
-          </a>
+          </Link>
         </button>
       </div>
     </div>
