@@ -60,13 +60,13 @@ const Footer = () => {
           </li>
         </ul>
         <div className="flex items-center gap-6 text-2xl">
-          <a href="">
+          <a href="" className="hover:text-light-blue">
             <FaFacebook />
           </a>
-          <a href="">
+          <a href="" className="hover:text-light-blue">
             <FaInstagram />
           </a>
-          <a href="">
+          <a href="" className="hover:text-light-blue">
             <FaLinkedin />
           </a>
         </div>

@@ -11,7 +11,8 @@ module.exports = {
       "purple": "#4468E2",
       "light-purple": "#D0D8FF",
       "gray": "#eaebed",
-      "modal": "rgba(0, 0, 0, 0.4)"
+      "modal": "rgba(0, 0, 0, 0.4)",
+      "danger": "#eb0d0d",
     },
     borderRadius: {
       "3": "3px",
