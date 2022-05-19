@@ -21,14 +21,14 @@ const Signin = () => {
           <input
             type="text"
             placeholder="User Name or Email"
-            className="outline-medium-blue border-solid border-gray border-1 mt-8 py-2 pl-3 pr-24 rounded-3 font-normal text-sm"
+            className="outline-medium-blue border-solid border-gray border-1 mt-8 py-2 w-72 p-3 rounded-3 font-normal text-sm"
           />
           <input
             type="password"
             placeholder="Password"
-            className="outline-medium-blue border-solid border-gray border-1 my-4 py-2 pl-3 pr-24 rounded-3 font-normal text-sm"
+            className="outline-medium-blue border-solid border-gray border-1 my-4 py-2 w-72 p-3 rounded-3 font-normal text-sm"
           />
-          <button className="bg-light-blue py-2 pl-3 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray">
+          <button className="bg-light-blue py-[0.6rem] mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray">
             Login
           </button>
           <span className="text-center text-white text-sm font-normal mb-2 relative after:content-[''] after:absolute after:w-[124px] after:h-[0.05px] after:bg-white after:top-3 after:right-0
