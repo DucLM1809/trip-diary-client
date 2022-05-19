@@ -46,10 +46,10 @@ const Signin = () => {
             />
           </div>
           <div className="flex justify-between text-white mt-2">
-            <span className="font-normal">Are you new to TriPari's?</span>
-            <span className="font-normal cursor-pointer underline hover:text-light-blue">
+            <a className="font-normal cursor-pointer underline hover:text-light-blue">Forget Password?</a>
+            <a className="font-normal cursor-pointer underline hover:text-light-blue">
               Register
-            </span>
+            </a>
           </div>
         </form>
       </div>

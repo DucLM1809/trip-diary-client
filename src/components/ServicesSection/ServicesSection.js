@@ -4,10 +4,16 @@ import { MdInsertPhoto } from "react-icons/md";
 
 const ServicesSection = () => {
   return (
-    <div id="services" className="flex flex-col items-center justify-center mx-28 mt-16">
+    <div
+      id="services"
+      className="flex flex-col items-center justify-center mx-28 mt-16"
+    >
       <h1 className="mt-6 mb-20 text-3xl font-bold">Services</h1>
       <div className="flex gap-10">
-        <div className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12">
+        <div
+          className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12 
+          hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
+        >
           <span>
             <RiKeyboardBoxFill className="text-purple text-6xl mb-3" />
           </span>
@@ -17,7 +23,10 @@ const ServicesSection = () => {
           </p>
         </div>
 
-        <div className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12">
+        <div
+          className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12
+          hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
+        >
           <span>
             <MdInsertPhoto className="text-purple text-6xl mb-3" />
           </span>
@@ -27,7 +36,10 @@ const ServicesSection = () => {
           </p>
         </div>
 
-        <div className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12">
+        <div
+          className="w-1/3 py-8 px-4 bg-aqua rounded-10 shadow-lg mb-12
+          hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
+        >
           <span>
             <RiKeyboardBoxFill className="text-purple text-6xl mb-3" />
           </span>
