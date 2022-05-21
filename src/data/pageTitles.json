@@ -6,5 +6,9 @@
     {
         "key": "/sign-in",
         "title": "Sign in"
+    },
+    {
+        "key": "/sign-up",
+        "title":"Sign up"
     }
 ]
