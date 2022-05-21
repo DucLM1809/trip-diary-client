@@ -3,6 +3,7 @@ import GoogleLogin from "react-google-login";
 // import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useForm } from "react-hook-form";
 import logo from "../images/logo.png";
+import { Link } from "react-router-dom";
 
 const Signin = () => {
   const onSuccess = (res) => {
@@ -92,9 +93,9 @@ const Signin = () => {
             />
           </div>
           <div className="flex justify-between text-white mt-2">
-            <a className="font-normal cursor-pointer underline hover:text-light-blue">
-              Forget Password?
-            </a>
+          <Link to="/forget-password" className="block py-2 px-6 text-sm">
+            ForgetPassword
+          </Link>
             <a className="font-normal cursor-pointer underline hover:text-light-blue">
               Register
             </a>

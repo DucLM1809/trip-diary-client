@@ -1,6 +1,8 @@
 import LandingPage from "./pages/LandingPage";
 import Signin from "./pages/Signin";
 import Register from "./pages/Register";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,6 +29,8 @@ function App() {
       <Route exact path="/" element={<LandingPage />}></Route>
       <Route exact path="/sign-in" element={<Signin />}></Route>
       <Route exact path="/sign-up" element={<Register />}></Route>
+      <Route exact path="/forget-password" element={<ForgetPassword />}></Route>
+      <Route exact path="/reset-password" element={<ResetPassword />}></Route>
     </Routes>
   );
 }
