@@ -7,7 +7,7 @@ const NavbarLandingPage = () => {
   return (
     <div id="home" className="flex justify-between items-center mx-28">
       <div className="flex items-center justify-center">
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className="w-9" />
         <span className="text-light-blue font-extrabold text-3xl ml-2 font-logo">
           TriPari's
         </span>

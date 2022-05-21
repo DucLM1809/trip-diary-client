@@ -29,8 +29,8 @@ const Signin = () => {
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
       <div className="bg-modal shadow-xl w-2/5 py-10 rounded-10 flex flex-col items-center justify-center">
         <div className="flex flex-col justify-center items-center">
-          <img src={logo} alt="logo" />
-          <span className="text-medium-blue font-extrabold text-3xl ml-2 font-logo">
+          <img src={logo} alt="logo" className="w-9" />
+          <span className="text-white font-extrabold text-3xl ml-2 font-logo">
             TriPari's
           </span>
         </div>
