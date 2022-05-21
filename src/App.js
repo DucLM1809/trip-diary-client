@@ -25,13 +25,15 @@ function App() {
   document.title = title;
 
   return (
-    <Routes>
-      <Route exact path="/" element={<LandingPage />}></Route>
-      <Route exact path="/sign-in" element={<Signin />}></Route>
-      <Route exact path="/sign-up" element={<Register />}></Route>
-      <Route exact path="/forget-password" element={<ForgetPassword />}></Route>
-      <Route exact path="/reset-password" element={<ResetPassword />}></Route>
-    </Routes>
+    
+      <Routes>
+        <Route exact path="/" element={<LandingPage />}></Route>
+        <Route exact path="/sign-in" element={<Signin />}></Route>
+        <Route exact path="/sign-up" element={<Register />}></Route>
+        <Route exact path="/forget-password" element={<ForgetPassword />}></Route>
+        <Route exact path="/reset-password" element={<ResetPassword />}></Route>
+      </Routes>
+    
   );
 }
 

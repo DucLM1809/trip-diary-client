@@ -10,5 +10,13 @@
     {
         "key": "/sign-up",
         "title":"Sign up"
+    },
+    {
+        "key": "/forget-password",
+        "title":"Forget Password"
+    },
+    {
+        "key": "/reset-password",
+        "title":"reset Password"
     }
 ]

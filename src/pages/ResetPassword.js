@@ -48,7 +48,7 @@ const ResetPassword = () => {
           )}
           <input
             type="password"
-            {...register("password", {
+            {...register("cpassword", {
               required: true,
               minLength: 6,
               maxLength: 9
@@ -56,14 +56,14 @@ const ResetPassword = () => {
             placeholder="Confirm your password"
             className="outline-medium-blue border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm"
           />
-          {errors?.password?.type === "required" && <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] "> This field is required</p>}
-          {errors?.password?.type === "minLength" && (
+          {errors?.cpassword?.type === "required" && <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] "> This field is required</p>}
+          {errors?.cpassword?.type === "minLength" && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
               {" "}
               Password must be 6 to 9 characters
             </p>
           )}
-          {errors?.password?.type === "maxLength" && (
+          {errors?.cpassword?.type === "maxLength" && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
               {" "}
               Password must be 6 to 9 characters
