@@ -1,4 +1,3 @@
-import React from "react";
 import { Link as LinkR } from "react-scroll";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.png";
@@ -13,7 +12,7 @@ const NavbarLandingPage = () => {
         </span>
       </div>
       <ul className="flex p-8 text-medium-blue text-lg">
-        <li className="mx-8 cursor-pointer" >
+        <li className="mx-8 cursor-pointer">
           <LinkR
             to="home"
             smooth={true}

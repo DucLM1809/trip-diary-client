@@ -78,10 +78,7 @@ const Signin = () => {
           <button className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray">
             Login
           </button>
-          <span
-            className="text-center text-white text-sm font-normal mb-2 relative after:content-[''] after:absolute after:w-[124px] after:h-[0.05px] after:bg-white after:top-3 after:right-0
-          before:content-[''] before:absolute before:w-[124px] before:h-[0.05px] before:bg-white before:top-3 before:left-0"
-          >
+          <span className="text-center text-white text-sm font-normal mb-2">
             or
           </span>
           <div>
