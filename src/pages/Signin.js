@@ -6,14 +6,6 @@ import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
 
 const Signin = () => {
-  const onSuccess = (res) => {
-    console.log("[Login success] currentUser: ", res.profileObj);
-  };
-
-  const onFailure = (res) => {
-    console.log("[Login failed] res: ", res);
-  };
-
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
@@ -38,45 +30,42 @@ const Signin = () => {
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
-            {...register("account", { required: true })}
+            {...register("account", {
+              required: "You must specify user name or email",
+            })}
             placeholder="User Name or Email"
-            className="outline-medium-blue border-solid border-gray border-1 mt-8 py-2 w-72 p-3 rounded-3 font-normal text-sm"
+            className="border-solid border-gray border-1 mt-8 py-2 w-72 p-3 rounded-3 font-normal text-sm outline-medium-blue"
           />
-          {errors?.account?.type === "required" && (
+          {errors?.account && (
             <p className="text-xs mt-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              This field is required
+              {errors.account.message}
             </p>
           )}
           <input
             type="password"
             {...register("password", {
-              required: true,
-              minLength: 6,
-              maxLength: 9,
+              required: "You must specify password",
+              minLength: {
+                value: 8,
+                message: "Password must have at least 8 characters",
+              },
+              maxLength: {
+                value: 10,
+                message: "Password must have maximum 10 characters",
+              },
             })}
             placeholder="Password"
-            className="outline-medium-blue border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm"
+            className="border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm outline-medium-blue"
           />
-          {errors?.password?.type === "required" && (
+          {errors?.password && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              This field is required
+              {errors.password.message}
             </p>
           )}
-          {errors?.password?.type === "minLength" && (
-            <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
-            </p>
-          )}
-          {errors?.password?.type === "maxLength" && (
-            <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
-            </p>
-          )}
-          <button className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray">
+          <button
+            className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
+            onClick={handleSubmit}
+          >
             Login
           </button>
           <span className="text-center text-white text-sm font-normal mb-2">
@@ -93,12 +82,18 @@ const Signin = () => {
             />
           </div>
           <div className="flex justify-between text-white mt-2">
-          <Link to="/forget-password" className="block py-2 px-6 text-sm">
-            ForgetPassword
-          </Link>
-            <a className="font-normal cursor-pointer underline hover:text-light-blue">
+            <Link
+              to="/forget-password"
+              className="font-normal underline hover:text-light-blue"
+            >
+              Forget password?
+            </Link>
+            <Link
+              to="/sign-up"
+              className="font-normal underline hover:text-light-blue"
+            >
               Register
-            </a>
+            </Link>
           </div>
         </form>
       </div>

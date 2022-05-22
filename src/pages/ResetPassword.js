@@ -3,15 +3,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import logo from "../images/logo.png";
 
-
 const ResetPassword = () => {
-  const responseGoogle = (response) => {
-    console.log(response);
-    console.log(response.profileObj);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-  const { register, handleSubmit, formState: {errors} } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
@@ -23,58 +25,47 @@ const ResetPassword = () => {
           </span>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <input
+          <input
             type="password"
             {...register("password", {
-              required: true,
-              minLength: 6,
-              maxLength: 9
+              required: "You must specify a password",
+              minLength: {
+                value: 8,
+                message: "Password must have at least 8 characters",
+              },
+              maxLength: {
+                value: 10,
+                message: "Password must have maximum 10 characters",
+              },
             })}
             placeholder="New password"
             className="outline-medium-blue border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm"
           />
-          {errors?.password?.type === "required" && <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] "> This field is required</p>}
-          {errors?.password?.type === "minLength" && (
+          {errors?.password && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
-            </p>
-          )}
-          {errors?.password?.type === "maxLength" && (
-            <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
+              {errors?.password?.message}
             </p>
           )}
           <input
             type="password"
-            {...register("cpassword", {
-              required: true,
-              minLength: 6,
-              maxLength: 9
+            {...register("confirm", {
+              validate: (value) =>
+                value === watch("password") || "The passwords do not match",
             })}
             placeholder="Confirm your password"
             className="outline-medium-blue border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm"
           />
-          {errors?.cpassword?.type === "required" && <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] "> This field is required</p>}
-          {errors?.cpassword?.type === "minLength" && (
+          {errors?.confirm && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
-            </p>
-          )}
-          {errors?.cpassword?.type === "maxLength" && (
-            <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
-              {" "}
-              Password must be 6 to 9 characters
+              {errors?.confirm?.message}
             </p>
           )}
           <button
             className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
+            onSubmit={handleSubmit}
           >
             Reset Password
           </button>
-          
         </form>
       </div>
     </div>

@@ -71,11 +71,6 @@ const NavbarLandingPage = () => {
             SIGN IN
           </Link>
         </button>
-        <button className="bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg ml-5">
-          <Link to="/sign-up" className="block py-2 px-6 text-sm">
-            SIGN UP
-          </Link>
-        </button>
       </div>
     </div>
   );
