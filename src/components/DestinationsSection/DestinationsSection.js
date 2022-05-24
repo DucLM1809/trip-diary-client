@@ -1,5 +1,5 @@
 import React from "react";
-import destination1 from "../../images/Destination1.png";
+import destination1 from "../../assests/images/Destination1.png";
 
 const DestinationsSection = () => {
   return (

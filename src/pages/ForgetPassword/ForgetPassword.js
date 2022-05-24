@@ -1,15 +1,39 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import logo from "../images/logo.png";
-import { Link } from "react-router-dom";
+import logo from "../../assests/images/logo.png";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import api from "../../api/axios";
 
 const ForgetPassword = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    handleForgetPassword(data);
+  };
+
+  const handleForgetPassword = async (data) => {
+    let res = await api
+      // .post("/api/users/forgot-password", {
+      .post("/users/forgot-password", {
+        email: data.account,
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.detail);
+      });
+      
+    if (res) {
+      alert("Check your email to reset password");
+    }
+
+    console.log(res.data);
+  };
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
@@ -24,7 +48,7 @@ const ForgetPassword = () => {
           Forgot your password?
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <input
+          <input
             type="text"
             {...register("account", {
               required: "You must specify an email",
@@ -41,10 +65,10 @@ const ForgetPassword = () => {
               {errors?.account?.message}
             </p>
           )}
-          <button className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray" onSubmit={handleSubmit}>
-            <Link to="/reset-password" className="block text-sm">
-              Send request
-            </Link>
+          <button
+            className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
+          >
+            Send request
           </button>
         </form>
       </div>

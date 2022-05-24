@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GoogleLogin from "react-google-login";
-// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useForm } from "react-hook-form";
-import logo from "../images/logo.png";
-import { Link } from "react-router-dom";
+import logo from "../../assests/images/logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import api from "../../api/axios";
+import { loginAccount, loginGoogle, logOut } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const Signin = () => {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/home";
+
   const responseGoogle = (response) => {
-    console.log(response);
     console.log(response.profileObj);
+    handleLoginGoogle(response);
+    dispatch(loginGoogle(response));
+    navigate(from, { replace: true });
+  };
+
+  const handleLoginGoogle = async (data) => {
+    // let res = await api.post("/api/login/google", {
+    let res = await api.post("/login/google", {
+      tokenId: data.tokenId,
+    });
+
+    localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+    console.log(res);
   };
 
   const {
@@ -16,7 +36,42 @@ const Signin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    console.log(data);
+    handleLoginAccount(data);
+    // dispatch(loginAccount(data));
+  };
+
+  const handleLoginAccount = async (data) => {
+    let res = await api
+      .post(
+        // "/api/login/",
+        "/login/",
+        {
+          username: data.account,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.detail)
+      });
+
+    if (res) {
+      dispatch(loginAccount(data));
+      localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+    }
+    // else {
+    //   navigate("/sign-in");
+    // }
+    console.log(res);
+  };
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
@@ -31,9 +86,13 @@ const Signin = () => {
           <input
             type="text"
             {...register("account", {
-              required: "You must specify user name or email",
+              required: "You must specify an email",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Invalid email format",
+              },
             })}
-            placeholder="User Name or Email"
+            placeholder="Email"
             className="border-solid border-gray border-1 mt-8 py-2 w-72 p-3 rounded-3 font-normal text-sm outline-medium-blue"
           />
           {errors?.account && (
@@ -64,7 +123,7 @@ const Signin = () => {
           )}
           <button
             className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
-            onClick={handleSubmit}
+            // onClick={handleSubmit(onSubmit)}
           >
             Login
           </button>

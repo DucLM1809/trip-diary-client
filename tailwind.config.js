@@ -25,7 +25,7 @@ module.exports = {
       'logo': 'Dancing Script',
     },
     backgroundImage: {
-      'sign-in': "url('/src/images/sign-in.png')"
+      'sign-in': "url('/src/assests/images/sign-in.png')"
     },
     borderWidth: {
       '0': '0',

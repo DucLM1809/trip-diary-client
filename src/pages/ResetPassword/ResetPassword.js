@@ -1,9 +1,12 @@
 import React from "react";
-
 import { useForm } from "react-hook-form";
-import logo from "../images/logo.png";
+import { useParams, useNavigate } from "react-router-dom";
+import logo from "../../assests/images/logo.png";
+import api from "../../api/axios";
 
-const ResetPassword = () => {
+const ResetPassword = (props) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,14 +15,36 @@ const ResetPassword = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+    handleResetPassword(data);
     console.log(data);
+  };
+
+  console.log(window.location.pathname);
+
+  let { prefix, id, token } = useParams();
+  console.log(id, token);
+
+  const handleResetPassword = async (data) => {
+    let res = await api({
+      url: `/users/reset-password/${id}/${token}`,
+      method: "post",
+      data: {
+        password: data.password,
+      },
+    });
+
+    if (res) {
+      navigate("/sign-in");
+    }
+
+    console.log(res);
   };
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
       <div className="bg-modal shadow-xl w-2/5 h-3/5 py-10 rounded-10 flex flex-col items-center justify-center">
         <div className="flex flex-col justify-center items-center">
-          <img src={logo} width={50} height={50} alt="logo" />
+          <img src={logo} alt="logo" className="w-9" />
           <span className="text-white font-extrabold text-5xl ml-2 mt-2 font-logo">
             TriPari's
           </span>
@@ -49,6 +74,7 @@ const ResetPassword = () => {
           <input
             type="password"
             {...register("confirm", {
+              required: "You must specify a confirm password",
               validate: (value) =>
                 value === watch("password") || "The passwords do not match",
             })}
@@ -62,7 +88,7 @@ const ResetPassword = () => {
           )}
           <button
             className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
-            onSubmit={handleSubmit}
+            onClick={handleSubmit(onSubmit)}
           >
             Reset Password
           </button>

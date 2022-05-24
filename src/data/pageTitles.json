@@ -1,22 +1,26 @@
 [
-    {
-        "key": "/",
-        "title": "TriPari's"
-    },
-    {
-        "key": "/sign-in",
-        "title": "Sign in"
-    },
-    {
-        "key": "/sign-up",
-        "title":"Sign up"
-    },
-    {
-        "key": "/forget-password",
-        "title":"Forget Password"
-    },
-    {
-        "key": "/reset-password",
-        "title":"Reset Password"
-    }
+  {
+    "key": "/",
+    "title": "TriPari's"
+  },
+  {
+    "key": "/sign-in",
+    "title": "Sign in"
+  },
+  {
+    "key": "/sign-up",
+    "title": "Sign up"
+  },
+  {
+    "key": "/forget-password",
+    "title": "Forget Password"
+  },
+  {
+    "key": "/reset-password",
+    "title": "Reset Password"
+  },
+  {
+    "key": "/home",
+    "title": "Home"
+  }
 ]

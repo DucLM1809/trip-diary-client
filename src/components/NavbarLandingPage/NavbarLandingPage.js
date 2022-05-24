@@ -1,6 +1,6 @@
 import { Link as LinkR } from "react-scroll";
 import { Link } from "react-router-dom";
-import logo from "../../images/logo.png";
+import logo from "../../assests/images/logo.png";
 
 const NavbarLandingPage = () => {
   return (

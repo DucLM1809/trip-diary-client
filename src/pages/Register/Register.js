@@ -1,16 +1,41 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import logo from "../images/logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assests/images/logo.png";
+import api from "../../api/axios";
 
 const FormSignup = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    handleRegister(data);
+  };
+
+  const handleRegister = async (data) => {
+    // let res = await api.post("/api/users/", {
+    let res = await api
+      .post("/users/", {
+        email: data.account,
+        username: data.username,
+        password: data.password,
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data.detail);
+      });
+
+    if (res) {
+      navigate("/sign-in");
+    }
+    console.log(res);
+  };
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
@@ -76,6 +101,7 @@ const FormSignup = () => {
           <input
             type="password"
             {...register("confirm", {
+              required: "You must specify a confirm password",
               validate: (value) =>
                 value === watch("password") || "The passwords do not match",
             })}
