@@ -1,8 +1,9 @@
 const initState = {
   user: {
-    username: "",
-    password: "",
-    auth: localStorage.getItem("accessToken") ? true : false,
+    email: '',
+    username: '',
+    password: '',
+    auth: localStorage.getItem('accessToken') ? true : false,
   },
 };
 
@@ -10,7 +11,7 @@ const rootReducer = (state = initState, action) => {
   console.log({ state, action });
   console.log(localStorage);
   switch (action.type) {
-    case "LOGIN_BY_ACCOUNT": {
+    case 'LOGIN_BY_ACCOUNT': {
       return {
         ...state,
         user: {
@@ -21,7 +22,7 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case "LOGIN_BY_GOOGLE": {
+    case 'LOGIN_BY_GOOGLE': {
       return {
         ...state,
         user: {
@@ -30,14 +31,24 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case "LOGOUT": {
+    case 'LOGOUT': {
       return {
         ...state,
         user: {
           ...state.user,
-          username: "",
-          password: "",
+          username: '',
+          password: '',
           auth: false,
+        },
+      };
+    }
+    case 'USER_GET_USER_INFO': {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          email: action.payload.email,
+          username: action.payload.username,
         },
       };
     }

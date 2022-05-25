@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import GoogleLogin from "react-google-login";
-import { useForm } from "react-hook-form";
-import logo from "../../assests/images/logo.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import api from "../../api/axios";
-import { loginAccount, loginGoogle, logOut } from "../../redux/actions";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import { useGoogleLogin } from 'react-google-login';
+import { useForm } from 'react-hook-form';
+import logo from '../../assests/images/logo.png';
+import GoogleIcon from '../../assests/images/google.png';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import api from '../../api/axios';
+import { loginAccount, loginGoogle, logOut } from '../../redux/actions';
+import { useDispatch } from 'react-redux';
+import { getUserInfo } from '../../redux/actions';
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -13,23 +15,36 @@ const Signin = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || '/home';
+  const clientId =
+    '518727150893-4c80ip0io9lbbnmbrujki5l8cn4vrvvv.apps.googleusercontent.com';
 
-  const responseGoogle = (response) => {
-    console.log(response.profileObj);
+  const onSuccess = (response) => {
     handleLoginGoogle(response);
     dispatch(loginGoogle(response));
     navigate(from, { replace: true });
   };
 
-  const handleLoginGoogle = async (data) => {
-    // let res = await api.post("/api/login/google", {
-    let res = await api.post("/login/google", {
-      tokenId: data.tokenId,
+  const { signIn } = useGoogleLogin({
+    onSuccess,
+    clientId,
+  });
+
+  const handleLoginGoogle = async (response) => {
+    let res = await api.post('/login/google', {
+      tokenId: response.tokenId,
     });
 
-    localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
-    console.log(res);
+    localStorage.setItem('accessToken', JSON.stringify(res.data.accessToken));
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${res.data.accessToken}`,
+      },
+    };
+
+    res = await api.get('/users/', config);
+    dispatch(getUserInfo(res.data[0]))
   };
 
   const {
@@ -48,14 +63,14 @@ const Signin = () => {
     let res = await api
       .post(
         // "/api/login/",
-        "/login/",
+        '/login/',
         {
           username: data.account,
           password: data.password,
         },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
         }
       )
@@ -63,11 +78,12 @@ const Signin = () => {
         console.log(error);
         setError(error.response.data.detail);
         // alert(error.response.data.detail);
+        // alert(error.response.data.detail);
       });
 
     if (res) {
       dispatch(loginAccount(data));
-      localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+      localStorage.setItem('accessToken', JSON.stringify(res.data.accessToken));
     }
     // else {
     //   navigate("/sign-in");
@@ -76,11 +92,11 @@ const Signin = () => {
   };
 
   return (
-    <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
-      <div className="bg-modal shadow-xl w-2/5 py-10 rounded-10 flex flex-col items-center justify-center">
-        <div className="flex flex-col justify-center items-center">
-          <img src={logo} alt="logo" className="w-9" />
-          <span className="text-white font-extrabold text-3xl ml-2 font-logo">
+    <div className='bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center'>
+      <div className='bg-modal shadow-xl w-2/5 py-10 rounded-10 flex flex-col items-center justify-center'>
+        <div className='flex flex-col justify-center items-center'>
+          <img src={logo} alt='logo' className='w-9' />
+          <span className='text-white font-extrabold text-3xl ml-2 font-logo'>
             TriPari's
           </span>
         </div>
@@ -97,12 +113,12 @@ const Signin = () => {
             <></>
           )}
           <input
-            type="text"
-            {...register("account", {
-              required: "You must specify an email",
+            type='text'
+            {...register('account', {
+              required: 'You must specify an email',
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Invalid email format",
+                message: 'Invalid email format',
               },
             })}
             placeholder="Email"
@@ -114,12 +130,12 @@ const Signin = () => {
             </p>
           )}
           <input
-            type="password"
-            {...register("password", {
-              required: "You must specify password",
+            type='password'
+            {...register('password', {
+              required: 'You must specify password',
               minLength: {
                 value: 8,
-                message: "Password must have at least 8 characters",
+                message: 'Password must have at least 8 characters',
               },
             })}
             placeholder="Password"
@@ -131,35 +147,35 @@ const Signin = () => {
             </p>
           )}
           <button
-            className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
+            className='bg-light-blue py-[0.5rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray'
             // onClick={handleSubmit(onSubmit)}
           >
             Login
           </button>
-          <span className="text-center text-white text-sm font-normal mb-2">
-            or
-          </span>
-          <div>
-            <GoogleLogin
-              clientId="518727150893-4c80ip0io9lbbnmbrujki5l8cn4vrvvv.apps.googleusercontent.com"
-              buttonText="Login via Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-              className="w-full justify-center"
-            />
+          <div className='flex p-3 md:py-[12.9px] items-center'>
+            <div className='flex-grow border-t-[0.7px] border-gray'></div>
+            <span className='flex-shrink mx-2 md:mx-4 text-gray text-sm md:text-base'>
+              OR
+            </span>
+            <div className='flex-grow border-t-[0.7px] border-gray'></div>
           </div>
-          <div className="flex justify-between text-white mt-2">
+
+          <button
+            className='flex justify-center items-center bg-white text-[#6b7280] text-[14px] py-[10px] w-full rounded-3 hover:opacity-80'
+            onClick={signIn}
+          >
+            <img src={GoogleIcon} className='w-[18px] h-[18px] mr-2' />
+            Login with Google
+          </button>
+
+          <div className='flex justify-between text-[#f2f2f2] mt-2'>
             <Link
-              to="/forget-password"
-              className="font-normal underline hover:text-light-blue"
+              to='/forget-password'
+              className='font-semibold hover:text-[#cbd5e1]'
             >
               Forget password?
             </Link>
-            <Link
-              to="/sign-up"
-              className="font-normal underline hover:text-light-blue"
-            >
+            <Link to='/sign-up' className='font-semibold hover:text-[#cbd5e1]'>
               Register
             </Link>
           </div>
