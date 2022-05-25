@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
 import api from "../../api/axios";
+import { resetPassword } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const ResetPassword = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -34,6 +37,7 @@ const ResetPassword = (props) => {
     });
 
     if (res) {
+      dispatch(resetPassword());
       navigate("/sign-in");
     }
 

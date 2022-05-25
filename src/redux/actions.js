@@ -30,3 +30,10 @@ export const registerNew = () => {
     type: "REGISTER",
   };
 };
+
+
+export const resetPassword = () => {
+  return {
+    type: "RESET_PASSWORD",
+  };
+};

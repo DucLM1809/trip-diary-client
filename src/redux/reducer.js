@@ -62,6 +62,15 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
+    case 'RESET_PASSWORD': {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          status: "Reset Password Successfull!",
+        },
+      };
+    }
     default:
       return state;
   }
