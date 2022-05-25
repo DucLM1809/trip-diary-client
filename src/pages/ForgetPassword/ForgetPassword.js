@@ -33,6 +33,7 @@ const ForgetPassword = () => {
 
     if (res) {
       setSuccess("Check your email to reset password");
+      setError("")
     }
   };
 
