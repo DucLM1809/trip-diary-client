@@ -6,7 +6,8 @@ import api from "../../api/axios";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
-  const [success, setSuccess] = useState();
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -26,6 +27,7 @@ const ForgetPassword = () => {
       })
       .catch((error) => {
         console.log(error);
+        setError(error.response.data.detail);
         // alert(error.response.data.detail);
       });
 
@@ -34,7 +36,7 @@ const ForgetPassword = () => {
       // alert("Check your email to reset password");
     }
 
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   return (
@@ -53,7 +55,16 @@ const ForgetPassword = () => {
           {success ? (
             <>
               <div className="bg-light-success border-1 border-success text-success py-2 px-2 mt-3 rounded-3 relative text-center">
-                <span class="block sm:inline">{success}</span>
+                <span className="block sm:inline">{success}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {error ? (
+            <>
+              <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center">
+                <span className="block sm:inline">{error}</span>
               </div>
             </>
           ) : (
