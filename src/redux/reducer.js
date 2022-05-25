@@ -3,7 +3,7 @@ const initState = {
     email: '',
     username: '',
     password: '',
-    status: '',
+    status: null,
     auth: localStorage.getItem('accessToken') ? true : false,
   },
 };

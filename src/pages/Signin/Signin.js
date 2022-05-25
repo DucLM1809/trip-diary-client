@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGoogleLogin } from "react-google-login";
 import { useForm } from "react-hook-form";
 import logo from "../../assests/images/logo.png";
@@ -12,7 +12,7 @@ import { getUserInfo } from "../../redux/actions";
 const Signin = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,7 +22,10 @@ const Signin = () => {
 
   const userInfo = useSelector((state) => state.user);
   console.log(userInfo);
-  // setSuccess(userInfo.status);
+
+  useEffect(() => {
+    setSuccess(userInfo.status);
+  }, [userInfo]);
 
   const onSuccess = (response) => {
     handleLoginGoogle(response);
@@ -81,7 +84,7 @@ const Signin = () => {
       .catch((error) => {
         console.log(error);
         setError(error.response.data.detail);
-        // setSuccess("");
+        setSuccess(null);
         // alert(error.response.data.detail);
       });
 
@@ -105,7 +108,7 @@ const Signin = () => {
           </span>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-          {/* {success ? (
+          {success ? (
             <>
               <div className="bg-light-success border-1 border-success text-success py-2 px-2 mt-3 rounded-3 relative text-center">
                 <span className="block sm:inline">{success}</span>
@@ -113,7 +116,7 @@ const Signin = () => {
             </>
           ) : (
             <></>
-          )} */}
+          )}
           {error ? (
             <>
               <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center">
