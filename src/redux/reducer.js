@@ -1,10 +1,10 @@
 const initState = {
   user: {
-    email: '',
-    username: '',
-    password: '',
+    email: "",
+    username: "",
+    password: "",
     status: null,
-    auth: localStorage.getItem('accessToken') ? true : false,
+    auth: localStorage.getItem("accessToken") ? true : false,
   },
 };
 
@@ -12,7 +12,7 @@ const rootReducer = (state = initState, action) => {
   console.log({ state, action });
   console.log(localStorage);
   switch (action.type) {
-    case 'LOGIN_BY_ACCOUNT': {
+    case "LOGIN_BY_ACCOUNT": {
       return {
         ...state,
         user: {
@@ -23,7 +23,7 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case 'LOGIN_BY_GOOGLE': {
+    case "LOGIN_BY_GOOGLE": {
       return {
         ...state,
         user: {
@@ -32,18 +32,19 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case 'LOGOUT': {
+    case "LOGOUT": {
       return {
         ...state,
         user: {
           ...state.user,
-          username: '',
-          password: '',
+          username: "",
+          password: "",
+          status: null,
           auth: false,
         },
       };
     }
-    case 'USER_GET_USER_INFO': {
+    case "USER_GET_USER_INFO": {
       return {
         ...state,
         user: {
@@ -53,7 +54,7 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case 'REGISTER': {
+    case "REGISTER": {
       return {
         ...state,
         user: {
@@ -62,7 +63,7 @@ const rootReducer = (state = initState, action) => {
         },
       };
     }
-    case 'RESET_PASSWORD': {
+    case "RESET_PASSWORD": {
       return {
         ...state,
         user: {
