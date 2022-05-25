@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GoogleLogin from "react-google-login";
+import GoogleLogin, { useGoogleLogin } from "react-google-login";
 import { useForm } from "react-hook-form";
 import logo from "../../assests/images/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,7 +61,8 @@ const Signin = () => {
       )
       .catch((error) => {
         console.log(error);
-        alert(error.response.data.detail)
+        setError(error.response.data.detail);
+        // alert(error.response.data.detail);
       });
 
     if (res) {
@@ -83,6 +85,15 @@ const Signin = () => {
           </span>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          {error ? (
+            <>
+              <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center">
+                <span class="block sm:inline">{error}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <input
             type="text"
             {...register("account", {
@@ -93,7 +104,7 @@ const Signin = () => {
               },
             })}
             placeholder="Email"
-            className="border-solid border-gray border-1 mt-8 py-2 w-72 p-3 rounded-3 font-normal text-sm outline-medium-blue"
+            className="border-solid border-gray border-1 mt-8 py-2 w-[19rem] p-3 rounded-3 font-normal text-sm outline-medium-blue"
           />
           {errors?.account && (
             <p className="text-xs mt-2 font-normal text-danger before:inline before:content-['⚠'] ">
@@ -108,13 +119,9 @@ const Signin = () => {
                 value: 8,
                 message: "Password must have at least 8 characters",
               },
-              maxLength: {
-                value: 10,
-                message: "Password must have maximum 10 characters",
-              },
             })}
             placeholder="Password"
-            className="border-solid border-gray border-1 mt-4 py-2 w-72 p-3 rounded-3 font-normal text-sm outline-medium-blue"
+            className="border-solid border-gray border-1 mt-4 py-2 w-[19rem] p-3 rounded-3 font-normal text-sm outline-medium-blue"
           />
           {errors?.password && (
             <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">

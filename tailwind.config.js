@@ -13,6 +13,10 @@ module.exports = {
       "gray": "#eaebed",
       "modal": "rgba(0, 0, 0, 0.4)",
       "danger": "#eb0d0d",
+      "red": "#c53030",
+      "light-pink": "#ffe1e1",
+      "success": "#567769",
+      "light-success": "#d4edda"
     },
     borderRadius: {
       "3": "3px",

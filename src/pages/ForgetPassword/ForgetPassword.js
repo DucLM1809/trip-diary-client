@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import logo from "../../assests/images/logo.png";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import api from "../../api/axios";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
+  const [success, setSuccess] = useState();
 
   const {
     register,
@@ -25,11 +26,12 @@ const ForgetPassword = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert(error.response.data.detail);
+        // alert(error.response.data.detail);
       });
-      
+
     if (res) {
-      alert("Check your email to reset password");
+      setSuccess("Check your email to reset password");
+      // alert("Check your email to reset password");
     }
 
     console.log(res.data);
@@ -48,6 +50,15 @@ const ForgetPassword = () => {
           Forgot your password?
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          {success ? (
+            <>
+              <div className="bg-light-success border-1 border-success text-success py-2 px-2 mt-3 rounded-3 relative text-center">
+                <span class="block sm:inline">{success}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <input
             type="text"
             {...register("account", {
@@ -65,9 +76,7 @@ const ForgetPassword = () => {
               {errors?.account?.message}
             </p>
           )}
-          <button
-            className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
-          >
+          <button className="bg-light-blue py-[0.6rem] mt-4 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray">
             Send request
           </button>
         </form>

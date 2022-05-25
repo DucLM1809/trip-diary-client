@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
@@ -6,6 +6,7 @@ import api from "../../api/axios";
 
 const FormSignup = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -28,7 +29,8 @@ const FormSignup = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert(error.response.data.detail);
+        // alert(error.response.data.detail);
+        setError(error.response.data.detail);
       });
 
     if (res) {
@@ -47,6 +49,15 @@ const FormSignup = () => {
           </span>
         </div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          {error ? (
+            <>
+              <div className="bg-light-pink border-1 border-red text-red py-2 px-3 mt-3 rounded-3 relative text-center">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <input
             type="text"
             {...register("account", {
@@ -84,10 +95,6 @@ const FormSignup = () => {
               minLength: {
                 value: 8,
                 message: "Password must have at least 8 characters",
-              },
-              maxLength: {
-                value: 10,
-                message: "Password must have maximum 10 characters",
               },
             })}
             placeholder="Password"

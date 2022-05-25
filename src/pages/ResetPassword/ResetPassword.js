@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
@@ -57,10 +57,6 @@ const ResetPassword = (props) => {
               minLength: {
                 value: 8,
                 message: "Password must have at least 8 characters",
-              },
-              maxLength: {
-                value: 10,
-                message: "Password must have maximum 10 characters",
               },
             })}
             placeholder="New password"
