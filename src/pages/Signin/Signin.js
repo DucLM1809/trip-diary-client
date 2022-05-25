@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GoogleLogin, { useGoogleLogin } from "react-google-login";
+import GoogleLogin from "react-google-login";
 import { useForm } from "react-hook-form";
 import logo from "../../assests/images/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -87,7 +87,9 @@ const Signin = () => {
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           {error ? (
             <>
-              <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center">
+              <div
+                className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center"
+              >
                 <span class="block sm:inline">{error}</span>
               </div>
             </>
