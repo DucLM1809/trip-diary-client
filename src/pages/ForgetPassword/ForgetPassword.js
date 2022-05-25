@@ -29,16 +29,11 @@ const ForgetPassword = () => {
         console.log(error);
         setError(error.response.data.detail);
         setSuccess("");
-        // alert(error.response.data.detail);
       });
 
     if (res) {
       setSuccess("Check your email to reset password");
-      setError("");
-      // alert("Check your email to reset password");
     }
-
-    // console.log(res.data);
   };
 
   return (

@@ -3,6 +3,7 @@ const initState = {
     email: '',
     username: '',
     password: '',
+    status: '',
     auth: localStorage.getItem('accessToken') ? true : false,
   },
 };
@@ -49,6 +50,15 @@ const rootReducer = (state = initState, action) => {
           ...state.user,
           email: action.payload.email,
           username: action.payload.username,
+        },
+      };
+    }
+    case 'REGISTER': {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          status: "Register Successfull!",
         },
       };
     }

@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
 import api from "../../api/axios";
+import { useDispatch } from "react-redux";
+import { registerNew } from "../../redux/actions";
 
 const FormSignup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
 
   const {
@@ -34,6 +37,7 @@ const FormSignup = () => {
       });
 
     if (res) {
+      dispatch(registerNew());
       navigate("/sign-in");
     }
     console.log(res);
