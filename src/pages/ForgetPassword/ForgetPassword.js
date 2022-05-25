@@ -28,11 +28,13 @@ const ForgetPassword = () => {
       .catch((error) => {
         console.log(error);
         setError(error.response.data.detail);
+        setSuccess("");
         // alert(error.response.data.detail);
       });
 
     if (res) {
       setSuccess("Check your email to reset password");
+      setError("");
       // alert("Check your email to reset password");
     }
 
