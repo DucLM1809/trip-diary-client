@@ -6,11 +6,12 @@ const initState = {
     status: null,
     auth: localStorage.getItem("accessToken") ? true : false,
   },
+  page: {
+    loading: null,
+  },
 };
 
 const rootReducer = (state = initState, action) => {
-  console.log({ state, action });
-  console.log(localStorage);
   switch (action.type) {
     case "LOGIN_BY_ACCOUNT": {
       return {
@@ -21,6 +22,10 @@ const rootReducer = (state = initState, action) => {
           password: action.payload.password,
           auth: true,
         },
+        page: {
+          ...state.page,
+          loading: action.payload,
+        },
       };
     }
     case "LOGIN_BY_GOOGLE": {
@@ -29,6 +34,10 @@ const rootReducer = (state = initState, action) => {
         user: {
           ...state.user,
           auth: true,
+        },
+        page: {
+          ...state.page,
+          loading: action.payload,
         },
       };
     }
@@ -41,6 +50,10 @@ const rootReducer = (state = initState, action) => {
           password: "",
           status: null,
           auth: false,
+        },
+        page: {
+          ...state.page,
+          loading: action.payload,
         },
       };
     }
@@ -61,6 +74,19 @@ const rootReducer = (state = initState, action) => {
           ...state.user,
           status: "Register Successfull!",
         },
+        page: {
+          ...state.page,
+          loading: action.payload,
+        },
+      };
+    }
+    case "FORGET_PASSWORD": {
+      return {
+        ...state,
+        page: {
+          ...state.page,
+          loading: action.payload,
+        },
       };
     }
     case "RESET_PASSWORD": {
@@ -69,6 +95,19 @@ const rootReducer = (state = initState, action) => {
         user: {
           ...state.user,
           status: "Reset Password Successfull!",
+        },
+        page: {
+          ...state.page,
+          loading: action.payload,
+        },
+      };
+    }
+    case "LOADING": {
+      return {
+        ...state,
+        page: {
+          ...state.page,
+          loading: action.payload,
         },
       };
     }

@@ -18,10 +18,10 @@ export const logOut = () => {
   };
 };
 
-export const getUserInfo = (payload) => {
+export const getUserInfo = (data) => {
   return {
     type: "USER_GET_USER_INFO",
-    payload: payload,
+    payload: data,
   };
 };
 
@@ -31,9 +31,21 @@ export const registerNew = () => {
   };
 };
 
+export const forgetPassword = () => {
+  return {
+    type: "FORGET_PASSWORD",
+  };
+};
 
 export const resetPassword = () => {
   return {
     type: "RESET_PASSWORD",
+  };
+};
+
+export const loadingPage = (data) => {
+  return {
+    type: "LOADING",
+    payload: data
   };
 };

@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
+import Loading from "./pages/Loading/Loading";
 
 function App() {
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [auth, setAuth] = useState(false);
 
   // let location = useLocation();
@@ -26,7 +27,6 @@ function App() {
 
   let userAccount = useSelector((state) => state.user);
   useEffect(() => {
-    console.log(userAccount);
     setAuth(userAccount.auth);
   }, [userAccount]);
 
@@ -41,7 +41,11 @@ function App() {
           path="/forget-password"
           element={<ForgetPassword />}
         ></Route>
-        <Route exact path="/reset-password/:id/:token" element={<ResetPassword />}></Route>
+        <Route
+          exact
+          path="/reset-password/:id/:token"
+          element={<ResetPassword />}
+        ></Route>
       </Route>
 
       <Route element={<RequireAuth auth={auth} />}>

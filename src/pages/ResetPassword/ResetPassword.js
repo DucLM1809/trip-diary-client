@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
 import api from "../../api/axios";
-import { resetPassword } from "../../redux/actions";
-import { useDispatch } from "react-redux";
+import { loadingPage, resetPassword } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const ResetPassword = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -18,6 +19,7 @@ const ResetPassword = (props) => {
   } = useForm();
 
   const onSubmit = (data) => {
+    dispatch(loadingPage(true))
     handleResetPassword(data);
     console.log(data);
   };
@@ -43,6 +45,11 @@ const ResetPassword = (props) => {
 
     console.log(res);
   };
+
+  let page = useSelector((state) => state.page);
+  useEffect(() => {
+    setLoading(page.loading);
+  }, [page]);
 
   return (
     <div className="bg-sign-in bg-no-repeat bg-center bg-cover h-screen flex items-center justify-center">
