@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
-import Loading from "./pages/Loading/Loading";
+import Create from "./pages/Create/Create";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -46,6 +46,7 @@ function App() {
           path="/reset-password/:id/:token"
           element={<ResetPassword />}
         ></Route>
+        <Route exact path="/create" element={<Create />}></Route>
       </Route>
 
       <Route element={<RequireAuth auth={auth} />}>

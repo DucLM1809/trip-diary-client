@@ -4,3 +4,4 @@ export { default as HeroSection } from "./HeroSection/HeroSection";
 export { default as ServicesSection } from "./ServicesSection/ServicesSection";
 export { default as DestinationsSection } from "./DestinationsSection/DestinationsSection";
 export { default as Footer } from "./Footer/Footer";
+export { default as Navbar } from "./Navbar/Navbar";
