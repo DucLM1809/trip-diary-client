@@ -32,17 +32,25 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex flex-1 justify-around items-center text-base ml-48">
-          <Link to="/create" className="flex flex-col items-center justify-center  hover:text-medium-blue">
+          <Link
+            to="/create"
+            className="flex flex-col items-center justify-center  hover:text-medium-blue focus:text-medium-blue"
+          >
             <GoGlobe className="text-2xl" />
             <span className="font-normal">Home</span>
           </Link>
-
-          <Link to="/create" className="flex flex-col items-center justify-center  hover:text-medium-blue">
+          <Link
+            to="/create"
+            className="flex flex-col items-center justify-center  hover:text-medium-blue focus:text-medium-blue"
+          >
             <FaMapMarkedAlt className="text-2xl" />
             <span className="font-normal">Trips</span>
           </Link>
 
-          <Link to="/create" className="flex flex-col items-center justify-center  hover:text-medium-blue">
+          <Link
+            to="/create"
+            className="flex flex-col items-center justify-center  hover:text-medium-blue focus:text-medium-blue"
+          >
             <BsFillPlusCircleFill className="text-2xl" />
             <span className="font-normal">Create</span>
           </Link>

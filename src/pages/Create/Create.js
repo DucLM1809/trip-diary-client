@@ -1,12 +1,16 @@
-import React from 'react'
-import { Navbar } from '../../components'
+import React from "react";
+import { CreateBody, Navbar, Sidebar } from "../../components";
 
 const Create = () => {
   return (
     <div>
-        <Navbar />
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <CreateBody />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Create
+export default Create;

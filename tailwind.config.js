@@ -16,7 +16,9 @@ module.exports = {
       "red": "#c53030",
       "light-pink": "#ffe1e1",
       "success": "#567769",
-      "light-success": "#d4edda"
+      "light-success": "#d4edda",
+      "dark-gray": "#202D3D",
+      "dark-white": "rgba(255, 255, 255, 0.5)",
     },
     borderRadius: {
       "3": "3px",

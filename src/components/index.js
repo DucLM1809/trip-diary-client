@@ -5,3 +5,5 @@ export { default as ServicesSection } from "./ServicesSection/ServicesSection";
 export { default as DestinationsSection } from "./DestinationsSection/DestinationsSection";
 export { default as Footer } from "./Footer/Footer";
 export { default as Navbar } from "./Navbar/Navbar";
+export { default as Sidebar } from "./Sidebar/Sidebar";
+export { default as CreateBody } from "./CreateBody/CreateBody";
