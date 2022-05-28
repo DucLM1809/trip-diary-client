@@ -11,6 +11,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
+import HomePage from "./pages/HomePage/HomePage";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -52,6 +53,8 @@ function App() {
       <Route element={<RequireAuth auth={auth} />}>
         <Route exact path="/home" element={<Home />}></Route>
       </Route>
+
+      <Route element={<HomePage />} exact path="/homepage"></Route>
     </Routes>
   );
 }
