@@ -7,3 +7,8 @@ export { default as Footer } from "./Footer/Footer";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as CreateBody } from "./CreateBody/CreateBody";
+export { default as Background } from "./Background/Background"
+export { default as FooterPub } from "./FooterPub/Footer"
+export { default as User } from "./User/User"
+export { default as Trip } from "./Trip/Trip"
+

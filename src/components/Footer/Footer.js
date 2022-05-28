@@ -40,7 +40,6 @@ const Footer = () => {
               spy={true}
               exact="true"
               activeClass="active"
-              href="#places"
             >
               Services
             </LinkR>
@@ -53,7 +52,6 @@ const Footer = () => {
               spy={true}
               exact="true"
               activeClass="active"
-              href="#recommendations"
             >
               Recommendations
             </LinkR>

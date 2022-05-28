@@ -7,6 +7,7 @@ const initState = {
     auth: localStorage.getItem("accessToken") ? true : false,
   },
   page: {
+    path: [],
     loading: null,
   },
 };
@@ -108,6 +109,15 @@ const rootReducer = (state = initState, action) => {
         page: {
           ...state.page,
           loading: action.payload,
+        },
+      };
+    }
+    case "GET_PATH": {
+      return {
+        ...state,
+        page: {
+          ...state.page,
+          path: action.payload,
         },
       };
     }

@@ -11,12 +11,14 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
+import Trips from "./pages/Trips/Trips";
 
 function App() {
   // const [title, setTitle] = useState("");
   const [auth, setAuth] = useState(false);
 
   // let location = useLocation();
+
   // useEffect(() => {
   //   setTitle(
   //     pageTitles.filter((pageTitle) => pageTitle.key === location.pathname)[0]
@@ -46,11 +48,12 @@ function App() {
           path="/reset-password/:id/:token"
           element={<ResetPassword />}
         ></Route>
-        <Route exact path="/create" element={<Create />}></Route>
       </Route>
 
       <Route element={<RequireAuth auth={auth} />}>
         <Route exact path="/home" element={<Home />}></Route>
+        <Route exact path="/create" element={<Create />}></Route>
+        <Route exact path="/trips" element={<Trips />}></Route>
       </Route>
     </Routes>
   );

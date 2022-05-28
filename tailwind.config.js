@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ['./src/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js'],
   theme: {
     colors: {
       "light-blue": "#1D95EC",
@@ -19,6 +19,8 @@ module.exports = {
       "light-success": "#d4edda",
       "dark-gray": "#202D3D",
       "dark-white": "rgba(255, 255, 255, 0.5)",
+      "placeholder": "#9ca3af",
+      "sky": "#D0D8E6",
     },
     borderRadius: {
       "3": "3px",
@@ -43,5 +45,7 @@ module.exports = {
       '8': '8px',
     },
   },
-  plugins: [],
+  plugins: [
+    require('tw-elements/dist/plugin')
+  ]
 };

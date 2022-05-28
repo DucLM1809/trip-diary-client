@@ -69,7 +69,6 @@ const Signin = () => {
 
   const onSubmit = (data) => {
     dispatch(loadingPage(true));
-    console.log(data);
     handleLoginAccount(data);
   };
 
@@ -88,7 +87,6 @@ const Signin = () => {
         }
       )
       .catch((error) => {
-        console.log(error);
         setError(error.response.data.detail);
         setSuccess(null);
         setLoading(false);
@@ -98,7 +96,6 @@ const Signin = () => {
       dispatch(loginAccount(data));
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
     }
-    console.log(res);
   };
 
   let page = useSelector((state) => state.page);

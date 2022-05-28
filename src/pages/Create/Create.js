@@ -1,5 +1,10 @@
 import React from "react";
-import { CreateBody, Navbar, Sidebar } from "../../components";
+import {
+  Background,
+  FooterPub,
+  Navbar,
+  Sidebar,
+} from "../../components";
 
 const Create = () => {
   return (
@@ -7,8 +12,9 @@ const Create = () => {
       <Navbar />
       <div className="flex">
         <Sidebar />
-        <CreateBody />
+        <Background />
       </div>
+      <FooterPub />
     </div>
   );
 };

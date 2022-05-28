@@ -5,7 +5,7 @@ import { BiDirections } from "react-icons/bi";
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-dark-gray h-[100vh] w-[100px] relative">
+    <div className="flex flex-col bg-dark-gray h-auto w-[100px] relative">
       <Link to="#overview"
         className="flex flex-col items-center justify-center text-dark-white 
         hover:text-light-blue focus:text-light-blue focus:after:absolute 
