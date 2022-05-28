@@ -1,5 +1,6 @@
 .profile{
     display: flex;
+
 }
 
 .profileRight{
@@ -63,7 +64,7 @@
     width: 90%;
     height: 170px;
     border-radius: 10px;
-    background-color: aliceblue;
+    background-color: white;
     margin-left: 5%;
     font-size: 20px;
     text-align: center;
@@ -78,9 +79,9 @@
 }
 
 .shareInput{
-    border-color: aliceblue;
+    border-color: white;
     width: 100%;
-    background-color: aliceblue;
+    background-color: white;
     height: 30px;
 }
 
@@ -168,55 +169,153 @@
 .trip{
     position: relative;
 }
-.dropbtn {
-    background-color: #04AA6D;
+
+.tripgogo {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    background-color: white;
+    width: 90%;
+    border-radius: 20px;
+    margin-left: 5%;
+}
+
+.trip1{
+    grid-area: 1 / 1 / 4 / 6; 
+}
+.trip2{
+    grid-area: 4 / 1 / 7 / 6;
+}
+.trip3{
+    margin-top: 35px;
+    grid-area: 1 / 1 / 2 / 2;
+    font-size: 25px;
+    margin-left: 61.55px;
+}
+.trip4{
+    grid-area: 1 / 5 / 2 / 6;   
+}
+.trip5{
+    
+    grid-area: 2 / 1 / 4 / 3;
+}
+.trip6{
+    grid-area: 1 / 3 / 4 / 4;
+    margin-top: 165px;
+    margin-left: 0%;
+}
+.trip7{
+    font-size: 25px;
+    margin-left: 61.55px;
+    grid-area: 4 / 1 / 5 / 2;
+    margin-top: 30px;
+}
+.trip8{
+    grid-area: 4 / 5 / 5 / 6;
+}
+.trip9{
+    grid-area: 5 / 1 / 7 / 3;
+}
+.trip10{
+    grid-area: 5 / 3 / 7 / 5;
+}
+.trip11{
+    grid-area: 5 / 5 / 7 / 6;
+}
+.buttonShow{
+    border: 3px solid white;
+    background-color: #CCD2E3;
+    font-size: 20px;
+    border-radius: 15px;
+    width: 150px;
+    margin-top: 40px;
+}
+
+.imgTrip{
+    height: 200px;
+    width: 350px;
+    margin-left: 61.55px;
+    border-radius: 20px;
+}
+
+.trip12{
+    grid-area: 2 / 1 / 3 / 2;
+    font-size: 40px;
+    margin-left: 350px;    
+    margin-top: 7px;
+    
+}
+.trip13{
+    grid-area: 2 / 1 / 3 / 2;
+    font-size: 40px;
+    margin-left: 70px;    
+    margin-top: 15px;
+}
+
+.trip13Img{
+    object-fit: cover;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.trip14{
+    grid-area: 3 / 1 / 4 / 2;
+}
+.trip14text{
     color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
-  }
-  
-  #myInput {
-    box-sizing: border-box;
-    background-position: 14px 12px;
-    background-repeat: no-repeat;
-    font-size: 16px;
-    padding: 14px 20px 12px 45px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  #myInput:focus {outline: 3px solid #ddd;}
-  
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f6f6f6;
-    min-width: 230px;
-    overflow: auto;
-    border: 1px solid #ddd;
-    z-index: 1;
-  }
-  
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  .dropdown a:hover {background-color: #ddd;}
-  
-  .show {display: block;}
+    font-weight:bold;
+    margin-left: 80px;
+    margin-top: 40px;
+    font-size: 18px;
+}
+.trip14text:hover{
+    text-decoration: underline;
+}
+.trip15{
+    grid-area: 4 / 1 / 5 / 6;
+}
+.hrTrip15{
+    margin-top: 20px;
+    width: 90%;
+    margin-left: 5%;
+}
+.trip16{
+    grid-area: 5 / 1 / 6 / 2;
+    font-size: 40px;
+    margin-left: 350px;    
+    margin-top: 7px;
+}
+.trip17{
+    grid-area: 5 / 1 / 7 / 6;
+    font-size: 40px;
+    margin-left: 70px;    
+    margin-top: 15px;
+}
+.trip18{
+    grid-area: 4 / 5 / 5 / 6;
+}
+
+.swiperTrip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.swiperTrip1{
+    grid-area: 1 / 1 / 3 / 4;
+}
+.swiperTrip2{
+    grid-area: 1 / 3 / 2 / 4;
+}
+.swiperTrip3{
+    grid-area: 2 / 1 / 3 / 4;
+    margin-top: 10px;
+}
+
+
 
 
