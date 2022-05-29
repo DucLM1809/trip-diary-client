@@ -19,25 +19,29 @@ const Navbar = () => {
 
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
+  const userName = localStorage.getItem("username");
+
+  const clickColor = "text-medium-blue"
 
   const handleClick = useEffect(() => {
     if (location.pathname === "/home") {
-      homeRef.current.classList.add("text-medium-blue");
-      tripRef.current.classList.remove("text-medium-blue");
-      createRef.current.classList.remove("text-medium-blue");
+      homeRef.current.classList.add(clickColor);
+      tripRef.current.classList.remove(clickColor);
+      createRef.current.classList.remove(clickColor);
     } else if (location.pathname === "/trips") {
-      tripRef.current.classList.add("text-medium-blue");
-      homeRef.current.classList.remove("text-medium-blue");
-      createRef.current.classList.remove("text-medium-blue");
+      tripRef.current.classList.add(clickColor);
+      homeRef.current.classList.remove(clickColor);
+      createRef.current.classList.remove(clickColor);
     } else {
-      createRef.current.classList.add("text-medium-blue");
-      homeRef.current.classList.remove("text-medium-blue");
-      tripRef.current.classList.remove("text-medium-blue");
+      createRef.current.classList.add(clickColor);
+      homeRef.current.classList.remove(clickColor);
+      tripRef.current.classList.remove(clickColor);
     }
   }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("username");
     dispatch(logOut());
   };
 
@@ -100,9 +104,7 @@ const Navbar = () => {
         <div className="flex flex-1 justify-end items-center">
           <img src={unknown} alt="unknown" className="w-10 h-10" />
           <span className="ml-5">
-            {userInfo.username
-              ? userInfo.username
-              : userInfo.email.split("@")[0]}
+            {userName}
           </span>
           <button
             className="ml-5 translate-y-[1px] relative"

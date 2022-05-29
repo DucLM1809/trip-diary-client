@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 // import { Editor, editorState } from "react-draft-wysiwyg";
@@ -10,24 +10,25 @@ import {
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
+import { useForm } from "react-hook-form";
 import banner from "../../assests/images/hero.png";
 
-const Background = () => {
+const Overview = () => {
+  const [display, setDisplay] = useState(false);
+  const [type, setType] = useState();
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyBMlWHzz9j3Q3MIcsGeO5d_MaS1kspQ3dk",
     libraries: ["places"],
   });
 
-  const [display, setDisplay] = useState(false);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
 
   const center = { lat: 48.8584, lng: 2.2945 };
 
   const containerStyle = {
-    width: '100%',
-    height: '100%'
+    width: "100%",
+    height: "100%",
   };
-  
 
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -41,6 +42,22 @@ const Background = () => {
 
   const handleChooseType = () => {
     setDisplay(!display);
+  };
+
+  const handleType = (e) => {
+    setDisplay(false)
+    setType(e.target.textContent);
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    data.type = type;
+    console.log(data);
   };
 
   return (
@@ -64,9 +81,12 @@ const Background = () => {
         </form>
         <AiFillCamera className="text-5xl text-gray absolute bottom-8 right-10 z-10 cursor-pointer" />
       </div>
-      <div className="shadow-lg border-1 border-gray sha h-fit my-10 py-10 flex justify-center rounded-10">
-        <form className="flex flex-col justify-around items-center w-8/12">
-          <div className="w-full flex justify-between mb-10 h-[90px]">
+      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10">
+        <form
+          className="flex flex-col justify-around items-center w-8/12"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
               <label htmlFor="name" className="mb-2">
                 Trip name
@@ -74,6 +94,7 @@ const Background = () => {
               <input
                 id="name"
                 type="text"
+                {...register("tripname")}
                 placeholder="Enter trip name"
                 className="border-2 border-gray pl-3 py-3 w-[560px] pr-10 rounded-5"
               ></input>
@@ -82,31 +103,36 @@ const Background = () => {
               <label htmlFor="type" className="mb-2">
                 Type
               </label>
-              <div className="cursor-pointer">
+              <div className="cursor-pointer w-[148px]">
                 <div
-                  className="border-2 border-gray px-2 py-3 rounded-5 mb-[1px] flex items-center"
+                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center"
                   onClick={handleChooseType}
                 >
-                  <span className="mr-2">Choose Type</span>
+                  <span className="mr-2">{type ? type : "Choose Type"}</span>
                   <FiChevronDown />
                 </div>
 
                 <div
-                  className={`border-2 border-gray rounded-5 mb-1 dis ${
+                  className={`border-2 border-gray rounded-5 mb-1 ${
                     display ? "block" : "hidden"
                   }`}
                 >
-                  <div className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3">
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleType(e)}
+                  >
                     Single Trip
                   </div>
-                  <div className="px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3">
+                  <div
+                    className="w-full px-2 py-1 h-full hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handleType(e)}
+                  >
                     Around Trip
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
               <label htmlFor="depature" className="mb-2">
@@ -115,6 +141,7 @@ const Background = () => {
               <input
                 id="departure"
                 type="text"
+                {...register("departure")}
                 placeholder="Departure"
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
@@ -126,12 +153,13 @@ const Background = () => {
               <input
                 id="to"
                 type="text"
+                {...register("destination")}
                 placeholder="Destination"
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
             </div>
           </div>
-          
+
           <div className="w-full flex justify-between">
             <div className="flex flex-col">
               <label htmlFor="from" className="mb-2">
@@ -140,6 +168,7 @@ const Background = () => {
               <input
                 id="from"
                 type="date"
+                {...register("from")}
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
             </div>
@@ -150,7 +179,7 @@ const Background = () => {
               <input
                 id="to"
                 type="date"
-                placeholder="To"
+                {...register("to")}
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
             </div>
@@ -163,6 +192,7 @@ const Background = () => {
               className="border-2 border-gray p-3 rounded-5"
               rows="10"
               id="description"
+              {...register("description")}
             ></textarea>
           </div>
           <button className="bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg">
@@ -186,7 +216,7 @@ const Background = () => {
             onLoad={onLoad}
             onUnmount={onUnmount}
           >
-            {/* Child components, such as markers, info windows, etc. */}
+            Child components, such as markers, info windows, etc.
             <></>
           </GoogleMap>
         ) : (
@@ -197,4 +227,4 @@ const Background = () => {
   );
 };
 
-export default Background;
+export default Overview;

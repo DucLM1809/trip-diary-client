@@ -36,6 +36,8 @@ const Signin = () => {
     dispatch(loadingPage(true));
     handleLoginGoogle(response);
     dispatch(loginGoogle(response));
+    localStorage.setItem("username", response.profileObj.name);
+
     navigate(from, { replace: true });
   };
 
@@ -95,6 +97,7 @@ const Signin = () => {
     if (res) {
       dispatch(loginAccount(data));
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+      localStorage.setItem("username", data.account.split("@")[0]);
     }
   };
 

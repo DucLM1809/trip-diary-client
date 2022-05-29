@@ -18,6 +18,7 @@ function App() {
   const [auth, setAuth] = useState(false);
 
   // let location = useLocation();
+  // console.log(location);
 
   // useEffect(() => {
   //   setTitle(
