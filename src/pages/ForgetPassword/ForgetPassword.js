@@ -110,10 +110,10 @@ const ForgetPassword = () => {
               </button>
             </form>
             <button
-              className="bg-danger w-[18rem] py-[0.6rem] mt-1 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
+              className="bg-danger w-[18rem]  mt-1 mb-2 font-semibold text-white rounded-3 hover:opacity-90 hover:text-gray"
               onClick={handleClick}
             >
-              <Link to="/sign-in">Cancel</Link>
+              <Link to="/sign-in" className="block w-full h-full py-[0.6rem]">Cancel</Link>
             </button>
           </div>
         </div>
