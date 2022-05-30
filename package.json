@@ -11,11 +11,8 @@
     "draft-js": "^0.11.7",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-<<<<<<< HEAD
     "react-dropdown": "^1.10.0",
-=======
     "react-draft-wysiwyg": "^1.14.7",
->>>>>>> c3b6414f1d440aa809b32bd0b260c1f7dc2d3ac5
     "react-google-login": "^5.2.2",
     "react-hook-form": "^7.31.1",
     "react-icons": "^4.3.1",
@@ -26,12 +23,9 @@
     "react-scroll": "^1.8.7",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-<<<<<<< HEAD
     "swiper": "^8.1.6",
-=======
     "tw-elements": "^1.0.0-alpha12",
     "uuid": "^8.3.2",
->>>>>>> c3b6414f1d440aa809b32bd0b260c1f7dc2d3ac5
     "web-vitals": "^2.1.4"
   },
   "scripts": {

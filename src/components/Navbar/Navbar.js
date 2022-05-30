@@ -103,9 +103,9 @@ const Navbar = () => {
         </div>
         <div className="flex flex-1 justify-end items-center">
           <img src={unknown} alt="unknown" className="w-10 h-10" />
-          <span className="ml-5">
+          <Link to="/user" className="ml-5">
             {userName}
-          </span>
+          </Link>
           <button
             className="ml-5 translate-y-[1px] relative"
             onClick={handleDisplayOut}
