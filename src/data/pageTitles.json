@@ -24,7 +24,11 @@
     "title": "Home"
   },
   {
-    "key": "/homepage",
-    "title":"homepage"
+    "key": "/add-detail",
+    "title": "Add Detail"
+  },
+  {
+    "key": "/create",
+    "title": "Create"
   }
 ]
