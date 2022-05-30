@@ -71,7 +71,7 @@ const Checklist = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center w-1/2 mx-auto">
+    <div className="flex flex-col justify-start min-h-[100vh] w-1/2 mx-auto">
       <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative">
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center">

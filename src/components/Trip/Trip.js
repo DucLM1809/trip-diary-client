@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import des5 from "../../assests/images/Destination5.png";
+import des6 from "../../assests/images/Destination6.jpg";
 import unknown from "../../assests/images/unknown.png";
 
 const Trip = () => {

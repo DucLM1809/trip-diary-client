@@ -85,9 +85,8 @@
     height: 30px;
 }
 
-.shareInput: focus{
+.shareInput:focus{
     outline: none;
-    
 }
 
 .editProfile{

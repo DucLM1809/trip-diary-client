@@ -9,15 +9,20 @@ import {
 } from "../../components";
 import { useLocation } from "react-router-dom";
 
+
+
+
 const Create = () => {
 
   const location = useLocation();
 
 
   return (
+    <>
     <div>
       <Navbar />
       <div className="flex">
+      
         <Sidebar />
         {location.hash === "" || location.hash === "#overview" ? (
           <Overview />
@@ -31,6 +36,7 @@ const Create = () => {
       </div>
       <FooterPub />
     </div>
+    </>
   );
 };
 

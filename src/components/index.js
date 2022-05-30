@@ -6,6 +6,7 @@ export { default as DestinationsSection } from "./DestinationsSection/Destinatio
 export { default as Footer } from "./Footer/Footer";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as Sidebar } from "./Sidebar/Sidebar";
+export { default as AddDetailBody } from "./AddDetailBody/AddDetailBody";
 export { default as Overview } from "./Overivew/Overview";
 export { default as Itinerary } from "./Itinerary/Itinerary";
 export { default as Checklist } from "./Checklist/Checklist"
