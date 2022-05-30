@@ -28,20 +28,20 @@
 
 .profileUserImg {
 
-    display: inline-block;
-    height: 250px;
-    width: 250px;
+    height: 170px;
+    width: 170px;
     object-fit: cover;
     grid-area: 3 / 2 / 5 /3;
-
     border-radius: 50%;
     border: 3px solid white;
+
 }
 .profileInfo{
-    grid-area: 4 / 3 / 5 / 4;
+    grid-area: 4 / 2 / 5 / 3;
     object-fit: cover;
     top: 280px;
-    
+    margin-left: 180px;
+    margin-bottom: 20px;
 }
 
 .profileInfoName{
@@ -97,7 +97,7 @@
     font-size: 20px;
     border-radius: 15px;
     height: 40px;
-    width: 310px;
+    width: 225px;
 }
 .iconcamera{
     grid-area: 3 / 5 / 4 / 6;
