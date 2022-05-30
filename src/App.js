@@ -11,6 +11,8 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
+import HomePage from "./pages/HomePage/HomePage";
+import Trips from "./pages/Trips/Trips";
 
 
 function App() {

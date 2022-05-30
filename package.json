@@ -9,7 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "bootstrap": "^5.1.3",
+=======
+    "draft-js": "^0.11.7",
+>>>>>>> 89120e786266ff78b32adbc5e10c4d88c92e9512
 =======
     "draft-js": "^0.11.7",
 >>>>>>> 89120e786266ff78b32adbc5e10c4d88c92e9512
@@ -20,7 +24,12 @@
     "react-dropdown": "^1.10.0",
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react-dropdown": "^1.10.0",
+=======
+    "react-draft-wysiwyg": "^1.14.7",
+>>>>>>> c3b6414f1d440aa809b32bd0b260c1f7dc2d3ac5
+>>>>>>> 89120e786266ff78b32adbc5e10c4d88c92e9512
 =======
     "react-draft-wysiwyg": "^1.14.7",
 >>>>>>> c3b6414f1d440aa809b32bd0b260c1f7dc2d3ac5
