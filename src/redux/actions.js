@@ -25,9 +25,10 @@ export const getUserInfo = (data) => {
   };
 };
 
-export const registerNew = () => {
+export const registerNew = (data) => {
   return {
     type: "REGISTER",
+    payload: data,
   };
 };
 
@@ -46,6 +47,13 @@ export const resetPassword = () => {
 export const loadingPage = (data) => {
   return {
     type: "LOADING",
-    payload: data
+    payload: data,
+  };
+};
+
+export const getPath = (data) => {
+  return {
+    type: "GET_PATH",
+    payload: data,
   };
 };

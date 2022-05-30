@@ -36,6 +36,8 @@ const Signin = () => {
     dispatch(loadingPage(true));
     handleLoginGoogle(response);
     dispatch(loginGoogle(response));
+    localStorage.setItem("username", response.profileObj.name);
+
     navigate(from, { replace: true });
   };
 
@@ -69,7 +71,6 @@ const Signin = () => {
 
   const onSubmit = (data) => {
     dispatch(loadingPage(true));
-    console.log(data);
     handleLoginAccount(data);
   };
 
@@ -88,7 +89,6 @@ const Signin = () => {
         }
       )
       .catch((error) => {
-        console.log(error);
         setError(error.response.data.detail);
         setSuccess(null);
         setLoading(false);
@@ -97,8 +97,8 @@ const Signin = () => {
     if (res) {
       dispatch(loginAccount(data));
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+      localStorage.setItem("username", data.account.split("@")[0]);
     }
-    console.log(res);
   };
 
   let page = useSelector((state) => state.page);

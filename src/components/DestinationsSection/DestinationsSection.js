@@ -19,7 +19,7 @@ const DestinationsSection = () => {
           hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
         >
           <img src={destination1} alt="" />
-          <h2 className="font-bold my-3">Singapore</h2>
+          <h2 className="font-extrabold my-3">Singapore</h2>
           <span className="font-normal">
             Singapore, officialy thr Republic of Singapore.
           </span>
@@ -29,7 +29,7 @@ const DestinationsSection = () => {
           hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
         >
           <img src={destination2} alt="" />
-          <h2 className="font-bold my-3">Thailand</h2>
+          <h2 className="font-extrabold my-3">Thailand</h2>
           <span className="font-normal">
             Thailand is a Southeast Asia country. It's known for interesting
             cuisine
@@ -40,7 +40,7 @@ const DestinationsSection = () => {
           hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
         >
           <img src={destination3} alt="" />
-          <h2 className="font-bold my-3">Paris</h2>
+          <h2 className="font-extrabold my-3">Paris</h2>
           <span className="font-normal">
             Paris, France's capital, is a major European city of light
           </span>
@@ -50,7 +50,7 @@ const DestinationsSection = () => {
           hover:translate-x-[0.4rem] hover:translate-y-[-1rem] hover:shadow-[0px_5px_15px_rgb(0,0,0,0.35)] hover:duration-300"
         >
           <img src={destination4} alt="" />
-          <h2 className="font-bold my-3">New Zealand</h2>
+          <h2 className="font-extrabold my-3">New Zealand</h2>
           <span className="font-normal">
             New Zealand is an island country in theSouth Pacific Ocean
           </span>
