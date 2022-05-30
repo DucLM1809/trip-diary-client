@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../redux/actions';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const Home = () => {
       {userInfo.username ? userInfo.username : userInfo.email.split('@')[0]}
       <br />
       <button onClick={handleLogout}>Logout</button>
+      <button className='bg-light-blue'><Link to={"/add-detail"}>AddDetail</Link></button>
+      <button className='bg-light-green'><Link to={"/create"}>Create</Link></button>
     </div>
   );
 };

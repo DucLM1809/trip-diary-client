@@ -22,5 +22,13 @@
   {
     "key": "/home",
     "title": "Home"
+  },
+  {
+    "key": "/add-detail",
+    "title": "Add Detail"
+  },
+  {
+    "key": "/create",
+    "title": "Create"
   }
 ]

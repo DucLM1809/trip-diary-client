@@ -11,6 +11,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { useSelector } from "react-redux";
 import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
+import AddDetail from "./pages/AddDetail/AddDetail";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -46,11 +47,13 @@ function App() {
           path="/reset-password/:id/:token"
           element={<ResetPassword />}
         ></Route>
-        <Route exact path="/create" element={<Create />}></Route>
+        
       </Route>
 
       <Route element={<RequireAuth auth={auth} />}>
         <Route exact path="/home" element={<Home />}></Route>
+        <Route exact path="/add-detail" element={<AddDetail />}></Route>
+        <Route exact path="/create" element={<Create />}></Route>
       </Route>
     </Routes>
   );
