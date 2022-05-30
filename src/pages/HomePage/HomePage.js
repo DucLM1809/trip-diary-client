@@ -110,7 +110,7 @@ const HomePage = () => {
           <div className="trip6">
             <Link to="/create">
               <button>
-                <AiFillPlusCircle size={"70px"} />
+                <AiFillPlusCircle size={"35px"} />
               </button>
             </Link>
           </div>
@@ -163,7 +163,7 @@ const HomePage = () => {
                   />
                 </div>
                 <div className="swiperTrip2">
-                  <div className="trip12">
+                  <div className="trip12_1">
                     <Link to="/homepage">
                       <IoPersonCircleOutline />
                     </Link>
@@ -184,7 +184,7 @@ const HomePage = () => {
                   />
                 </div>
                 <div className="swiperTrip2">
-                  <div className="trip12">
+                  <div className="trip12_1">
                     <Link to="/homepage">
                       <IoPersonCircleOutline />
                     </Link>

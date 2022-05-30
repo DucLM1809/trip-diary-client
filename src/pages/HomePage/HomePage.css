@@ -202,9 +202,9 @@
     grid-area: 2 / 1 / 4 / 3;
 }
 .trip6{
-    grid-area: 1 / 3 / 4 / 4;
-    margin-top: 165px;
-    margin-left: 0%;
+    grid-area: 1 / 4 / 2 / 5;
+    margin-top: 40px;
+    margin-left: 190px;
 }
 .trip7{
     font-size: 25px;
@@ -290,7 +290,6 @@
 .trip17{
     grid-area: 5 / 1 / 7 / 6;
     font-size: 40px;
-    margin-left: 70px;    
     margin-top: 15px;
 }
 .trip18{
@@ -315,6 +314,16 @@
     grid-area: 2 / 1 / 3 / 4;
     margin-top: 10px;
 }
+
+.trip12_1{
+    grid-area: 2 / 1 / 3 / 2;
+    font-size: 40px;
+    margin-left: 70px;    
+    margin-top: 7px;
+}
+
+
+
 
 
 
