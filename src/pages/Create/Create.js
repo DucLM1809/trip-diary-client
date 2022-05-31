@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  AddDetailBody,
   Checklist,
   FooterPub,
   Itinerary,
@@ -27,7 +28,7 @@ const Create = () => {
         {location.hash === "" || location.hash === "#overview" ? (
           <Overview />
         ) : location.hash === "#itinerary" ? (
-          <Itinerary />
+          <AddDetailBody />
         ) : location.hash === "#check-list" ? (
           <Checklist />
         ) : (

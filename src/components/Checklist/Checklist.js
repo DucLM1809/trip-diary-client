@@ -65,14 +65,14 @@ const Checklist = () => {
   };
 
   const handleDeleteItem = (key) => {
-    console.log(key);
+    // console.log(key);
     let temp = items.filter((item) => !(item.key === key));
     setItems(temp)
   };
 
   return (
-    <div className="flex flex-col justify-start min-h-[100vh] w-1/2 mx-auto">
-      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative">
+    <div className="flex flex-col justify-start h-[80vh] w-1/2 mx-auto">
+      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative overflow-y-auto">
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center">
             <h1 className="text-2xl ml-14">What to arrange</h1>
@@ -133,7 +133,7 @@ const Checklist = () => {
           </div>
           {items.length > 0 ? (
             items.map((item) => (
-              <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
+              <div key={item.key} className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
                 <div>
                   <input
                     key={item.key}
