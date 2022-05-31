@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 // import { Editor, editorState } from "react-draft-wysiwyg";
@@ -7,58 +7,77 @@ import {
   useJsApiLoader,
   GoogleMap,
   Marker,
-  Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
 import banner from "../../assests/images/hero.png";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
 const Overview = () => {
   const [display, setDisplay] = useState(false);
   const [type, setType] = useState();
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBMlWHzz9j3Q3MIcsGeO5d_MaS1kspQ3dk",
+    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
     libraries: ["places"],
   });
 
-  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
 
-  const center = { lat: 48.8584, lng: 2.2945 };
+  const [selected1, setSelected1] = useState(null);
+  const [selected2, setSelected2] = useState(null);
+  const [coordinate1, setCoordinate1] = useState({});
+  const [coordinate2, setCoordinate2] = useState({});
 
   const containerStyle = {
     width: "100%",
     height: "100%",
   };
 
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null);
-  }, []);
-
   const handleChooseType = () => {
     setDisplay(!display);
   };
 
   const handleType = (e) => {
-    setDisplay(false)
+    setDisplay(false);
     setType(e.target.textContent);
   };
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     data.type = type;
+    data.from_lat = coordinate1.lat
+    data.from_lng = coordinate1.lng 
+    data.to_lat = coordinate2.lat
+    data.to_lng = coordinate2.lng
     console.log(data);
   };
+
+  useEffect(() => {
+    // console.log(selected1);
+    setCoordinate1({ ...selected1 });
+  }, [selected1]);
+
+  useEffect(() => {
+    // console.log(selected2);
+    setCoordinate2({ ...selected2 });
+  }, [selected2]);
 
   return (
     <div className="flex flex-col justify-center mx-28 mt-10">
@@ -135,28 +154,16 @@ const Overview = () => {
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
-              <label htmlFor="depature" className="mb-2">
-                Depature
+              <label htmlFor="departure" className="mb-2">
+                Departure
               </label>
-              <input
-                id="departure"
-                type="text"
-                {...register("departure")}
-                placeholder="Departure"
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
-              />
+              <PlacesAutocomplete1 setSelected1={setSelected1} />
             </div>
             <div className="flex flex-col">
               <label htmlFor="destination" className="mb-2">
                 Destination
               </label>
-              <input
-                id="to"
-                type="text"
-                {...register("destination")}
-                placeholder="Destination"
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
-              />
+              <PlacesAutocomplete2 setSelected2={setSelected2} />
             </div>
           </div>
 
@@ -207,23 +214,100 @@ const Overview = () => {
           onEditorStateChange={this.onEditorStateChange}
         /> */}
       </div>
-      <div className="w-full h-[400px] mt-10 mb-28">
+
+      <div className="w-full h-[500px] mt-10 mb-28">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
+            center={coordinate1 || center}
+            zoom={6}
           >
-            Child components, such as markers, info windows, etc.
-            <></>
+            <Marker position={coordinate1} />
+            <Marker position={coordinate2} />
           </GoogleMap>
         ) : (
           <></>
         )}
       </div>
     </div>
+  );
+};
+
+const PlacesAutocomplete1 = ({ setSelected1 }) => {
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { status, data },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelect = async (address) => {
+    setValue(address, false);
+    clearSuggestions();
+
+    const results = await getGeocode({ address });
+    const { lat, lng } = getLatLng(results[0]);
+    setSelected1({ lat, lng });
+  };
+
+  return (
+    <Combobox onSelect={handleSelect}>
+      <ComboboxInput
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className="combobox-input border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+        placeholder="Enter address"
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
+  );
+};
+
+const PlacesAutocomplete2 = ({ setSelected2 }) => {
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { status, data },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelect = async (address) => {
+    setValue(address, false);
+    clearSuggestions();
+
+    const results = await getGeocode({ address });
+    const { lat, lng } = getLatLng(results[0]);
+    setSelected2({ lat, lng });
+  };
+
+  return (
+    <Combobox onSelect={handleSelect}>
+      <ComboboxInput
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className="combobox-input border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+        placeholder="Enter address"
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
   );
 };
 

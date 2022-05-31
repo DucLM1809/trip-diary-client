@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reach/combobox": "^0.17.0",
     "@react-google-maps/api": "^2.11.8",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -13,8 +14,8 @@
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.1.0",
-    "react-dropdown": "^1.10.0",
     "react-draft-wysiwyg": "^1.14.7",
+    "react-dropdown": "^1.10.0",
     "react-google-login": "^5.2.2",
     "react-hook-form": "^7.31.1",
     "react-icons": "^4.3.1",
@@ -27,6 +28,7 @@
     "redux-devtools-extension": "^2.13.9",
     "swiper": "^8.1.6",
     "tw-elements": "^1.0.0-alpha12",
+    "use-places-autocomplete": "^3.0.0",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
