@@ -149,7 +149,7 @@ const UserHomePage = () => {
                     />
                   </div>
                   <div className="swiperTrip2">
-                    <div className="trip12">
+                    <div className="trip12_1">
                       <Link to="/homepage">
                         <IoPersonCircleOutline />
                       </Link>
@@ -172,7 +172,7 @@ const UserHomePage = () => {
                     />
                   </div>
                   <div className="swiperTrip2">
-                    <div className="trip12">
+                    <div className="trip12_1">
                       <Link to="/homepage">
                         <IoPersonCircleOutline />
                       </Link>
