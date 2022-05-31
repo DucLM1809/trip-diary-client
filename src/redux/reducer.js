@@ -10,6 +10,29 @@ const initState = {
     path: [],
     loading: null,
   },
+  trip: {
+    name: "",
+    type: "",
+    fromLat: "",
+    fromLng: "",
+    toLat: "",
+    toLng: "",
+    startAt: "",
+    finishAt: "",
+    backtripAt: "",
+    tripID: "",
+    coverImgUrl: "",
+  },
+  location: {
+    review: "",
+    lat: "",
+    lng: "",
+    startAt: "",
+  },
+  checklist: {
+    name: '',
+    notes: '',
+  }
 };
 
 const rootReducer = (state = initState, action) => {
@@ -118,6 +141,32 @@ const rootReducer = (state = initState, action) => {
         page: {
           ...state.page,
           path: action.payload,
+        },
+      };
+    }
+    case "CREATE_TRIP": {
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          name: action.payload.name,
+          fromLat: action.payload.fromLat,
+          fromLng: action.payload.fromLng,
+          toLat: action.payload.toLat,
+          toLng: action.payload.toLng,
+          startAt: action.payload.startAt,
+          finishAt: action.payload.finishAt,
+          tripID: action.payload.id,
+          coverImgUrl: action.payload.coverImgUrl,
+          description: action.payload.description,
+        },
+      };
+    }
+    case "CREATE_LOCATION": {
+      return {
+        ...state,
+        location: {
+          ...state.location,
         },
       };
     }
