@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserHomePage = () => {
   const [trip, setTrip] = useState();
+  const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -73,9 +74,9 @@ const UserHomePage = () => {
                 <img src={unknown} alt="" className="profileUserImg" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">Tungtung</h4>
+                  <h4 className="profileInfoName">{userName}</h4>
                   {/* <h3>/tungtung</h3> */}
-                  <p className="profileInfoDesc">Hế nhô các bạn!</p>
+                  {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
                 <button className="editProfile">Edit Profile</button>
                 <div className="iconcamera cursor-pointer">
