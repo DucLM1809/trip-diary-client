@@ -21,6 +21,7 @@ import "@reach/combobox/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { createTrip } from "../../redux/actions";
 import api from "../../api/axios";
+import { uploadImage } from "../../utils";
 
 const Overview = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const Overview = () => {
   const [coordinate2, setCoordinate2] = useState({});
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
+  const [urlImg, setUrlImg] = useState();
 
   useEffect(() => {
     setSuccess("");
@@ -122,7 +124,7 @@ const Overview = () => {
           startAt: data.from,
           finishAt: data.to,
           backtripAt: data.to,
-          coverImgUrl: data.coverImg.length > 0 ? data.coverImg[0].name : "",
+          coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
         },
         config
@@ -150,8 +152,16 @@ const Overview = () => {
     setCoordinate2({ ...selected2 });
   }, [selected2]);
 
+  const handleUploadImg = (e) => {
+    uploadImage(e.target.files[0]).then((result) => setUrlImg(result));
+  };
+
+  // useEffect(() => {
+  //   console.log(urlImg);
+  // }, [urlImg])
+
   return (
-    <div className="flex flex-col justify-center mx-28 mt-10">
+    <div className="flex flex-col justify-center mx-28 mt-10 w-full">
       <div
         className="w-full h-96 relative 
           after:absolute after:content-[''] 
@@ -159,9 +169,8 @@ const Overview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={banner}
-          alt="banner"
-          className="w-full h-full object-cover rounded-10 relative"
+          src={urlImg ? urlImg : ''}
+          className={`w-full h-full object-cover rounded-10 relative ${urlImg ? 'block' : 'hidden' }`}
         />
         <form
           className="absolute bottom-9 right-11 z-20 opacity-0 cursor-pointer"
@@ -169,7 +178,7 @@ const Overview = () => {
         >
           <input
             type="file"
-            {...register("coverImg")}
+            onChange={(e) => handleUploadImg(e)}
             className="overflow-hidden h-10 w-10 file:cursor-pointer border-0 outline-none cursor-pointer"
           ></input>
         </form>

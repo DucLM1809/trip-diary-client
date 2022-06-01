@@ -17,7 +17,7 @@ import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 
 const UserHomePage = () => {
-  const [trip, setTrip] = useState({});
+  const [trip, setTrip] = useState();
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -47,7 +47,9 @@ const UserHomePage = () => {
   // handleGetTrips();
 
   const handleGetTrip = async () => {
-    let res = await api.get(`/trips/${tripInfo.tripID}`, config);
+    let res = await api
+      .get(`/trips/${tripInfo.tripID}`, config)
+      .catch((error) => console.log(error));
     if (res) {
       setTrip(res.data);
       // console.log("Trip: ", res);
@@ -128,11 +130,7 @@ const UserHomePage = () => {
           {trip ? (
             <>
               <div className="trip5">
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
+                <img class="imgTrip" alt="" src={trip.coverImgUrl} />
               </div>
               <div className="trip6">
                 <Link to="/create">
@@ -153,20 +151,32 @@ const UserHomePage = () => {
 
           <div className="trip10"></div>
           <div className="trip11"></div>
-          <div className="trip12">
-            <Link to="/homepage">
-              <IoPersonCircleOutline />
-            </Link>
-          </div>
-          <div className="trip13">
-            <img
-              className="trip13Img"
-              src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-            />
-          </div>
-          <div className="trip14">
-            <h2 className="trip14text">{trip.name}</h2>
-          </div>
+          {trip ? (
+            <>
+              {" "}
+              <div className="trip12">
+                <Link to="/homepage">
+                  <IoPersonCircleOutline />
+                </Link>
+              </div>
+              <div className="trip13">
+                <img
+                  className="trip13Img"
+                  src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {trip ? (
+            <div className="trip14">
+              <h2 className="trip14text">{trip.name}</h2>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className="trip15">
             <hr className="hrTrip15" />
           </div>
