@@ -57,7 +57,9 @@ const UserHomePage = () => {
       // console.log("Trip: ", res);
     }
   };
-  handleGetTrip();
+  useEffect(() => {
+    handleGetTrip();
+  }, []);
 
   return (
     <>
