@@ -15,6 +15,7 @@ import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
+import banner from "../../assests/images/hero.png";
 
 const UserHomePage = () => {
   const [trip, setTrip] = useState();
@@ -131,7 +132,11 @@ const UserHomePage = () => {
           {trip ? (
             <>
               <div className="trip5">
-                <img class="imgTrip" alt="" src={trip.coverImgUrl} />
+                <img
+                  class="imgTrip"
+                  alt=""
+                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                />
               </div>
               <div className="trip6">
                 <Link to="/create">

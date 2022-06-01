@@ -5,7 +5,6 @@ import { FiChevronDown } from "react-icons/fi";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
-import banner from "../../assests/images/hero.png";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
