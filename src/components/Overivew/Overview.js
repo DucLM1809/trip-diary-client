@@ -35,7 +35,7 @@ const Overview = () => {
   const [type, setType] = useState("Single Trip");
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
-    libraries: ["places"],
+    libraries: "places",
   });
 
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
