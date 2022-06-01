@@ -285,7 +285,7 @@ const Overview = () => {
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
               {errors?.from && (
-                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-['⚠'] ">
+                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-[''] ">
                   {errors.from.message}
                 </p>
               )}
@@ -311,7 +311,7 @@ const Overview = () => {
                 }`}
               />
               {!disable && errors?.to && (
-                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-['⚠'] ">
+                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-[''] ">
                   {errors.to.message}
                 </p>
               )}
