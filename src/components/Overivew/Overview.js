@@ -160,7 +160,7 @@ const Overview = () => {
   // }, [urlImg])
 
   return (
-    <div className="flex flex-col justify-center mx-28 mt-10 w-full">
+    <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
       <div
         className="w-full h-96 relative 
           after:absolute after:content-[''] 
@@ -169,7 +169,7 @@ const Overview = () => {
       >
         <img
           src={urlImg ? urlImg : ''}
-          className={`w-full h-full object-cover rounded-10 relative ${urlImg ? 'block' : 'hidden' }`}
+          className={`min-w-full h-full object-cover rounded-10 relative ${urlImg ? 'block' : 'hidden' }`}
         />
         <form
           className="absolute bottom-9 right-11 z-20 opacity-0 cursor-pointer"
