@@ -32,8 +32,12 @@ const Navbar = () => {
       tripRef.current.classList.add(clickColor);
       homeRef.current.classList.remove(clickColor);
       createRef.current.classList.remove(clickColor);
-    } else {
+    } else if (location.pathname === "/create" || location.hash === "#overview") {
       createRef.current.classList.add(clickColor);
+      homeRef.current.classList.remove(clickColor);
+      tripRef.current.classList.remove(clickColor);
+    } else {
+      createRef.current.classList.remove(clickColor);
       homeRef.current.classList.remove(clickColor);
       tripRef.current.classList.remove(clickColor);
     }
