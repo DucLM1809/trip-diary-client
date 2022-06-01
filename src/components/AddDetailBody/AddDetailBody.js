@@ -19,11 +19,11 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { useJsApiLoader } from "@react-google-maps/api";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { createLocation } from "../../redux/actions";
 import api from "../../api/axios";
+import { uploadImage } from "../../utils"
 
 function AddDetailBody() {
   const dispatch = useDispatch();
@@ -41,11 +41,6 @@ function AddDetailBody() {
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
-    libraries: ["places"],
-  });
 
   const [selected, setSelected] = useState(null);
   const [selectKey, setSelectKey] = useState("");
@@ -159,6 +154,14 @@ function AddDetailBody() {
     setLocations(temp);
   }, [selectKey]);
 
+  // const uploadImage = (data) => {
+  //   console.log(data);
+  //   const handleUploadImage = async () => {
+  //     let res = await api.post("https://api.cloud");
+  //   };
+  //   handleUploadImage();
+  // };
+
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
       <div className="border-1 border-gray flex flex-col justify-between w-full h-full mb-10 rounded-10 shadow-lg overflow-y-auto">
@@ -245,9 +248,10 @@ function AddDetailBody() {
                   <div className="w-4/5 flex">
                     <input
                       type="file"
-                      {...register(`image${location.num}`)}
+                      id="update-avatar"
                       placeholder="Location"
                       className="border-solid border-gray border-2 w-full p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue"
+                      onChange={(e) => uploadImage(e.target.files[0])}
                     />
                   </div>
 

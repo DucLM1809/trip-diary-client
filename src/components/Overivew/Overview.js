@@ -44,10 +44,12 @@ const Overview = () => {
   const [selected2, setSelected2] = useState(null);
   const [coordinate1, setCoordinate1] = useState({});
   const [coordinate2, setCoordinate2] = useState({});
+  const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
     setSuccess("");
+    setErr("");
   }, []);
 
   const containerStyle = {
@@ -126,10 +128,13 @@ const Overview = () => {
         config
       )
       .catch((error) => {
+        setErr(error.response.data.detail);
+        setSuccess("");
         console.log(error);
       });
     if (res) {
       setSuccess("Create Trip Successfully!");
+      setErr("");
       console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
@@ -179,6 +184,15 @@ const Overview = () => {
             <>
               <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto mt-3 mb-4 rounded-3 relative text-center w-1/2">
                 <span className="block sm:inline">{success}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {err ? (
+            <>
+              <div className="bg-light-pink border-1 border-danger text-danger py-2 px-2 mx-auto mt-3 mb-4 rounded-3 relative text-center w-1/2">
+                <span className="block sm:inline">{err}</span>
               </div>
             </>
           ) : (
