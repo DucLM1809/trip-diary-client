@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assests/images/logo.png";
 import unknown from "../../assests/images/unknown.png";
 import { GoSearch, GoGlobe } from "react-icons/go";
@@ -16,6 +16,7 @@ const Navbar = () => {
   const createRef = useRef();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
@@ -47,6 +48,7 @@ const Navbar = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
     dispatch(logOut());
+    navigate("/sign-in")
   };
 
   const handleDisplayOut = () => {
