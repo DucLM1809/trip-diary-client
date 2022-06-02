@@ -10,13 +10,13 @@ const Sidebar = () => {
   const location = useLocation();
 
   const slide1 =
-    "text-light-blue after:absolute after:w-[6px] after:h-[68px] after:bg-light-blue after:top-0 after:right-[2px] after:rounded-3";
+    "text-light-blue after:absolute after:w-[6px] after:h-[80px] after:bg-light-blue after:top-[2px] after:right-[2px] after:rounded-3";
 
   const slide2 =
-    "text-light-blue after:absolute after:w-[6px] after:h-[68px] after:bg-light-blue after:top-[68px] after:right-[2px] after:rounded-3";
+    "text-light-blue after:absolute after:w-[6px] after:h-[80px] after:bg-light-blue after:top-[80px] after:right-[2px] after:rounded-3";
 
   const slide3 =
-    "text-light-blue after:absolute after:w-[6px] after:h-[68px] after:bg-light-blue after:top-[136px] after:right-[2px] after:rounded-3";
+    "text-light-blue after:absolute after:w-[6px] after:h-[80px] after:bg-light-blue after:top-[160px] after:right-[2px] after:rounded-3";
 
   const normalColor = "text-dark-white";
 
@@ -54,7 +54,7 @@ const Sidebar = () => {
         className="flex flex-col items-center justify-center text-dark-white 
         hover:text-light-blue"
       >
-        <FaSuitcaseRolling className="mt-3 text-3xl" />
+        <FaSuitcaseRolling className="mt-6 text-3xl" />
         <span className="font-normal">Overview</span>
       </Link>
       <Link
@@ -64,7 +64,7 @@ const Sidebar = () => {
         className="flex flex-col items-center justify-center text-dark-white 
         hover:text-light-blue"
       >
-        <BiDirections className="mt-3 text-3xl" />
+        <BiDirections className="mt-6 text-3xl" />
         <span className="font-normal">Itinerary</span>
       </Link>
       <Link
@@ -74,7 +74,7 @@ const Sidebar = () => {
         className="flex flex-col items-center justify-center text-dark-white 
         hover:text-light-blue"
       >
-        <FaListAlt className="mt-3 text-3xl" />
+        <FaListAlt className="mt-6 text-3xl" />
         <span className="font-normal">Checklist</span>
       </Link>
     </div>

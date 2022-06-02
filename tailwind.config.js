@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['./src/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js'],
+  content: ['./src/**/*.{html,js}'],
   theme: {
     colors: {
       "light-blue": "#1D95EC",
@@ -45,7 +45,5 @@ module.exports = {
       '8': '8px',
     },
   },
-  plugins: [
-    require('tw-elements/dist/plugin')
-  ]
+  plugins: []
 };

@@ -27,7 +27,7 @@ const FormSignup = () => {
 
   const handleRegister = async (data) => {
     let res = await api
-      .post("/users/", {
+      .post("/users", {
         email: data.account,
         username: data.username,
         password: data.password,

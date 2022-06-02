@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserHomePage.css";
 import { BiFilter } from "react-icons/bi";
 import Navbar from "../../components/Navbar/Navbar";
@@ -12,9 +12,55 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
-import unknown from "../../assests/images/unknown.png"
+import unknown from "../../assests/images/unknown.png";
+import api from "../../api/axios";
+import { useDispatch, useSelector } from "react-redux";
+import banner from "../../assests/images/hero.png";
 
 const UserHomePage = () => {
+  const [trip, setTrip] = useState();
+  const userName = localStorage.getItem("username");
+
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const tripInfo = useSelector((state) => state.trip);
+  useEffect(() => {
+    console.log(tripInfo);
+  }, [tripInfo]);
+
+  // const handleGetTrips = async () => {
+  //   let res = await api.get("/trips", config);
+  //   if (res) {
+  //     console.log("Trips: ", res);
+  //   }
+  // };
+  // handleGetTrips();
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${tripInfo.tripID}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+      // console.log("Trip: ", res);
+    }
+  };
+  useEffect(() => {
+    handleGetTrip();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -28,16 +74,12 @@ const UserHomePage = () => {
                   alt=""
                   className="profileCoverImg"
                 />
-                <img
-                  src={unknown}
-                  alt=""
-                  className="profileUserImg"
-                />
+                <img src={unknown} alt="" className="profileUserImg" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">Tungtung</h4>
+                  <h4 className="profileInfoName">{userName}</h4>
                   {/* <h3>/tungtung</h3> */}
-                  <p className="profileInfoDesc">Hế nhô các bạn!</p>
+                  {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
                 <button className="editProfile">Edit Profile</button>
                 <div className="iconcamera cursor-pointer">
@@ -89,20 +131,27 @@ const UserHomePage = () => {
           <div className="trip4">
             <button className="buttonShow">Show all</button>
           </div>
-          <div className="trip5">
-            <img
-              class="imgTrip"
-              alt=""
-              src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-            />
-          </div>
-          <div className="trip6">
-            <Link to="/create">
-              <button>
-                <AiFillPlusCircle size={"35px"} />
-              </button>
-            </Link>
-          </div>
+          {trip ? (
+            <>
+              <div className="trip5">
+                <img
+                  class="imgTrip"
+                  alt=""
+                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                />
+              </div>
+              <div className="trip6">
+                <Link to="/create">
+                  <button>
+                    <AiFillPlusCircle size={"35px"} />
+                  </button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
           <div className="trip7">
             <h1>My past trips</h1>
           </div>
@@ -110,20 +159,32 @@ const UserHomePage = () => {
 
           <div className="trip10"></div>
           <div className="trip11"></div>
-          <div className="trip12">
-            <Link to="/homepage">
-              <IoPersonCircleOutline />
-            </Link>
-          </div>
-          <div className="trip13">
-            <img
-              className="trip13Img"
-              src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-            />
-          </div>
-          <div className="trip14">
-            <h2 className="trip14text">The United States of America </h2>
-          </div>
+          {trip ? (
+            <>
+              {" "}
+              <div className="trip12">
+                <Link to="/homepage">
+                  <IoPersonCircleOutline />
+                </Link>
+              </div>
+              <div className="trip13">
+                <img
+                  className="trip13Img"
+                  src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {trip ? (
+            <div className="trip14">
+              <h2 className="trip14text">{trip.name}</h2>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className="trip15">
             <hr className="hrTrip15" />
           </div>
