@@ -16,8 +16,12 @@ import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
+import { TiLocationOutline } from "react-icons/ti";
+import {FiCalendar} from "react-icons/fi";
+import {AiOutlineExclamationCircle} from "react-icons/ai";
 
-const UserHomePage = () => {
+
+const NextTrip = () => {
   const [trip, setTrip] = useState();
   const userName = localStorage.getItem("username");
 
@@ -77,7 +81,7 @@ const UserHomePage = () => {
                 <img src={unknown} alt="" className="profileUserImg" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{userName}</h4>
+                  <h3 className="profileInfoName">{userName}</h3>
                   {/* <h3>/tungtung</h3> */}
                   {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
@@ -125,12 +129,12 @@ const UserHomePage = () => {
         <div className="tripgogo">
           <div className="trip1"></div>
           <div className="trip2"></div>
-          <div className="trip3">
-            <Link to="/nexttrip">            <h1>My next trips</h1></Link>
+          <div className="trip3_1">
+            <h1>My next trips</h1>
+           
           </div>
-          <div className="trip4">
-            <button className="buttonShow">Show all</button>
-          </div>
+
+          
           {trip ? (
             <>
               <div className="trip5">
@@ -141,29 +145,37 @@ const UserHomePage = () => {
                 />
               </div>
               <div className="trip6">
-                <Link to="/create">
-                  <button>
-                    <AiFillPlusCircle size={"35px"} />
-                  </button>
-                </Link>
+
               </div>
             </>
           ) : (
             <></>
           )}
 
-          <div className="trip7">
-            <h1>My past trips</h1>
+          
+          <div className="trip8">
+          <hr/>
           </div>
-          <div className="trip8"></div>
 
-          <div className="trip10"></div>
-          <div className="trip11"></div>
+          <div></div>
+          <div className="trip10">
+              <TiLocationOutline fontSize={"35px"}/>
+              
+          </div>
+          <div className="trip10_1">
+          <p >tung</p>
+          </div>
+          <div className="trip11">
+            <AiOutlineExclamationCircle/>
+          </div>
+          <div className="trip11_1">
+            <p>tung</p>
+          </div>
           {trip ? (
             <>
               {" "}
               <div className="trip12">
-                <Link to="/homepage">
+                <Link to="/user">
                   <IoPersonCircleOutline />
                 </Link>
               </div>
@@ -186,127 +198,12 @@ const UserHomePage = () => {
           )}
 
           <div className="trip15">
-            <hr className="hrTrip15" />
+            <FiCalendar fontSize={"30px"}/>
           </div>
-          <div className="trip16"></div>
-          <div className="trip17">
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              freeMode={true}
-              pagination={{
-                clickable: true,
-              }}
-              modules={[FreeMode, Pagination]}
-              className="mySwiper"
-            >
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      class="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      class="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-            </Swiper>
+          <div className="trip15_1">
+          <p>tungtung</p>
           </div>
-          <div className="trip18">
-            <button className="buttonShow">Show all</button>
-          </div>
+
         </div>
       </div>
       <Footer />
@@ -314,4 +211,4 @@ const UserHomePage = () => {
   );
 };
 
-export default UserHomePage;
+export default NextTrip;

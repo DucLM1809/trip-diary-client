@@ -17,7 +17,7 @@ import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
 
-const UserHomePage = () => {
+const PastTrip = () => {
   const [trip, setTrip] = useState();
   const userName = localStorage.getItem("username");
 
@@ -126,7 +126,7 @@ const UserHomePage = () => {
           <div className="trip1"></div>
           <div className="trip2"></div>
           <div className="trip3">
-            <Link to="/nexttrip">            <h1>My next trips</h1></Link>
+            <Link to="/nexttrip">            <h1>My past trips</h1></Link>
           </div>
           <div className="trip4">
             <button className="buttonShow">Show all</button>
@@ -314,4 +314,4 @@ const UserHomePage = () => {
   );
 };
 
-export default UserHomePage;
+export default PastTrip;

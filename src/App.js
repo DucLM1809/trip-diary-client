@@ -13,6 +13,7 @@ import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
 import UserHomePage from "./pages/UserHomePage/UserHomePage";
 import Trips from "./pages/Trips/Trips";
+import NextTrip from "./pages/UserHomePage/NextTrip";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -57,6 +58,8 @@ function App() {
         <Route exact path="/create" element={<Create />}></Route>
         <Route exact path="/trips" element={<Trips />}></Route>
         <Route element={<UserHomePage />} exact path="/user"></Route>
+        <Route element={<NextTrip />} exact path="/nexttrip"></Route>
+
       </Route>
     </Routes>
   );
