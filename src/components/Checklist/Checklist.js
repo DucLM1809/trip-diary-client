@@ -3,11 +3,33 @@ import { FaTrashAlt } from "react-icons/fa";
 import { BiPlus } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
+import api from "../../api/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { createChecklist } from "../../redux/actions";
 
 const Checklist = () => {
+  const dispatch = useDispatch();
+  const tripInfo = useSelector((state) => state.trip);
+
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
   const [displayAdd, setDisplayAdd] = useState(false);
   const [items, setItems] = useState([]);
   const [item, setItem] = useState("");
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
 
   const {
     register,
@@ -24,6 +46,31 @@ const Checklist = () => {
 
   const onSubmitCheckbox = (data) => {
     console.log(data);
+    data.checklist.map((item) => {
+      const handleCreateChecklist = async () => {
+        let res = await api
+          .post(
+            `/trips/${tripInfo.tripID}/checklist`,
+            {
+              name: item,
+            },
+            config
+          )
+          .catch((error) => {
+            if (error.response.status === 405) {
+              setErr("You must create a trip first");
+            }
+            setSuccess("");
+          });
+        if (res) {
+          setSuccess("Add Checklist Successfully!");
+          setErr("");
+          dispatch(createChecklist(res));
+          console.log(res);
+        }
+      };
+      handleCreateChecklist();
+    });
   };
 
   const onSubmitItem = (data) => {
@@ -67,16 +114,34 @@ const Checklist = () => {
   const handleDeleteItem = (key) => {
     // console.log(key);
     let temp = items.filter((item) => !(item.key === key));
-    setItems(temp)
+    setItems(temp);
   };
 
   return (
     <div className="flex flex-col justify-start h-[80vh] w-1/2 mx-auto">
       <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative overflow-y-auto">
+        {success ? (
+          <>
+            <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
+              <span className="block sm:inline">{success}</span>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {err ? (
+          <>
+            <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
+              <span className="block sm:inline">{err}</span>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center">
             <h1 className="text-2xl ml-14">What to arrange</h1>
-            <span className="text-xl ml-5 font-normal">0/8</span>
+            {/* <span className="text-xl ml-5 font-normal">0/8</span> */}
           </div>
           <button
             className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
@@ -99,7 +164,7 @@ const Checklist = () => {
               />
               <span className="ml-4">Shoes</span>
             </div>
-            <button>
+            <button className="cursor-not-allowed" >
               <FaTrashAlt className="text-2xl" />
             </button>
           </div>
@@ -113,7 +178,7 @@ const Checklist = () => {
               />
               <span className="ml-4">Money</span>
             </div>
-            <button>
+            <button className="cursor-not-allowed" >
               <FaTrashAlt className="text-2xl" />
             </button>
           </div>
@@ -127,13 +192,16 @@ const Checklist = () => {
               />
               <span className="ml-4">Card</span>
             </div>
-            <button>
+            <button className="cursor-not-allowed" >
               <FaTrashAlt className="text-2xl" />
             </button>
           </div>
           {items.length > 0 ? (
             items.map((item) => (
-              <div key={item.key} className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
+              <div
+                key={item.key}
+                className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0"
+              >
                 <div>
                   <input
                     key={item.key}
@@ -146,7 +214,10 @@ const Checklist = () => {
                   />
                   <span className="ml-4">{item.value}</span>
                 </div>
-                <div className="hover:cursor-pointer" onClick={() => handleDeleteItem(item.key)}>
+                <div
+                  className="hover:cursor-pointer"
+                  onClick={() => handleDeleteItem(item.key)}
+                >
                   <FaTrashAlt className="text-2xl" />
                 </div>
               </div>
