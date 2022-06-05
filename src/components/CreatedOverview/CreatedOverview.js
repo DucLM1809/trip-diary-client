@@ -1,14 +1,27 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import banner from "../../assests/images/hero.png";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoAirplane } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { FaMapMarkerAlt, FaMapPin, FaRegComment } from "react-icons/fa";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import destination1 from "../../assests/images/Destination1.png";
 import unknown from "../../assests/images/unknown.png";
+import { v4 as uuidv4 } from "uuid";
 
 const CreatedOverview = () => {
+  const [like, setLike] = useState(false);
+  const [numLike, setNumLike] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [displayComment, setDisplayComment] = useState(false);
+  const [replies, setReplies] = useState([]);
+  const [displayReply, setDisplayReply] = useState(false);
+
+  const userInfo = useSelector((state) => state.user);
+  const userName = localStorage.getItem("username");
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
     libraries: "places",
@@ -20,6 +33,51 @@ const CreatedOverview = () => {
   };
 
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmitComment = (data) => {
+    console.log(data);
+    let listComments = [...comments];
+    listComments.push(data.comment);
+    setComments(listComments);
+    resetField("comment");
+  };
+
+  const onSubmitReply = (data) => {
+    console.log(data);
+    let listReplies = [...replies];
+    listReplies.push(data.reply);
+    setReplies(listReplies);
+    resetField("reply");
+  };
+
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
+  const handleLike = () => {
+    setLike(true);
+    setNumLike(numLike + 1);
+  };
+
+  const handleDisLike = () => {
+    setLike(false);
+    setNumLike(numLike - 1);
+  };
+
+  const handleDisplayComment = () => {
+    setDisplayComment(!displayComment);
+  };
+
+  const handleDisplayReply = () => {
+    setDisplayReply(!displayReply);
+  };
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 max-w-[1100px]">
@@ -108,28 +166,56 @@ const CreatedOverview = () => {
           </div>
           <div className="w-full border-1 border-gray rounded-5">
             <div className="w-full flex border-b-1 border-b-gray">
-              <div className="flex items-center m-2">
-                <AiOutlineHeart className="text-3xl " />
-                <span className="text-base ml-1">1 Like</span>
+              <div className="flex items-center m-2 ">
+                {like ? (
+                  <AiFillHeart
+                    className="text-3xl text-[#ff274b] cursor-pointer hover:opacity-80"
+                    onClick={() => handleDisLike()}
+                  />
+                ) : (
+                  <AiOutlineHeart
+                    className="text-3xl cursor-pointer"
+                    onClick={() => handleLike()}
+                  />
+                )}
+
+                <span className="text-base ml-1">
+                  {numLike} {numLike > 1 ? "Likes" : "Like"}
+                </span>
               </div>
               <div className="flex items-center text-2xl m-2">
-                <FaRegComment />
-                <span className="text-base ml-1">0 Comment</span>
+                <FaRegComment
+                  className="cursor-pointer"
+                  onClick={handleDisplayComment}
+                />
+                <span className="text-base ml-1">
+                  {comments.length}{" "}
+                  {comments.length > 1 ? "Comments" : "Comment"}
+                </span>
               </div>
             </div>
-            <form className="my-4 flex relative">
+            <form
+              className={`my-4 flex relative ${
+                displayComment ? "block" : "hidden"
+              }`}
+              onSubmit={handleSubmit(onSubmitComment)}
+            >
               <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
               <input
                 type="text"
                 placeholder="Enter comment..."
+                {...register("comment")}
                 className="mx-4 px-4 border-1 border-gray w-full rounded-5"
               />
               <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                 <IoSend />
               </button>
             </form>
-
-            <div className="mb-10 flex-col">
+            <div
+              className={`mb-10 flex-col ${
+                displayComment ? "block" : "hidden"
+              }`}
+            >
               <div className="flex">
                 <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
                 <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
@@ -145,6 +231,18 @@ const CreatedOverview = () => {
               <span className="ml-24 text-xs hover:opacity-80 cursor-pointer">
                 Reply
               </span>
+              <div className="flex ml-20 mt-2">
+                <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
+                <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
+                  <div className="flex items-center gap-2">
+                    <h2>Tran Thanh Quang</h2>
+                    <span className="text-xs text-placeholder">
+                      06/06/2022, 03:21:17
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal">You are so handsome</p>
+                </div>
+              </div>
               <form className="ml-20 mt-4 flex relative">
                 <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
                 <input
@@ -157,6 +255,84 @@ const CreatedOverview = () => {
                 </button>
               </form>
             </div>
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div
+                  key={uuidv4()}
+                  className={`mb-10 flex-col ${
+                    displayComment ? "block" : "hidden"
+                  }`}
+                >
+                  <div className="flex">
+                    <img
+                      src={unknown}
+                      alt=""
+                      className="w-[50px] h-[50px] ml-4"
+                    />
+                    <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
+                      <div className="flex items-center gap-2">
+                        <h2>{userName}</h2>
+                        <span className="text-xs text-placeholder">
+                          06/06/2022, 03:21:17
+                        </span>
+                      </div>
+                      <p className="text-sm font-normal">{comment}</p>
+                    </div>
+                  </div>
+                  <span
+                    className="ml-24 text-xs hover:opacity-80 cursor-pointer"
+                    onClick={handleDisplayReply}
+                  >
+                    Reply
+                  </span>
+                  {replies.length > 0 ? (
+                    replies.map((reply) => (
+                      <div className="flex ml-20 mt-2">
+                        <img
+                          src={unknown}
+                          alt=""
+                          className="w-[50px] h-[50px] ml-4"
+                        />
+                        <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
+                          <div className="flex items-center gap-2">
+                            <h2>{userName}</h2>
+                            <span className="text-xs text-placeholder">
+                              06/06/2022, 03:21:17
+                            </span>
+                          </div>
+                          <p className="text-sm font-normal">{reply}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                  <form
+                    className={`ml-20 mt-4 flex relative ${
+                      displayReply ? "block" : "hidden"
+                    }`}
+                    onSubmit={handleSubmit(onSubmitReply)}
+                  >
+                    <img
+                      src={unknown}
+                      alt=""
+                      className="w-[50px] h-[50px] ml-4"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Enter comment..."
+                      {...register("reply")}
+                      className="mx-4 px-4 border-1 border-gray w-full rounded-5"
+                    />
+                    <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
+                      <IoSend />
+                    </button>
+                  </form>
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

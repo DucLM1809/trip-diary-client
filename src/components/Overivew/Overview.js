@@ -29,16 +29,15 @@ const Overview = () => {
   const [selected2, setSelected2] = useState(null);
   const [coordinate1, setCoordinate1] = useState({});
   const [coordinate2, setCoordinate2] = useState({});
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [urlImg, setUrlImg] = useState();
   const [edit, setEdit] = useState(false);
+  const [trip, setTrip] = useState();
 
   const dispatch = useDispatch();
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
+    googleMapsApiKey: "AIzaSyD8LFh53VddzDevOC6A5Jhln9KgpmpoExg",
     libraries: "places",
   });
 
@@ -86,6 +85,7 @@ const Overview = () => {
     resetField,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -127,7 +127,7 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
         },
@@ -158,7 +158,7 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
         },
@@ -190,6 +190,37 @@ const Overview = () => {
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
   };
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${113}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+      console.log(res);
+    }
+  };
+
+  useEffect(() => {
+    handleGetTrip();
+  }, [edit]);
+
+  useEffect(() => {
+    console.log(trip);
+    if (edit) {
+      setValue("tripname", trip.name);
+      if (trip.backtripAt) {
+        setType("Around Trip");
+        setValue("to", trip.backtripAt);
+      } else {
+        setType("Single Trip");
+      }
+      setValue("from", trip.startAt);
+      setValue("description", trip.description);
+      setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
+      setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
+    }
+  }, [edit]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
@@ -292,19 +323,13 @@ const Overview = () => {
               <label htmlFor="departure" className="mb-2">
                 Departure
               </label>
-              <PlacesAutocomplete1
-                setSelected1={setSelected1}
-                setLocation1={setLocation1}
-              />
+              <PlacesAutocomplete1 setSelected1={setSelected1} />
             </div>
             <div className="flex flex-col">
               <label htmlFor="destination" className="mb-2">
                 Destination
               </label>
-              <PlacesAutocomplete2
-                setSelected2={setSelected2}
-                setLocation2={setLocation2}
-              />
+              <PlacesAutocomplete2 setSelected2={setSelected2} />
             </div>
           </div>
 
@@ -392,7 +417,7 @@ const Overview = () => {
   );
 };
 
-const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
+const PlacesAutocomplete1 = ({ setSelected1 }) => {
   const {
     ready,
     value,
@@ -403,7 +428,6 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation1(address);
     clearSuggestions();
 
     const results = await getGeocode({ address });
@@ -433,7 +457,7 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
   );
 };
 
-const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
+const PlacesAutocomplete2 = ({ setSelected2 }) => {
   const {
     ready,
     value,
@@ -444,7 +468,6 @@ const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation2(address);
     clearSuggestions();
     const results = await getGeocode({ address });
     const { lat, lng } = getLatLng(results[0]);
