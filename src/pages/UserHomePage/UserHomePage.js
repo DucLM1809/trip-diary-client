@@ -128,7 +128,57 @@ const UserHomePage = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1"></div>
+          <div className="trip1">
+          <Swiper
+              slidesPerView={3}
+              spaceBetween={30}
+              freeMode={true}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[FreeMode, Pagination]}
+              className="mySwiper"
+            >
+              {trips.length > 0 ? (
+              trips.map((trip) => (
+            <SwiperSlide>
+
+                <div key={uuidv4()}>
+                  <div className="swiperNextTrip">
+                    <img
+                      className="imgNextTrip"
+                      alt=""
+                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                    />
+                    <div className="CountryNextTrip">
+                    <img
+                      className="trip13Img"
+                      src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                    />
+                  </div>  
+                  <div className="swiperImgIcon">
+                    <Link to="/">
+                      <IoPersonCircleOutline />
+                    </Link>
+                    </div>
+                  </div>
+
+
+
+                  <div className="swiperNextTripText">
+                    <h2 className="trip14text">{trip.name}</h2>
+                  </div>
+                </div>
+
+
+
+            </SwiperSlide>
+                          ))
+                          ) : (
+                            <></>
+                          )}
+          </Swiper>
+          </div>
           <div className="trip2"></div>
           <div className="trip3">
             <Link to="/nexttrip">            <h1>My next trips</h1></Link>
@@ -143,36 +193,12 @@ const UserHomePage = () => {
               </button>
             </Link>
           </div>
-          {trips.length > 0 ? (
-            trips.map((trip) => (
-              <div key={uuidv4()}>
-                <div className="trip5">
-                  <img
-                    className="imgTrip"
-                    alt=""
-                    src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                  />
-                </div>
+              
+          
 
-                <div className="trip12">
-                  <Link to="/">
-                    <IoPersonCircleOutline />
-                  </Link>
-                </div>
-                <div className="trip13">
-                  <img
-                    className="trip13Img"
-                    src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                  />
-                </div>
-                <div className="trip14">
-                  <h2 className="trip14text">{trip.name}</h2>
-                </div>
-              </div>
-            ))
-          ) : (
-            <></>
-          )}
+           
+          
+
 
           <div className="trip7">
             <h1>My past trips</h1>
@@ -275,7 +301,7 @@ const UserHomePage = () => {
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
               </SwiperSlide>
-              <SwiperSlide>
+              {/* <SwiperSlide>
                 {" "}
                 <img
                   className="imgTrip"
@@ -298,7 +324,7 @@ const UserHomePage = () => {
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
-              </SwiperSlide>
+              </SwiperSlide> */}
             </Swiper>
           </div>
           <div className="trip18">
