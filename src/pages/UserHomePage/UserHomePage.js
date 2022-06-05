@@ -129,7 +129,7 @@ const UserHomePage = () => {
 
         <div className="tripgogo">
           <div className="trip1">
-          <Swiper
+            <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
@@ -140,48 +140,42 @@ const UserHomePage = () => {
               className="mySwiper"
             >
               {trips.length > 0 ? (
-              trips.map((trip) => (
-            <SwiperSlide>
-
-                <div key={uuidv4()}>
-                  <div className="swiperNextTrip">
-                    <img
-                      className="imgNextTrip"
-                      alt=""
-                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                    />
-                    <div className="CountryNextTrip">
-                    <img
-                      className="trip13Img"
-                      src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                    />
-                  </div>  
-                  <div className="swiperImgIcon">
-                    <Link to="/">
-                      <IoPersonCircleOutline />
-                    </Link>
+                trips.map((trip) => (
+                  <SwiperSlide key={uuidv4()}>
+                    <div className="swiperNextTrip">
+                      <img
+                        className="imgNextTrip"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      />
+                      <div className="CountryNextTrip">
+                        <img
+                          className="trip13Img"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        />
+                      </div>
+                      <div className="swiperImgIcon">
+                        <Link to="/">
+                          <IoPersonCircleOutline />
+                        </Link>
+                      </div>
+                      <div className="swiperNextTripText">
+                        <h2 className="trip14text">{trip.name}</h2>
+                      </div>
                     </div>
-                  </div>
-
-
-
-                  <div className="swiperNextTripText">
-                    <h2 className="trip14text">{trip.name}</h2>
-                  </div>
-                </div>
-
-
-
-            </SwiperSlide>
-                          ))
-                          ) : (
-                            <></>
-                          )}
-          </Swiper>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <></>
+              )}
+            </Swiper>
           </div>
           <div className="trip2"></div>
           <div className="trip3">
-            <Link to="/nexttrip">            <h1>My next trips</h1></Link>
+            <Link to="/nexttrip">
+              {" "}
+              <h1>My next trips</h1>
+            </Link>
           </div>
           <div className="trip4">
             <button className="buttonShow">Show all</button>
@@ -193,12 +187,6 @@ const UserHomePage = () => {
               </button>
             </Link>
           </div>
-              
-          
-
-           
-          
-
 
           <div className="trip7">
             <h1>My past trips</h1>
@@ -208,9 +196,7 @@ const UserHomePage = () => {
           <div className="trip10"></div>
           <div className="trip11"></div>
 
-          <div className="trip15">
-            <hr className="hrTrip15" />
-          </div>
+          <div className="trip15"></div>
           <div className="trip16"></div>
           <div className="trip17">
             <Swiper

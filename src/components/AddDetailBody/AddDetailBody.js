@@ -32,7 +32,8 @@ function AddDetailBody() {
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [edit, setEdit] = useState(false);
-
+  const [urlImg, setUrlImg] = useState();
+  const [listImg, setListImg] = useState([]);
   const dispatch = useDispatch();
 
   const accessToken = localStorage
@@ -45,6 +46,7 @@ function AddDetailBody() {
       "Content-Type": "application/json",
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
@@ -193,13 +195,15 @@ function AddDetailBody() {
     setLocations(temp);
   }, [selectKey]);
 
-  // const uploadImage = (data) => {
-  //   console.log(data);
-  //   const handleUploadImage = async () => {
-  //     let res = await api.post("https://api.cloud");
-  //   };
-  //   handleUploadImage();
-  // };
+  const handleUploadImg = (e) => {
+    uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
+  };
+
+  useEffect(() => {
+    let temp = [...listImg];
+    temp.push(urlImg);
+    setListImg(temp);
+  }, [urlImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -272,28 +276,23 @@ function AddDetailBody() {
                       selectkey={location.key}
                       setSelectKey={setSelectKey}
                     />
-                    {/* <input
-                      type="text"
-                      placeholder="Location"
-                      {...register(`location${location.num}`)}
-                      className="border-solid border-gray border-2 w-full p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue"
-                    /> */}
                   </div>
 
                   <div className="flex justify-between w-4/5 mt-3">
                     <p className="text-black mb-2">Images</p>
                     <AiFillPicture className="my-auto" />
                   </div>
-                  <div className="w-4/5 flex">
-                    <input
-                      type="file"
-                      id="update-avatar"
-                      placeholder="Location"
-                      className="border-solid border-gray border-2 w-full p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue"
-                      // onChange={(e) => uploadImage(e.target.files[0])}
-                    />
+                  <div className="w-4/5 flex justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue overflow-y-auto">
+                    {listImg.map((img) => (
+                      <img
+                        className="w-[90px] h-[90px]"
+                        key={uuidv4()}
+                        src={img}
+                        alt=""
+                      />
+                    ))}
+                    <input type="file" onChange={(e) => handleUploadImg(e)} className="ml-4" />
                   </div>
-
                   <div className="flex justify-between w-4/5 mt-3">
                     <p className="text-black mb-2">Description</p>
                     <BsFillBookmarkHeartFill className="my-auto" />
