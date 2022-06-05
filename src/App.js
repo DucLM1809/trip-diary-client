@@ -55,8 +55,9 @@ function App() {
       <Route element={<RequireAuth auth={auth} />}>
         <Route exact path="/home" element={<Home />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
+        <Route exact path="/edit/trip/:id" element={<Create />}></Route>
         <Route exact path="/trips" element={<Trips />}></Route>
-        <Route element={<UserHomePage />} exact path="/user"></Route>
+        <Route exact path="/user" element={<UserHomePage />}></Route>
       </Route>
     </Routes>
   );

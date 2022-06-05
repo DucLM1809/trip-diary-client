@@ -11,6 +11,7 @@ module.exports = {
       "purple": "#4468E2",
       "light-purple": "#D0D8FF",
       "gray": "#eaebed",
+      "dark-gray": "#a3a8b9",
       "modal": "rgba(0, 0, 0, 0.4)",
       "danger": "#eb0d0d",
       "red": "#c53030",
@@ -21,6 +22,7 @@ module.exports = {
       "dark-white": "rgba(255, 255, 255, 0.5)",
       "placeholder": "#9ca3af",
       "sky": "#D0D8E6",
+      "green": "#01d9cf"
     },
     borderRadius: {
       "3": "3px",

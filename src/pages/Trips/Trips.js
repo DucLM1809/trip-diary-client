@@ -1,10 +1,14 @@
 import React from "react";
-import { FooterPub, Navbar } from "../../components";
+import { CreatedOverview, FooterPub, Navbar, Sidebar } from "../../components";
 
 const Trips = () => {
   return (
     <>
       <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <CreatedOverview />
+      </div>
       <FooterPub />
     </>
   );
