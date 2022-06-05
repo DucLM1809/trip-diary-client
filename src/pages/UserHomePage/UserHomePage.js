@@ -14,11 +14,13 @@ import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
+import { v4 as uuidv4 } from "uuid";
 
 const UserHomePage = () => {
   const [trip, setTrip] = useState();
+  const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -40,26 +42,29 @@ const UserHomePage = () => {
     console.log(tripInfo);
   }, [tripInfo]);
 
-  // const handleGetTrips = async () => {
-  //   let res = await api.get("/trips", config);
-  //   if (res) {
-  //     console.log("Trips: ", res);
-  //   }
-  // };
-  // handleGetTrips();
-
-  const handleGetTrip = async () => {
-    let res = await api
-      .get(`/trips/${tripInfo.tripID}`, config)
-      .catch((error) => console.log(error));
+  const handleGetTrips = async () => {
+    let res = await api.get("/trips", config);
     if (res) {
-      setTrip(res.data);
-      // console.log("Trip: ", res);
+      console.log("Trips: ", res.data);
+      setTrips(res.data);
     }
   };
   useEffect(() => {
-    handleGetTrip();
+    handleGetTrips();
   }, []);
+
+  // const handleGetTrip = async () => {
+  //   let res = await api
+  //     .get(`/trips/${tripInfo.tripID}`, config)
+  //     .catch((error) => console.log(error));
+  //   if (res) {
+  //     setTrip(res.data);
+  //     // console.log("Trip: ", res);
+  //   }
+  // };
+  // useEffect(() => {
+  //   handleGetTrip();
+  // }, []);
 
   return (
     <>
@@ -131,23 +136,40 @@ const UserHomePage = () => {
           <div className="trip4">
             <button className="buttonShow">Show all</button>
           </div>
-          {trip ? (
-            <>
-              <div className="trip5">
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                />
+          <div className="trip6">
+            <Link to="/create">
+              <button>
+                <AiFillPlusCircle size={"35px"} />
+              </button>
+            </Link>
+          </div>
+          {trips.length > 0 ? (
+            trips.map((trip) => (
+              <div key={uuidv4()}>
+                <div className="trip5">
+                  <img
+                    className="imgTrip"
+                    alt=""
+                    src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                  />
+                </div>
+
+                <div className="trip12">
+                  <Link to="/">
+                    <IoPersonCircleOutline />
+                  </Link>
+                </div>
+                <div className="trip13">
+                  <img
+                    className="trip13Img"
+                    src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                  />
+                </div>
+                <div className="trip14">
+                  <h2 className="trip14text">{trip.name}</h2>
+                </div>
               </div>
-              <div className="trip6">
-                <Link to="/create">
-                  <button>
-                    <AiFillPlusCircle size={"35px"} />
-                  </button>
-                </Link>
-              </div>
-            </>
+            ))
           ) : (
             <></>
           )}
@@ -159,31 +181,6 @@ const UserHomePage = () => {
 
           <div className="trip10"></div>
           <div className="trip11"></div>
-          {trip ? (
-            <>
-              {" "}
-              <div className="trip12">
-                <Link to="/homepage">
-                  <IoPersonCircleOutline />
-                </Link>
-              </div>
-              <div className="trip13">
-                <img
-                  className="trip13Img"
-                  src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                />
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
-          {trip ? (
-            <div className="trip14">
-              <h2 className="trip14text">{trip.name}</h2>
-            </div>
-          ) : (
-            <></>
-          )}
 
           <div className="trip15">
             <hr className="hrTrip15" />
@@ -204,7 +201,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      class="imgTrip"
+                      className="imgTrip"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />
@@ -227,7 +224,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      class="imgTrip"
+                      className="imgTrip"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />
@@ -249,7 +246,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -257,7 +254,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -265,7 +262,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -273,7 +270,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -281,7 +278,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -289,7 +286,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -297,7 +294,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  class="imgTrip"
+                  className="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />

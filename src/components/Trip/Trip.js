@@ -160,7 +160,7 @@ const Trip = () => {
           />
         </Link>
       </div>
-      <button className="bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10">
+      <button className="block bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10">
         LOAD MORE
       </button>
     </div>

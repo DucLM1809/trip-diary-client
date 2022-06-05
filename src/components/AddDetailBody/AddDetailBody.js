@@ -21,11 +21,18 @@ import {
 import "@reach/combobox/styles.css";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { createLocation } from "../../redux/actions";
 import api from "../../api/axios";
-import { uploadImage } from "../../utils"
+import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 
 function AddDetailBody() {
+  const [selected, setSelected] = useState(null);
+  const [selectKey, setSelectKey] = useState("");
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
+  const [edit, setEdit] = useState(false);
+
   const dispatch = useDispatch();
 
   const accessToken = localStorage
@@ -42,10 +49,14 @@ function AddDetailBody() {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
 
-  const [selected, setSelected] = useState(null);
-  const [selectKey, setSelectKey] = useState("");
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname.split("/")[1] === "edit") {
+      setEdit(true);
+    } else {
+      setEdit(false);
+    }
+  }, [location]);
 
   useEffect(() => {
     setErr("");
@@ -111,7 +122,35 @@ function AddDetailBody() {
             console.log("res: ", res);
           }
         };
-        handleCreateLocation();
+
+        const handleEditLocation = async () => {
+          let res = await api
+            .put(
+              `/trips/${tripInfo.tripID}/locations/${112}`,
+              {
+                startAt: location.date,
+                review: location.description,
+                lat: location.coordinate.lat,
+                lng: location.coordinate.lng,
+              },
+              config
+            )
+            .catch((error) => {
+              console.log(error);
+              setSuccess("");
+            });
+          if (res) {
+            setSuccess("Edit Detail Successfully!");
+            setErr("");
+            dispatch(createLocation(res));
+            console.log("res: ", res);
+          }
+        };
+        if (edit) {
+          handleEditLocation();
+        } else {
+          handleCreateLocation();
+        }
       }
     });
     console.log(data);
@@ -199,7 +238,7 @@ function AddDetailBody() {
                   className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-4"
                   onClick={handleSubmit(onSubmit)}
                 >
-                  SAVE
+                  {edit ? "SAVE" : "CREATE"}
                 </button>
               </div>
             </div>
@@ -251,7 +290,7 @@ function AddDetailBody() {
                       id="update-avatar"
                       placeholder="Location"
                       className="border-solid border-gray border-2 w-full p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue"
-                      onChange={(e) => uploadImage(e.target.files[0])}
+                      // onChange={(e) => uploadImage(e.target.files[0])}
                     />
                   </div>
 
