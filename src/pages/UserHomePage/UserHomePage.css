@@ -18,7 +18,7 @@
 }
 
 .profileCoverImg {
-    border-radius: 15px;
+    border-radius: 5px;
     margin-left: 5%;
     object-fit: cover;
     grid-area: 1 / 1 / 4 /6;
@@ -53,8 +53,6 @@
     font-weight: 300;
 }
 
-
-
 .profileBottom{
     display: flex;
 }
@@ -63,7 +61,7 @@
     margin-top: 50px;
     width: 90%;
     height: 170px;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: white;
     margin-left: 5%;
     font-size: 20px;
@@ -253,7 +251,7 @@
     border: 3px solid white;
     background-color: #CCD2E3;
     font-size: 20px;
-    border-radius: 15px;
+    border-radius: 10px;
     width: 150px;
     margin-top: 40px;
 }
@@ -262,7 +260,7 @@
     height: 200px;
     width: 350px;
     margin-left: 61.55px;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .trip12{

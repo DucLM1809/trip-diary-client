@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { MdStickyNote2 } from "react-icons/md";
 import { BiPlus } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
@@ -30,6 +31,7 @@ const Checklist = () => {
   const [item, setItem] = useState("");
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
+  const [note, setNote] = useState(false);
 
   const {
     register,
@@ -41,22 +43,28 @@ const Checklist = () => {
     defaultValues: {
       item: "",
       check: false,
+      note: "",
     },
   });
 
   const onSubmitCheckbox = (data) => {
     console.log(data);
-    data.checklist.map((item) => {
+    data.list = [...items];
+    data.list.map((item) => {
+      item.note = data[`note${item.key}`]
       const handleCreateChecklist = async () => {
         let res = await api
           .post(
             `/trips/${tripInfo.tripID}/checklist`,
             {
-              name: item,
+              name: item.value,
+              hasPrepared: item.check,
+              notes: item.note,
             },
             config
           )
           .catch((error) => {
+            console.log(error);
             if (error.response.status === 405) {
               setErr("You must create a trip first");
             }
@@ -74,18 +82,19 @@ const Checklist = () => {
   };
 
   const onSubmitItem = (data) => {
-    console.log(data);
     let temp = [...items];
     temp.push({
       key: uuidv4(),
       value: data.item.toString(),
       check: data.check,
+      note: data.note,
     });
     setItems(temp);
     setItem(data.item);
     setDisplayAdd(false);
     resetField("item");
     resetField("check");
+    resetField("note");
   };
 
   useEffect(() => {
@@ -94,6 +103,7 @@ const Checklist = () => {
 
   const handleAddItem = () => {
     setDisplayAdd(true);
+    setNote(false);
   };
 
   const handleCheck = (key) => {
@@ -103,18 +113,17 @@ const Checklist = () => {
     setItems(temp);
   };
 
-  // useEffect(() => {
-  //   console.log(items);
-  // }, [items]);
-
   const handleDeleteAdd = () => {
     setDisplayAdd(false);
   };
 
   const handleDeleteItem = (key) => {
-    // console.log(key);
     let temp = items.filter((item) => !(item.key === key));
     setItems(temp);
+  };
+
+  const handleDisplayNote = () => {
+    setNote(!note);
   };
 
   return (
@@ -147,79 +156,52 @@ const Checklist = () => {
             className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
             onClick={handleSubmit(onSubmitCheckbox)}
           >
-            SAVE
+            CREATE
           </button>
         </div>
         <form
           className="flex flex-col mx-16 mt-8"
           onSubmit={handleSubmit(onSubmitCheckbox)}
         >
-          <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
-            <div>
-              <input
-                type="checkbox"
-                value="Shoes"
-                {...register("checklist")}
-                className="scale-[1.8]"
-              />
-              <span className="ml-4">Shoes</span>
-            </div>
-            <button className="cursor-not-allowed" >
-              <FaTrashAlt className="text-2xl" />
-            </button>
-          </div>
-          <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
-            <div>
-              <input
-                type="checkbox"
-                value="Money"
-                {...register("checklist")}
-                className="scale-[1.8]"
-              />
-              <span className="ml-4">Money</span>
-            </div>
-            <button className="cursor-not-allowed" >
-              <FaTrashAlt className="text-2xl" />
-            </button>
-          </div>
-          <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
-            <div>
-              <input
-                type="checkbox"
-                value="Card"
-                {...register("checklist")}
-                className="scale-[1.8]"
-              />
-              <span className="ml-4">Card</span>
-            </div>
-            <button className="cursor-not-allowed" >
-              <FaTrashAlt className="text-2xl" />
-            </button>
-          </div>
           {items.length > 0 ? (
             items.map((item) => (
-              <div
-                key={item.key}
-                className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0"
-              >
-                <div>
-                  <input
-                    key={item.key}
-                    type="checkbox"
-                    value={item.value}
-                    checked={item.check}
-                    {...register("checklist")}
-                    className="scale-[1.8]"
-                    onClick={() => handleCheck(item.key)}
-                  />
-                  <span className="ml-4">{item.value}</span>
+              <div key={item.key}>
+                <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
+                  <div>
+                    <input
+                      key={item.key}
+                      type="checkbox"
+                      value={item.value}
+                      checked={item.check}
+                      {...register("checklist")}
+                      className="scale-[1.8]"
+                      onClick={() => handleCheck(item.key)}
+                    />
+                    <span className="ml-4">{item.value}</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <div
+                      className="mr-2 cursor-pointer"
+                      onClick={() => handleDisplayNote()}
+                    >
+                      <MdStickyNote2 className="text-2xl" />
+                    </div>
+                    <div
+                      className="hover:cursor-pointer"
+                      onClick={() => handleDeleteItem(item.key)}
+                    >
+                      <FaTrashAlt className="text-2xl" />
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="hover:cursor-pointer"
-                  onClick={() => handleDeleteItem(item.key)}
-                >
-                  <FaTrashAlt className="text-2xl" />
-                </div>
+                <textarea
+                  id="note"
+                  rows={1}
+                  {...register(`note${item.key}`)}
+                  className={`border-1 border-gray w-full rounded-5 mt-2 py-2 px-2 ${
+                    note ? "block" : "hidden"
+                  }`}
+                />
               </div>
             ))
           ) : (
