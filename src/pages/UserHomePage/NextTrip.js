@@ -127,7 +127,7 @@ const NextTrip = () => {
            
           </div>          
           <div className="trip8">
-          <hr/>
+            <hr />
           </div>
 
           <div className="NextTripContent">

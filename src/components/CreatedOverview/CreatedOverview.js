@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import destination1 from "../../assests/images/Destination1.png";
 import unknown from "../../assests/images/unknown.png";
 import { v4 as uuidv4 } from "uuid";
+import api from "../../api/axios";
 
 const CreatedOverview = () => {
   const [like, setLike] = useState(false);
@@ -18,9 +19,38 @@ const CreatedOverview = () => {
   const [displayComment, setDisplayComment] = useState(false);
   const [replies, setReplies] = useState([]);
   const [displayReply, setDisplayReply] = useState(false);
-
-  const userInfo = useSelector((state) => state.user);
+  const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
+
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const tripInfo = useSelector((state) => state.trip);
+  useEffect(() => {
+    console.log(tripInfo);
+  }, [tripInfo]);
+
+  const handleGetTrips = async () => {
+    let res = await api.get("/trips", config);
+    if (res) {
+      console.log("Trips: ", res.data);
+      setTrips(res.data);
+    }
+  };
+  useEffect(() => {
+    handleGetTrips();
+  }, []);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
