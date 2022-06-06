@@ -1,67 +1,267 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
-// import { Editor, editorState } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  Autocomplete,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
-import banner from "../../assests/images/hero.png";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
+import { useDispatch } from "react-redux";
+import { createTrip } from "../../redux/actions";
+import api from "../../api/axios";
+import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
+import { Link, useLocation } from "react-router-dom";
 
 const Overview = () => {
-  const [display, setDisplay] = useState(false);
-  const [type, setType] = useState();
+  const ApiKey = "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g";
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBMlWHzz9j3Q3MIcsGeO5d_MaS1kspQ3dk",
-    libraries: ["places"],
+    googleMapsApiKey: ApiKey,
+    libraries: "places",
   });
 
-  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname.split("/")[1] === "edit") {
+      setEdit(true);
+    } else {
+      setEdit(false);
+    }
+  }, [location]);
 
-  const center = { lat: 48.8584, lng: 2.2945 };
+  const [display, setDisplay] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [type, setType] = useState("Single Trip");
+  const [selected1, setSelected1] = useState(null);
+  const [selected2, setSelected2] = useState(null);
+  const [coordinate1, setCoordinate1] = useState({ ...center });
+  const [coordinate2, setCoordinate2] = useState({});
+  const [departure, setDeparture] = useState();
+  const [destination, setDestination] = useState();
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
+  const [urlImg, setUrlImg] = useState();
+  const [edit, setEdit] = useState(false);
+  const [trip, setTrip] = useState();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setSuccess("");
+    setErr("");
+  }, []);
 
   const containerStyle = {
     width: "100%",
     height: "100%",
   };
 
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null);
-  }, []);
-
   const handleChooseType = () => {
     setDisplay(!display);
   };
 
   const handleType = (e) => {
-    setDisplay(false)
+    setDisplay(false);
     setType(e.target.textContent);
   };
+
+  useEffect(() => {
+    if (type === "Single Trip") {
+      setDisable(true);
+      resetField("to");
+    } else {
+      setDisable(false);
+    }
+  }, [type]);
 
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
     data.type = type;
-    console.log(data);
+    data.from_lat = coordinate1.lat;
+    data.from_lng = coordinate1.lng;
+    data.to_lat = coordinate2.lat;
+    data.to_lng = coordinate2.lng;
+    if (edit) {
+      handleEditTrip(data);
+    } else {
+      handleCreateTrip(data);
+    }
   };
 
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const handleCreateTrip = async (data) => {
+    let res = await api
+      .post(
+        "/trips",
+        {
+          name: data.tripname,
+          type: data.type,
+          fromLat: data.from_lat,
+          fromLng: data.from_lng,
+          toLat: data.to_lat,
+          toLng: data.to_lng,
+          startAt: data.from,
+          backTripAt: data.to,
+          coverImgUrl: urlImg ? urlImg : "",
+          description: data.description,
+        },
+        config
+      )
+      .catch((error) => {
+        setErr(error.response.data.detail);
+        setSuccess("");
+        console.log(error);
+      });
+    if (res) {
+      setSuccess("Create Trip Successfully!");
+      setErr("");
+      console.log("res: ", res.data);
+      dispatch(createTrip(res.data));
+    }
+  };
+
+  const handleEditTrip = async (data) => {
+    let res = await api
+      .put(
+        `/trips/${113}`,
+        {
+          name: data.tripname,
+          type: data.type,
+          fromLat: data.from_lat,
+          fromLng: data.from_lng,
+          toLat: data.to_lat,
+          toLng: data.to_lng,
+          startAt: data.from,
+          backTripAt: data.to,
+          coverImgUrl: urlImg ? urlImg : "",
+          description: data.description,
+        },
+        config
+      )
+      .catch((error) => {
+        setErr(error.response.data.detail);
+        setSuccess("");
+        console.log(error);
+      });
+    if (res) {
+      setSuccess("Edit Trip Successfully!");
+      setErr("");
+      console.log("res: ", res.data);
+      dispatch(createTrip(res.data));
+    }
+  };
+
+  useEffect(() => {
+    console.log(selected1);
+    setCoordinate1({ ...selected1 });
+  }, [selected1]);
+
+  useEffect(() => {
+    console.log(selected2);
+    setCoordinate2({ ...selected2 });
+  }, [selected2]);
+
+  const handleUploadImg = (e) => {
+    uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
+  };
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${113}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+      console.log(res);
+    }
+  };
+
+  useEffect(() => {
+    handleGetTrip();
+  }, [edit]);
+
+  useEffect(() => {
+    try {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      fetch(urlDep)
+        .then((response) => response.json())
+        .then((data) => {
+          setDeparture(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [location, coordinate1]);
+
+  useEffect(() => {
+    try {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      fetch(urlDes)
+        .then((response) => response.json())
+        .then((data) => {
+          setDestination(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [location, coordinate2]);
+
+  useEffect(() => {
+    console.log(trip);
+    if (edit) {
+      setValue("tripname", trip.name);
+      if (trip.backtripAt) {
+        setType("Around Trip");
+        setValue("to", trip.backtripAt);
+      } else {
+        setType("Single Trip");
+      }
+      setValue("from", trip.startAt);
+      setValue("description", trip.description);
+      setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
+      setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
+    } else {
+      resetField("tripname");
+      setType("Single Trip");
+      resetField("from");
+      resetField("to");
+      resetField("description");
+    }
+  }, [edit]);
+
   return (
-    <div className="flex flex-col justify-center mx-28 mt-10">
+    <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
       <div
         className="w-full h-96 relative 
           after:absolute after:content-[''] 
@@ -69,13 +269,18 @@ const Overview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={banner}
-          alt="banner"
-          className="w-full h-full object-cover rounded-10 relative"
+          src={urlImg ? urlImg : ""}
+          className={`min-w-full h-full object-cover rounded-10 relative ${
+            urlImg ? "block" : "hidden"
+          }`}
         />
-        <form className="absolute bottom-9 right-11 z-20 opacity-0 cursor-pointer">
+        <form
+          className="absolute bottom-9 right-11 z-20 opacity-0 cursor-pointer"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
             type="file"
+            onChange={(e) => handleUploadImg(e)}
             className="overflow-hidden h-10 w-10 file:cursor-pointer border-0 outline-none cursor-pointer"
           ></input>
         </form>
@@ -86,6 +291,24 @@ const Overview = () => {
           className="flex flex-col justify-around items-center w-8/12"
           onSubmit={handleSubmit(onSubmit)}
         >
+          {success ? (
+            <>
+              <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto mt-3 mb-4 rounded-3 relative text-center w-1/2">
+                <span className="block sm:inline">{success}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {err ? (
+            <>
+              <div className="bg-light-pink border-1 border-danger text-danger py-2 px-2 mx-auto mt-3 mb-4 rounded-3 relative text-center w-1/2">
+                <span className="block sm:inline">{err}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
               <label htmlFor="name" className="mb-2">
@@ -135,27 +358,21 @@ const Overview = () => {
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
-              <label htmlFor="depature" className="mb-2">
-                Depature
+              <label htmlFor="departure" className="mb-2">
+                Departure
               </label>
-              <input
-                id="departure"
-                type="text"
-                {...register("departure")}
-                placeholder="Departure"
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+              <PlacesAutocomplete1
+                setSelected1={setSelected1}
+                departure={departure}
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="destination" className="mb-2">
                 Destination
               </label>
-              <input
-                id="to"
-                type="text"
-                {...register("destination")}
-                placeholder="Destination"
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+              <PlacesAutocomplete2
+                setSelected2={setSelected2}
+                destination={destination}
               />
             </div>
           </div>
@@ -168,9 +385,19 @@ const Overview = () => {
               <input
                 id="from"
                 type="date"
-                {...register("from")}
+                {...register("from", {
+                  required: "You must specify a start date",
+                  validate: (value) =>
+                    Date.parse(value) >= Date.now() ||
+                    " Plan must be over today",
+                })}
                 className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
               />
+              {errors?.from && (
+                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-[''] ">
+                  {errors.from.message}
+                </p>
+              )}
             </div>
             <div className="flex flex-col">
               <label htmlFor="to" className="mb-2">
@@ -179,9 +406,24 @@ const Overview = () => {
               <input
                 id="to"
                 type="date"
-                {...register("to")}
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+                disabled={disable}
+                {...register("to", {
+                  required: !disable && "You must specify a finish date",
+                  validate: (value) =>
+                    (!disable &&
+                      (Date.parse(value) >= Date.parse(watch("from")) ||
+                        " At least equal to start day")) ||
+                    true,
+                })}
+                className={`border-2 border-gray px-2 py-3 w-[360px] rounded-5 ${
+                  disable ? "cursor-not-allowed" : ""
+                }`}
               />
+              {!disable && errors?.to && (
+                <p className="text-xs mt-2 font-normal text-danger before:inline before:content-[''] ">
+                  {errors.to.message}
+                </p>
+              )}
             </div>
           </div>
           <div className="w-full flex flex-col my-10">
@@ -196,34 +438,106 @@ const Overview = () => {
             ></textarea>
           </div>
           <button className="bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg">
-            SAVE
+            {edit ? "SAVE" : "CREATE"}
           </button>
         </form>
-        {/* <Editor
-          editorState={editorState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
-          onEditorStateChange={this.onEditorStateChange}
-        /> */}
       </div>
-      <div className="w-full h-[400px] mt-10 mb-28">
+      <div className="w-full h-[500px] mt-10 mb-28">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
+            center={coordinate1 || center}
+            zoom={6}
           >
-            Child components, such as markers, info windows, etc.
-            <></>
+            <Marker position={coordinate1} />
+            <Marker position={coordinate2} />
           </GoogleMap>
         ) : (
           <></>
         )}
       </div>
+      <Link to={`/edit/trip/${113}`}>Edit</Link>
     </div>
+  );
+};
+
+const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
+  // console.log("Dep: ", departure);
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { status, data },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelect = async (address) => {
+    setValue(address, false);
+    clearSuggestions();
+    const results = await getGeocode({ address });
+    const { lat, lng } = getLatLng(results[0]);
+    setSelected1({ lat, lng });
+  };
+
+  return (
+    <Combobox onSelect={handleSelect}>
+      <ComboboxInput
+        required
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className="combobox-input border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+        placeholder="Enter address"
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
+  );
+};
+
+const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
+  // console.log("Des: ", destination);
+  const {
+    ready,
+    value,
+    setValue,
+    suggestions: { status, data },
+    clearSuggestions,
+  } = usePlacesAutocomplete();
+
+  const handleSelect = async (address) => {
+    setValue(address, false);
+    clearSuggestions();
+    const results = await getGeocode({ address });
+    const { lat, lng } = getLatLng(results[0]);
+    setSelected2({ lat, lng });
+  };
+
+  return (
+    <Combobox onSelect={handleSelect}>
+      <ComboboxInput
+        value={value}
+        required
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className="combobox-input border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+        placeholder="Enter address"
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
   );
 };
 

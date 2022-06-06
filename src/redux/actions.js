@@ -57,3 +57,24 @@ export const getPath = (data) => {
     payload: data,
   };
 };
+
+export const createTrip = (data) => {
+  return {
+    type: "CREATE_TRIP",
+    payload: data
+  }
+}
+
+export const createLocation = (data) => {
+  return {
+    type: "CREATE_LOCATION",
+    payload: data
+  }
+}
+
+export const createChecklist = (data) => {
+  return {
+    type: "CREATE_CHECKLIST",
+    payload: data
+  }
+}

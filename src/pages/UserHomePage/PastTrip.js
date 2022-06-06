@@ -14,13 +14,11 @@ import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
-import { v4 as uuidv4 } from "uuid";
 
-const UserHomePage = () => {
+const PastTrip = () => {
   const [trip, setTrip] = useState();
-  const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -42,29 +40,26 @@ const UserHomePage = () => {
     console.log(tripInfo);
   }, [tripInfo]);
 
-  const handleGetTrips = async () => {
-    let res = await api.get("/trips", config);
+  // const handleGetTrips = async () => {
+  //   let res = await api.get("/trips", config);
+  //   if (res) {
+  //     console.log("Trips: ", res);
+  //   }
+  // };
+  // handleGetTrips();
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${tripInfo.tripID}`, config)
+      .catch((error) => console.log(error));
     if (res) {
-      console.log("Trips: ", res.data);
-      setTrips(res.data);
+      setTrip(res.data);
+      // console.log("Trip: ", res);
     }
   };
   useEffect(() => {
-    handleGetTrips();
+    handleGetTrip();
   }, []);
-
-  // const handleGetTrip = async () => {
-  //   let res = await api
-  //     .get(`/trips/${tripInfo.tripID}`, config)
-  //     .catch((error) => console.log(error));
-  //   if (res) {
-  //     setTrip(res.data);
-  //     // console.log("Trip: ", res);
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleGetTrip();
-  // }, []);
 
   return (
     <>
@@ -128,65 +123,34 @@ const UserHomePage = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1">
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              freeMode={true}
-              pagination={{
-                clickable: true,
-              }}
-              modules={[FreeMode, Pagination]}
-              className="mySwiper"
-            >
-              {trips.length > 0 ? (
-                trips.map((trip) => (
-                  <SwiperSlide key={uuidv4()}>
-                    <div className="swiperNextTrip">
-                      <img
-                        className="imgNextTrip"
-                        alt=""
-                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                      />
-                      <div className="CountryNextTrip">
-                        <img
-                          className="trip13Img"
-                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
-                      </div>
-                      <div className="swiperImgIcon">
-                        <Link to="/">
-                          <IoPersonCircleOutline />
-                        </Link>
-                      </div>
-                      <div className="swiperNextTripText">
-                        <h2 className="trip14text">{trip.name}</h2>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))
-              ) : (
-                <></>
-              )}
-            </Swiper>
-          </div>
+          <div className="trip1"></div>
           <div className="trip2"></div>
           <div className="trip3">
-            <Link to="/nexttrip">
-              {" "}
-              <h1>My next trips</h1>
-            </Link>
+            <Link to="/nexttrip">            <h1>My past trips</h1></Link>
           </div>
           <div className="trip4">
             <button className="buttonShow">Show all</button>
           </div>
-          <div className="trip6">
-            <Link to="/create">
-              <button>
-                <AiFillPlusCircle size={"35px"} />
-              </button>
-            </Link>
-          </div>
+          {trip ? (
+            <>
+              <div className="trip5">
+                <img
+                  class="imgTrip"
+                  alt=""
+                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                />
+              </div>
+              <div className="trip6">
+                <Link to="/create">
+                  <button>
+                    <AiFillPlusCircle size={"35px"} />
+                  </button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
 
           <div className="trip7">
             <h1>My past trips</h1>
@@ -195,8 +159,35 @@ const UserHomePage = () => {
 
           <div className="trip10"></div>
           <div className="trip11"></div>
+          {trip ? (
+            <>
+              {" "}
+              <div className="trip12">
+                <Link to="/homepage">
+                  <IoPersonCircleOutline />
+                </Link>
+              </div>
+              <div className="trip13">
+                <img
+                  className="trip13Img"
+                  src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {trip ? (
+            <div className="trip14">
+              <h2 className="trip14text">{trip.name}</h2>
+            </div>
+          ) : (
+            <></>
+          )}
 
-          <div className="trip15"></div>
+          <div className="trip15">
+            <hr className="hrTrip15" />
+          </div>
           <div className="trip16"></div>
           <div className="trip17">
             <Swiper
@@ -213,7 +204,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      className="imgTrip"
+                      class="imgTrip"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />
@@ -236,7 +227,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      className="imgTrip"
+                      class="imgTrip"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />
@@ -258,7 +249,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -266,7 +257,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -274,7 +265,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -282,15 +273,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              {/* <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -298,7 +281,7 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
@@ -306,11 +289,19 @@ const UserHomePage = () => {
               <SwiperSlide>
                 {" "}
                 <img
-                  className="imgTrip"
+                  class="imgTrip"
                   alt=""
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
-              </SwiperSlide> */}
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <img
+                  class="imgTrip"
+                  alt=""
+                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
+                />
+              </SwiperSlide>
             </Swiper>
           </div>
           <div className="trip18">
@@ -323,4 +314,4 @@ const UserHomePage = () => {
   );
 };
 
-export default UserHomePage;
+export default PastTrip;

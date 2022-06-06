@@ -59,7 +59,7 @@ const Signin = () => {
       },
     };
 
-    res = await api.get("/users/", config);
+    res = await api.get("/users", config);
     dispatch(getUserInfo(res.data[0]));
   };
 
@@ -77,7 +77,7 @@ const Signin = () => {
   const handleLoginAccount = async (data) => {
     let res = await api
       .post(
-        "/login/",
+        "/login",
         {
           username: data.account,
           password: data.password,

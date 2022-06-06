@@ -13,3 +13,4 @@ export { default as Checklist } from "./Checklist/Checklist"
 export { default as FooterPub } from "./FooterPub/Footer";
 export { default as User } from "./User/User";
 export { default as Trip } from "./Trip/Trip";
+export { default as CreatedOverview } from "./CreatedOverview/CreatedOverview"
