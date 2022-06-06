@@ -1,13 +1,24 @@
 import React from "react";
-import { CreatedOverview, FooterPub, Navbar, Sidebar } from "../../components";
+import { CreatedOverview, FooterPub, Navbar, Sidebar, CreatedItinerary } from "../../components";
+import { useLocation } from "react-router-dom";
 
 const Trips = () => {
+  const location = useLocation();
+
   return (
     <>
       <Navbar />
       <div className="flex">
         <Sidebar />
-        <CreatedOverview />
+        {location.hash === "" || location.hash === "#overview" ? (
+          <CreatedOverview />
+        ) : location.hash === "#itinerary" ? (
+          <CreatedItinerary />
+        )  : (
+          <></>
+        )}
+
+        
       </div>
       <FooterPub />
     </>
