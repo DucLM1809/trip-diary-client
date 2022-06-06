@@ -128,8 +128,8 @@ const UserHomePage = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1">
-          <Swiper
+          <div className="NextTripSwiper">
+            <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
@@ -140,79 +140,64 @@ const UserHomePage = () => {
               className="mySwiper"
             >
               {trips.length > 0 ? (
-              trips.map((trip) => (
-            <SwiperSlide>
+                trips.map((trip) => (
+                  <SwiperSlide>
+                    <div key={uuidv4()}>
+                      <div className="swiperNextTrip">
+                        <img
+                          className="imgNextTrip"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                        />
 
-                <div key={uuidv4()}>
-                  <div className="swiperNextTrip">
-                    <img
-                      className="imgNextTrip"
-                      alt=""
-                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                    />
-                    <div className="CountryNextTrip">
-                    <img
-                      className="trip13Img"
-                      src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                    />
-                  </div>  
-                  <div className="swiperImgIcon">
-                    <Link to="/">
-                      <IoPersonCircleOutline />
-                    </Link>
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="swiperImgIcon">
+                          <Link to="/">
+                            <IoPersonCircleOutline />
+                          </Link>
+                        </div>
+                        <div className="swiperNextTripText">
+                          <Link to="/nexttrip">
+                          <h2 className="tripName">{trip.name}  </h2>
+                          </Link>
+                          
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-
-
-                  <div className="swiperNextTripText">
-                    <h2 className="trip14text">{trip.name}</h2>
-                  </div>
-                </div>
-
-
-
-            </SwiperSlide>
-                          ))
-                          ) : (
-                            <></>
-                          )}
-          </Swiper>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <></>
+              )}
+            </Swiper>
           </div>
-          <div className="trip2"></div>
-          <div className="trip3">
-            <Link to="/nexttrip">            <h1>My next trips</h1></Link>
+          <div className="NextTripTitle">
+            <Link to="/nexttrip">My next trips</Link>
           </div>
-          <div className="trip4">
+          <div className="NextTripHr">
+            <hr className="NexthrTrip" />
+          </div>
+          <div className="NextTripButton">
             <button className="buttonShow">Show all</button>
           </div>
-          <div className="trip6">
+          <div className="NextTripCreate">
             <Link to="/create">
               <button>
                 <AiFillPlusCircle size={"35px"} />
               </button>
             </Link>
           </div>
-              
-          
 
-           
-          
-
-
-          <div className="trip7">
+          <div className="PastTripTitle">
             <h1>My past trips</h1>
           </div>
-          <div className="trip8"></div>
 
-          <div className="trip10"></div>
-          <div className="trip11"></div>
-
-          <div className="trip15">
-            <hr className="hrTrip15" />
-          </div>
-          <div className="trip16"></div>
-          <div className="trip17">
+          <div className="PastTripSwiper">
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -240,7 +225,7 @@ const UserHomePage = () => {
                     </div>
                   </div>
                   <div className="swiperTrip3">
-                    <h2 className="trip14text">
+                    <h2 className="tripName">
                       The United States of America{" "}
                     </h2>
                   </div>
@@ -263,7 +248,7 @@ const UserHomePage = () => {
                     </div>
                   </div>
                   <div className="swiperTrip3">
-                    <h2 className="trip14text">
+                    <h2 className="tripName">
                       The United States of America{" "}
                     </h2>
                   </div>
@@ -327,7 +312,7 @@ const UserHomePage = () => {
               </SwiperSlide> */}
             </Swiper>
           </div>
-          <div className="trip18">
+          <div className="PastTripButton">
             <button className="buttonShow">Show all</button>
           </div>
         </div>
