@@ -22,23 +22,9 @@ import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { Link, useLocation } from "react-router-dom";
 
 const Overview = () => {
-  const [display, setDisplay] = useState(false);
-  const [disable, setDisable] = useState(true);
-  const [type, setType] = useState("Single Trip");
-  const [selected1, setSelected1] = useState(null);
-  const [selected2, setSelected2] = useState(null);
-  const [coordinate1, setCoordinate1] = useState({});
-  const [coordinate2, setCoordinate2] = useState({});
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
-  const [urlImg, setUrlImg] = useState();
-  const [edit, setEdit] = useState(false);
-
-  const dispatch = useDispatch();
+  const ApiKey = "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g";
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
+    googleMapsApiKey: ApiKey,
     libraries: "places",
   });
 
@@ -51,6 +37,23 @@ const Overview = () => {
       setEdit(false);
     }
   }, [location]);
+
+  const [display, setDisplay] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [type, setType] = useState("Single Trip");
+  const [selected1, setSelected1] = useState(null);
+  const [selected2, setSelected2] = useState(null);
+  const [coordinate1, setCoordinate1] = useState({ ...center });
+  const [coordinate2, setCoordinate2] = useState({});
+  const [departure, setDeparture] = useState();
+  const [destination, setDestination] = useState();
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
+  const [urlImg, setUrlImg] = useState();
+  const [edit, setEdit] = useState(false);
+  const [trip, setTrip] = useState();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSuccess("");
@@ -86,6 +89,7 @@ const Overview = () => {
     resetField,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -127,7 +131,7 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
         },
@@ -158,7 +162,7 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
         },
@@ -178,18 +182,83 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    // console.log(selected1);
+    console.log(selected1);
     setCoordinate1({ ...selected1 });
   }, [selected1]);
 
   useEffect(() => {
-    // console.log(selected2);
+    console.log(selected2);
     setCoordinate2({ ...selected2 });
   }, [selected2]);
 
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
   };
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${113}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+      console.log(res);
+    }
+  };
+
+  useEffect(() => {
+    handleGetTrip();
+  }, [edit]);
+
+  useEffect(() => {
+    try {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      fetch(urlDep)
+        .then((response) => response.json())
+        .then((data) => {
+          setDeparture(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [location, coordinate1]);
+
+  useEffect(() => {
+    try {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      fetch(urlDes)
+        .then((response) => response.json())
+        .then((data) => {
+          setDestination(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [location, coordinate2]);
+
+  useEffect(() => {
+    console.log(trip);
+    if (edit) {
+      setValue("tripname", trip.name);
+      if (trip.backtripAt) {
+        setType("Around Trip");
+        setValue("to", trip.backtripAt);
+      } else {
+        setType("Single Trip");
+      }
+      setValue("from", trip.startAt);
+      setValue("description", trip.description);
+      setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
+      setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
+    } else {
+      resetField("tripname");
+      setType("Single Trip");
+      resetField("from");
+      resetField("to");
+      resetField("description");
+    }
+  }, [edit]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
@@ -294,7 +363,7 @@ const Overview = () => {
               </label>
               <PlacesAutocomplete1
                 setSelected1={setSelected1}
-                setLocation1={setLocation1}
+                departure={departure}
               />
             </div>
             <div className="flex flex-col">
@@ -303,7 +372,7 @@ const Overview = () => {
               </label>
               <PlacesAutocomplete2
                 setSelected2={setSelected2}
-                setLocation2={setLocation2}
+                destination={destination}
               />
             </div>
           </div>
@@ -392,7 +461,8 @@ const Overview = () => {
   );
 };
 
-const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
+const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
+  // console.log("Dep: ", departure);
   const {
     ready,
     value,
@@ -403,9 +473,7 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation1(address);
     clearSuggestions();
-
     const results = await getGeocode({ address });
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
@@ -433,7 +501,8 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
   );
 };
 
-const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
+const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
+  // console.log("Des: ", destination);
   const {
     ready,
     value,
@@ -444,7 +513,6 @@ const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation2(address);
     clearSuggestions();
     const results = await getGeocode({ address });
     const { lat, lng } = getLatLng(results[0]);
