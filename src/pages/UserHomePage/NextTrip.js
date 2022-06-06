@@ -19,10 +19,14 @@ import banner from "../../assests/images/hero.png";
 import { TiLocationOutline } from "react-icons/ti";
 import {FiCalendar} from "react-icons/fi";
 import {AiOutlineExclamationCircle} from "react-icons/ai";
+import { Scrollbars } from "react-custom-scrollbars";
+import { v4 as uuidv4 } from "uuid";
+
 
 
 const NextTrip = () => {
   const [trip, setTrip] = useState();
+  const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -44,25 +48,15 @@ const NextTrip = () => {
     console.log(tripInfo);
   }, [tripInfo]);
 
-  // const handleGetTrips = async () => {
-  //   let res = await api.get("/trips", config);
-  //   if (res) {
-  //     console.log("Trips: ", res);
-  //   }
-  // };
-  // handleGetTrips();
-
-  const handleGetTrip = async () => {
-    let res = await api
-      .get(`/trips/${tripInfo.tripID}`, config)
-      .catch((error) => console.log(error));
+  const handleGetTrips = async () => {
+    let res = await api.get("/trips", config);
     if (res) {
-      setTrip(res.data);
-      // console.log("Trip: ", res);
+      console.log("Trips: ", res.data);
+      setTrips(res.data);
     }
   };
   useEffect(() => {
-    handleGetTrip();
+    handleGetTrips();
   }, []);
 
   return (
@@ -127,50 +121,68 @@ const NextTrip = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1"></div>
-          <div className="trip2"></div>
-          <div className="trip3_1">
+
+          <div className="NextTripTitle">
             <h1>My next trips</h1>
            
-          </div>
-
-          
-          {trip ? (
-            <>
-              <div className="trip5">
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                />
-              </div>
-              <div className="trip6">
-
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
-
-          
+          </div>          
           <div className="trip8">
           <hr/>
           </div>
 
-          <div></div>
-          <div className="trip10">
-              <TiLocationOutline fontSize={"35px"}/>
+          <div className="NextTripContent">
+            <Scrollbars style={{height:"500px"}}>
+            {trips.length > 0 ? (
+                trips.map((trip) => (
+                    <div key={uuidv4()}>
+                      <div className="swiperNextTrip">
+                        <img
+                          className="imgNextTrip"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                        />
+
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="DetailTripLocation">
+                          <TiLocationOutline/>
+                        </div>
+                        <div className="DeatailTripDate">
+                          <FiCalendar/>
+                        </div>
+                        <div className="DetailTripType">
+                          <AiOutlineExclamationCircle/>
+                        </div>
+                        <div className="TripLocationText">
+                          tung
+                        </div>
+                        <div className="TripDateText">
+                          tugntung
+                        </div>
+                        <div className="TripTypeText">tungtung</div>
+                        <div className="swiperNextTripText">
+                          <h2 className="tripName">{trip.name}  </h2>
+                        </div>
+                        <div className="NextTripHr">
+                          <hr/>
+                        </div>
+                      </div>
+                    </div>
+                ))
+              ) : (
+                <></>
+              )}
               
+
+            </Scrollbars>
           </div>
-          <div className="trip10_1">
-          <p >tung</p>
-          </div>
-          <div className="trip11">
-            <AiOutlineExclamationCircle/>
-          </div>
-          <div className="trip11_1">
-            <p>tung</p>
-          </div>
+          
+
+        
           {trip ? (
             <>
               {" "}
@@ -196,13 +208,6 @@ const NextTrip = () => {
           ) : (
             <></>
           )}
-
-          <div className="trip15">
-            <FiCalendar fontSize={"30px"}/>
-          </div>
-          <div className="trip15_1">
-          <p>tungtung</p>
-          </div>
 
         </div>
       </div>

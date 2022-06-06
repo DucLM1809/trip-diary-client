@@ -34,5 +34,9 @@
   {
     "key": "/nexttrip",
     "title": "Home"
+  },
+  {
+    "key": "/pasttrip",
+    "title":"Home"
   }
 ]
