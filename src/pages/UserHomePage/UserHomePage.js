@@ -128,11 +128,7 @@ const UserHomePage = () => {
         </div>
 
         <div className="tripgogo">
-<<<<<<< HEAD
           <div className="NextTripSwiper">
-=======
-          <div className="trip1">
->>>>>>> 9cfef370294e4b275dc28c6273d5efd675ab3129
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -145,7 +141,6 @@ const UserHomePage = () => {
             >
               {trips.length > 0 ? (
                 trips.map((trip) => (
-<<<<<<< HEAD
                   <SwiperSlide>
                     <div key={uuidv4()}>
                       <div className="swiperNextTrip">
@@ -172,28 +167,6 @@ const UserHomePage = () => {
                           </Link>
                           
                         </div>
-=======
-                  <SwiperSlide key={uuidv4()}>
-                    <div className="swiperNextTrip">
-                      <img
-                        className="imgNextTrip"
-                        alt=""
-                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                      />
-                      <div className="CountryNextTrip">
-                        <img
-                          className="trip13Img"
-                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
-                      </div>
-                      <div className="swiperImgIcon">
-                        <Link to="/">
-                          <IoPersonCircleOutline />
-                        </Link>
-                      </div>
-                      <div className="swiperNextTripText">
-                        <h2 className="trip14text">{trip.name}</h2>
->>>>>>> 9cfef370294e4b275dc28c6273d5efd675ab3129
                       </div>
                     </div>
                   </SwiperSlide>
@@ -203,17 +176,8 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
-<<<<<<< HEAD
           <div className="NextTripTitle">
             <Link to="/nexttrip">My next trips</Link>
-=======
-          <div className="trip2"></div>
-          <div className="trip3">
-            <Link to="/nexttrip">
-              {" "}
-              <h1>My next trips</h1>
-            </Link>
->>>>>>> 9cfef370294e4b275dc28c6273d5efd675ab3129
           </div>
           <div className="NextTripHr">
             <hr className="NexthrTrip" />
@@ -229,24 +193,11 @@ const UserHomePage = () => {
             </Link>
           </div>
 
-<<<<<<< HEAD
           <div className="PastTripTitle">
-=======
-          <div className="trip7">
->>>>>>> 9cfef370294e4b275dc28c6273d5efd675ab3129
             <h1>My past trips</h1>
           </div>
 
-<<<<<<< HEAD
           <div className="PastTripSwiper">
-=======
-          <div className="trip10"></div>
-          <div className="trip11"></div>
-
-          <div className="trip15"></div>
-          <div className="trip16"></div>
-          <div className="trip17">
->>>>>>> 9cfef370294e4b275dc28c6273d5efd675ab3129
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
