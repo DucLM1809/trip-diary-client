@@ -145,7 +145,7 @@ const Overview = () => {
     if (res) {
       setSuccess("Create Trip Successfully!");
       setErr("");
-      console.log("res: ", res.data);
+      // console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
   };
@@ -176,7 +176,7 @@ const Overview = () => {
     if (res) {
       setSuccess("Edit Trip Successfully!");
       setErr("");
-      console.log("res: ", res.data);
+      // console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
   };
@@ -215,12 +215,12 @@ const Overview = () => {
       fetch(urlDep)
         .then((response) => response.json())
         .then((data) => {
-          setDeparture(data.results[0].formatted_address);
+          try {
+            setDeparture(data.results[0].formatted_address);
+          } catch (error) {}
         })
         .catch((error) => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [location, coordinate1]);
 
   useEffect(() => {
@@ -229,13 +229,21 @@ const Overview = () => {
       fetch(urlDes)
         .then((response) => response.json())
         .then((data) => {
-          setDestination(data.results[0].formatted_address);
+          try {
+            setDestination(data.results[0].formatted_address);
+          } catch (error) {}
         })
         .catch((error) => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [location, coordinate2]);
+
+  useEffect(() => {
+    console.log(departure);
+  }, [coordinate1]);
+
+  useEffect(() => {
+    console.log(destination);
+  }, [coordinate2]);
 
   useEffect(() => {
     console.log(trip);
