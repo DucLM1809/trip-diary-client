@@ -10,7 +10,7 @@
 .profileCover {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 450px;
@@ -187,16 +187,17 @@
     grid-area: 4 / 1 / 7 / 6;
 }
 .NextTripTitle{
-    margin-top: 35px;
+    margin-top: 25px;
     grid-area: 1 / 1 / 2 / 2;
     font-size: 25px;
     margin-left: 61.55px;
 }
-.NextTripTitle{
-    margin-top: 5px;
+
+.NextTripTitle_1{
+    margin-top: 15px;
     grid-area: 1 / 1 / 2 / 2;
-    font-size: 30px;
-    margin-left: 30.55px;
+    font-size: 25px;
+    margin-left: 61.55px;
 }
 .NextTripButton{
     grid-area: 1 / 5 / 2 / 6;   
@@ -207,7 +208,7 @@
 }
 .NextTripCreate{
     grid-area: 1 / 4 / 2 / 5;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 190px;
 }
 .PastTripTitle{
@@ -253,7 +254,7 @@
     font-size: 20px;
     border-radius: 10px;
     width: 150px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .imgTrip {
@@ -305,11 +306,7 @@
 }
 
 
-.NexthrTrip{
-    margin-top: 20px;
-    width: 90%;
-    margin-left: 5%;
-}
+
 .trip16{
     grid-area: 5 / 1 / 6 / 2;
     font-size: 40px;
@@ -434,4 +431,10 @@
     width: 90%;
     margin-left: 5%;
     opacity: 50%;
+}
+.UserNextTripHr{
+  grid-area: 3 / 1 / 4 / 6;
+  margin-top: 120px;
+  width: 90%;
+  margin-left: 5%;
 }

@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-const PastTrip = () => {
+const NextTrip = () => {
   const [trip, setTrip] = useState();
   const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
@@ -121,15 +121,12 @@ const PastTrip = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1"></div>
-          <div className="trip2"></div>
-          <div className="trip3_1">
-            <h1>My next trips</h1>
+
+          <div className="NextTripTitle">
+            <h1>My past trips</h1>
            
           </div>          
-          <div className="trip8">
-          <hr/>
-          </div>
+
 
           <div className="NextTripContent">
             <Scrollbars style={{height:"500px"}}>
@@ -167,6 +164,9 @@ const PastTrip = () => {
                         <div className="TripTypeText">tungtung</div>
                         <div className="swiperNextTripText">
                           <h2 className="tripName">{trip.name}  </h2>
+                        </div>
+                        <div className="NextTripHr">
+                          <hr/>
                         </div>
                       </div>
                     </div>
@@ -214,4 +214,4 @@ const PastTrip = () => {
   );
 };
 
-export default PastTrip;
+export default NextTrip;
