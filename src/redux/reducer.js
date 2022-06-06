@@ -23,16 +23,11 @@ const initState = {
     tripID: "",
     coverImgUrl: "",
   },
-  location: {
-    review: "",
-    lat: "",
-    lng: "",
-    startAt: "",
-  },
+  locations: [],
   checklist: {
-    name: '',
-    notes: '',
-  }
+    name: "",
+    notes: "",
+  },
 };
 
 const rootReducer = (state = initState, action) => {
@@ -160,14 +155,23 @@ const rootReducer = (state = initState, action) => {
           coverImgUrl: action.payload.coverImgUrl,
           description: action.payload.description,
         },
+        locations: [],
       };
     }
     case "CREATE_LOCATION": {
+      console.log(action.payload);
       return {
         ...state,
-        location: {
-          ...state.location,
-        },
+        locations: [
+          ...state.locations,
+          {
+            review: action.payload.data.review,
+            lat: action.payload.data.lat,
+            lng: action.payload.data.lng,
+            startAt: action.payload.data.startAt,
+            locationID: action.payload.data.id,
+          },
+        ],
       };
     }
     default:

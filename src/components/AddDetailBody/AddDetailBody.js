@@ -67,8 +67,13 @@ function AddDetailBody() {
 
   const tripInfo = useSelector((state) => state.trip);
   useEffect(() => {
-    // console.log(tripInfo);
+    console.log("Trip: ", tripInfo);
   }, [tripInfo]);
+
+  const tripInfoLoc = useSelector((state) => state.locations);
+  useEffect(() => {
+    console.log("Location: ", tripInfoLoc);
+  }, [tripInfoLoc]);
 
   const {
     register,
@@ -144,14 +149,33 @@ function AddDetailBody() {
           if (res) {
             setSuccess("Edit Detail Successfully!");
             setErr("");
-            dispatch(createLocation(res));
+            dispatch(createLocation(res.data));
             console.log("res: ", res);
           }
         };
+
+        const handleCreateLocationImages = async () => {
+          let res = await api
+            .post(
+              `/trips/${tripInfo.tripID}/locations/${tripInfoLoc[0].locationID}/images`,
+              {
+                url: urlImg,
+              },
+              config
+            )
+            .catch((error) => {
+              console.log(error);
+            });
+          if (res) {
+            console.log(res);
+          }
+        };
+
         if (edit) {
           handleEditLocation();
         } else {
           handleCreateLocation();
+          handleCreateLocationImages();
         }
       }
     });
