@@ -201,8 +201,11 @@ function AddDetailBody() {
 
   useEffect(() => {
     let temp = [...listImg];
-    temp.push(urlImg);
+    if (urlImg) {
+      temp.push(urlImg);
+    }
     setListImg(temp);
+    console.log(temp);
   }, [urlImg]);
 
   return (
@@ -282,16 +285,27 @@ function AddDetailBody() {
                     <p className="text-black mb-2">Images</p>
                     <AiFillPicture className="my-auto" />
                   </div>
-                  <div className="w-4/5 flex justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue overflow-y-auto">
-                    {listImg.map((img) => (
-                      <img
-                        className="w-[90px] h-[90px]"
-                        key={uuidv4()}
-                        src={img}
-                        alt=""
-                      />
-                    ))}
-                    <input type="file" onChange={(e) => handleUploadImg(e)} className="ml-4" />
+                  <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
+                    {listImg.length > 0 ? (
+                      listImg.map((img) => {
+                        return (
+                          <img
+                            className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                            key={uuidv4()}
+                            src={img}
+                            alt=""
+                          />
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
+                    <input
+                      type="file"
+                      {...register(`imageList${location.num}`)}
+                      onChange={(e) => handleUploadImg(e)}
+                      className="ml-4"
+                    />
                   </div>
                   <div className="flex justify-between w-4/5 mt-3">
                     <p className="text-black mb-2">Description</p>

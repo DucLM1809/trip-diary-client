@@ -182,12 +182,12 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    // console.log(selected1);
+    console.log(selected1);
     setCoordinate1({ ...selected1 });
   }, [selected1]);
 
   useEffect(() => {
-    // console.log(selected2);
+    console.log(selected2);
     setCoordinate2({ ...selected2 });
   }, [selected2]);
 
@@ -210,23 +210,31 @@ const Overview = () => {
   }, [edit]);
 
   useEffect(() => {
-    let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
-    fetch(urlDep)
-      .then((response) => response.json())
-      .then((data) => {
-        setDeparture(data.results[0].formatted_address);
-      })
-      .catch((error) => console.log(error));
+    try {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      fetch(urlDep)
+        .then((response) => response.json())
+        .then((data) => {
+          setDeparture(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
   }, [location, coordinate1]);
 
   useEffect(() => {
-    let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
-    fetch(urlDes)
-      .then((response) => response.json())
-      .then((data) => {
-        setDestination(data.results[0].formatted_address);
-      })
-      .catch((error) => console.log(error));
+    try {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      fetch(urlDes)
+        .then((response) => response.json())
+        .then((data) => {
+          setDestination(data.results[0].formatted_address);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
   }, [location, coordinate2]);
 
   useEffect(() => {
@@ -466,7 +474,7 @@ const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
   const handleSelect = async (address) => {
     setValue(address, false);
     clearSuggestions();
-    const results = await getGeocode(address);
+    const results = await getGeocode({ address });
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
