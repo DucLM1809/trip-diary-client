@@ -8,7 +8,7 @@ const storageAccountName = process.env.REACT_APP_STORAGE_RESOURCE_NAME;
 
 const accessToken = localStorage
   .getItem("accessToken")
-  .toString()
+  ?.toString()
   .split('"')[1];
 
 const config = {
