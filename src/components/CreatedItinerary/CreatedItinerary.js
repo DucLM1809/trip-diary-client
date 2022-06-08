@@ -2,30 +2,21 @@ import "@reach/combobox/styles.css";
 import React, { useEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-import destination1 from "../../assests/images/Destination1.png";
-import destination2 from "../../assests/images/Destination2.png";
-import destination3 from "../../assests/images/Destination3.png";
-import destination4 from "../../assests/images/Destination4.png";
 import { AiFillCaretUp } from "react-icons/ai";
 import { HiLocationMarker } from "react-icons/hi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper";
 import api from "../../api/axios";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 function CreatedItinerary() {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
 
   const location = useLocation();
   const [locations, setLocations] = useState([]);
-  const [departures, setDepartures] = useState([]);
-  const [images, setImages] = useState([]);
 
   const tripID = location.pathname.split("/")[3];
-
-  useEffect(() => {
-    console.log(location);
-  }, []);
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -47,20 +38,6 @@ function CreatedItinerary() {
       .get(`/trips/${tripID}/locations`, config)
       .catch((error) => console.log(error));
     if (res) {
-      await res.data.map((item) => {
-        let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.lat},${item.lng}&key=${ApiKey}`;
-        fetch(urlDep)
-          .then((response) => response.json())
-          .then((data) => {
-            try {
-              item.departure =
-                data.results[data.results.length - 2].formatted_address ||
-                data.results[0].formatted_address;
-            } catch (error) {}
-          })
-          .catch((error) => console.log(error));
-      });
-      console.log(res.data);
       setLocations(res.data);
     }
   };
@@ -72,12 +49,24 @@ function CreatedItinerary() {
           .get(`/trips/${tripID}/locations/${location.id}/images`, config)
           .catch((error) => console.log(error));
         if (res) {
-          console.log("Images: ", res.data);
-          setImages(res);
           location.images = res.data;
         }
       };
       getImages();
+    });
+  };
+
+  const handleGetDepartures = async () => {
+    locations.map((location) => {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${ApiKey}`;
+      let getDepatures = async () => {
+        let res = await axios.get(urlDep).catch((error) => console.log(error));
+        if (res) {
+          location.departure =
+            res.data.results[res.data.results.length - 2].formatted_address;
+        }
+      };
+      getDepatures();
     });
   };
 
@@ -87,34 +76,9 @@ function CreatedItinerary() {
 
   useEffect(() => {
     handleGetImages();
+    handleGetDepartures();
+    console.log(locations);
   }, [locations]);
-
-  useEffect(() => {
-    locations.map((location) => {
-      console.log("Img ", location.images[0]?.url);
-    });
-  }, [locations]);
-
-  // useEffect(() => {
-  //   let temp = [...departures];
-  //   try {
-  //     locations.map((location) => {
-  //       let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${ApiKey}`;
-  //       fetch(urlDep)
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           try {
-  //             temp.push(
-  //               data.results[data.results.length - 2].formatted_address ||
-  //                 data.results[0].formatted_address
-  //             );
-  //           } catch (error) {}
-  //         })
-  //         .catch((error) => console.log(error));
-  //       setDepartures(temp);
-  //     });
-  //   } catch (error) {}
-  // }, []);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px]">
@@ -160,7 +124,7 @@ function CreatedItinerary() {
                       modules={[FreeMode, Pagination]}
                       className="mySwiper"
                     > */}
-                      {/* {location.image.map((img) => {
+                    {/* {location.image.map((img) => {
                         return (
                           <SwiperSlide>
                             {" "}
@@ -172,26 +136,29 @@ function CreatedItinerary() {
                           </SwiperSlide>
                         );
                       })} */}
-                      {location.images.length > 0 ? (
-                        location.images.map((img) => {
-                          return (
-                            <div className="flex justify-start flex-wrap gap-2">
-                              {" "}
-                              {img?.url ? (
-                                <img
-                                  src={img?.url}
-                                  alt=""
-                                  className="w-[250px] h-[250px]"
-                                />
-                              ) : (
-                                <></>
-                              )}
-                            </div>
-                          );
-                        })
-                      ) : (
-                        <></>
-                      )}
+                    {location.images.length > 0 ? (
+                      location.images.map((img) => {
+                        return (
+                          <div
+                            key={uuidv4()}
+                            className="flex justify-start flex-wrap gap-2"
+                          >
+                            {" "}
+                            {img?.url ? (
+                              <img
+                                src={img?.url}
+                                alt=""
+                                className="w-[250px] h-[250px] object-cover"
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
                     {/* </Swiper> */}
                   </div>
                 </div>

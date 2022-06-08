@@ -177,15 +177,15 @@ const CreatedOverview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={trip ? trip.coverImgUrl : banner}
+          src={trip?.coverImgUrl}
           className="min-w-full h-full object-cover rounded-10 relative"
         />
       </div>
       <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 rounded-10">
-        <h1 className="text-3xl text-center mb-14">{trip ? trip.name : ""}</h1>
+        <h1 className="text-3xl text-center mb-14">{trip?.name}</h1>
         <div className="flex justify-between items-start mx-10 relative font-bold text-base">
           <div className="flex flex-col justify-center">
-            <span className="">From: {trip ? trip.startAt : ""}</span>
+            <span className="">From: {trip?.startAt}</span>
             <span className="flex items-center justify-center">
               <FaMapMarkerAlt /> {departure}
             </span>
@@ -196,7 +196,7 @@ const CreatedOverview = () => {
           </div>
           <div className=""></div>
           <div className="flex flex-col justify-center">
-            <span>To: {trip ? trip.backTripAt : ""}</span>
+            <span>To: {trip?.backTripAt}</span>
             <span className="flex items-center justify-center">
               <FaMapPin /> {destination}
             </span>
@@ -230,13 +230,13 @@ const CreatedOverview = () => {
                 return (
                   <div className="relative">
                     <img
-                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      src={trip?.coverImgUrl || banner}
                       alt=""
                       className="w-[250px] h-[250px] object-cover rounded-5"
                     />
                     <div className="flex justify-center items-center absolute bottom-5 left-5 text-xl">
                       <FaMapMarkerAlt className="text-green" />
-                      <span className="text-xl text-white ml-1">{trip.name}</span>
+                      <span className="text-xl text-white ml-1">{trip?.name}</span>
                     </div>
                   </div>
                 );
@@ -249,7 +249,7 @@ const CreatedOverview = () => {
         <div className="flex flex-col items-start mx-10 relative">
           <h1 className="mb-2 text-xl">Description</h1>
           <div className="mb-6">
-            <p className="font-medium">{trip ? trip.description : ""}</p>
+            <p className="font-medium">{trip?.description}</p>
           </div>
           <div className="w-full border-1 border-gray rounded-5">
             <div className="w-full flex border-b-1 border-b-gray">

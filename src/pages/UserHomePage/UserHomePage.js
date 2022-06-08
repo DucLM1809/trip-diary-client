@@ -145,7 +145,7 @@ const UserHomePage = () => {
                     <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
                       <div className="swiperNextTrip">
                         <img
-                          className="imgNextTrip"
+                          className="imgNextTrip object-cover"
                           alt=""
                           src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                         />
@@ -215,7 +215,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      className="imgTrip"
+                      className="imgTrip object-cover"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />

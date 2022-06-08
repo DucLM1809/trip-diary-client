@@ -15,11 +15,11 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTrip } from "../../redux/actions";
 import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
@@ -30,6 +30,8 @@ const Overview = () => {
 
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
   const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (location.pathname.split("/")[1] === "edit") {
       setEdit(true);
@@ -54,11 +56,10 @@ const Overview = () => {
   const [trip, setTrip] = useState();
 
   const dispatch = useDispatch();
-
+  const tripInfo = useSelector((state) => state.trip);
   useEffect(() => {
-    setSuccess("");
-    setErr("");
-  }, []);
+    console.log(tripInfo);
+  }, [tripInfo]);
 
   const containerStyle = {
     width: "100%",
@@ -153,7 +154,7 @@ const Overview = () => {
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
-        `/trips/${113}`,
+        `/trips/${tripInfo.tripID}`,
         {
           name: data.tripname,
           type: data.type,
@@ -182,12 +183,10 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    console.log(selected1);
     setCoordinate1({ ...selected1 });
   }, [selected1]);
 
   useEffect(() => {
-    console.log(selected2);
     setCoordinate2({ ...selected2 });
   }, [selected2]);
 
@@ -197,7 +196,7 @@ const Overview = () => {
 
   const handleGetTrip = async () => {
     let res = await api
-      .get(`/trips/${113}`, config)
+      .get(`/trips/${tripInfo.tripID}`, config)
       .catch((error) => console.log(error));
     if (res) {
       setTrip(res.data);
@@ -206,48 +205,58 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    handleGetTrip();
+    if (success) {
+      setEdit(true);
+    } else {
+      setEdit(false);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (edit) {
+      handleGetTrip();
+    }
   }, [edit]);
 
-  useEffect(() => {
-    try {
-      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
-      fetch(urlDep)
-        .then((response) => response.json())
-        .then((data) => {
-          try {
-            setDeparture(data.results[0].formatted_address);
-          } catch (error) {}
-        })
-        .catch((error) => console.log(error));
-    } catch (error) {}
-  }, [location, coordinate1]);
+  // useEffect(() => {
+  //   try {
+  //     let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+  //     fetch(urlDep)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         try {
+  //           setDeparture(data.results[0].formatted_address);
+  //         } catch (error) {}
+  //       })
+  //       .catch((error) => console.log(error));
+  //   } catch (error) {}
+  // }, [location, coordinate1]);
 
-  useEffect(() => {
-    try {
-      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
-      fetch(urlDes)
-        .then((response) => response.json())
-        .then((data) => {
-          try {
-            setDestination(data.results[0].formatted_address);
-          } catch (error) {}
-        })
-        .catch((error) => console.log(error));
-    } catch (error) {}
-  }, [location, coordinate2]);
+  // useEffect(() => {
+  //   try {
+  //     let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+  //     fetch(urlDes)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         try {
+  //           setDestination(data.results[0].formatted_address);
+  //         } catch (error) {}
+  //       })
+  //       .catch((error) => console.log(error));
+  //   } catch (error) {}
+  // }, [location, coordinate2]);
 
-  useEffect(() => {
-    console.log(departure);
-  }, [coordinate1]);
+  // useEffect(() => {
+  //   console.log(departure);
+  // }, [coordinate1]);
 
-  useEffect(() => {
-    console.log(destination);
-  }, [coordinate2]);
+  // useEffect(() => {
+  //   console.log(destination);
+  // }, [coordinate2]);
 
   useEffect(() => {
     console.log(trip);
-    if (edit) {
+    if (edit && trip) {
       setValue("tripname", trip.name);
       if (trip.backtripAt) {
         setType("Around Trip");

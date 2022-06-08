@@ -70,9 +70,6 @@ function AddDetailBody() {
   }, []);
 
   const tripInfo = useSelector((state) => state.trip);
-  // useEffect(() => {
-  //   console.log("Trip: ", tripInfo);
-  // }, [tripInfo]);
 
   const tripInfoLoc = useSelector((state) => state.locations);
   useEffect(() => {
