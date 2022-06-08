@@ -142,8 +142,7 @@ const UserHomePage = () => {
               {trips.length > 0 ? (
                 trips.map((trip) => (
                   <SwiperSlide>
-                    
-                    <div key={uuidv4()}>
+                    <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
                       <div className="swiperNextTrip">
                         <img
                           className="imgNextTrip"
@@ -169,7 +168,7 @@ const UserHomePage = () => {
                           
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 ))
               ) : (

@@ -58,7 +58,7 @@ function App() {
         <Route exact path="/home" element={<Home />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
         <Route exact path="/edit/trip/:id" element={<Create />}></Route>
-        <Route exact path="/trips" element={<Trips />}></Route>
+        <Route exact path="/trips/trip/:id" element={<Trips />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
         <Route exact path="/pasttrip" element={<PastTrip />}></Route>

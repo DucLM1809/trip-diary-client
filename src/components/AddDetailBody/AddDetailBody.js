@@ -34,6 +34,10 @@ function AddDetailBody() {
   const [edit, setEdit] = useState(false);
   const [urlImg, setUrlImg] = useState();
   const [listImg, setListImg] = useState([]);
+  const [locations, setLocations] = useState([
+    { key: uuidv4(), coordinate: {}, num: 1 },
+  ]);
+
   const dispatch = useDispatch();
 
   const accessToken = localStorage
@@ -66,13 +70,13 @@ function AddDetailBody() {
   }, []);
 
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log("Trip: ", tripInfo);
-  }, [tripInfo]);
+  // useEffect(() => {
+  //   console.log("Trip: ", tripInfo);
+  // }, [tripInfo]);
 
   const tripInfoLoc = useSelector((state) => state.locations);
   useEffect(() => {
-    console.log("Location: ", tripInfoLoc);
+    console.log("Trip: ", tripInfoLoc);
   }, [tripInfoLoc]);
 
   const {
@@ -86,13 +90,12 @@ function AddDetailBody() {
     let temp = [];
     locations.map((location) => {
       location.date = data[`date${location.num}`];
-      location.image = data[`image${location.num}`];
+      location.images = [data[`imageList${location.num}`]];
       location.description = data[`description${location.num}`];
       temp.push(location);
     });
     data.locations = temp;
     data.locations.map((location) => {
-      console.log("Loc: ", location);
       if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
         setErr("You choose a day before start day");
         setSuccess("");
@@ -113,7 +116,7 @@ function AddDetailBody() {
               config
             )
             .catch((error) => {
-              console.log(err);
+              console.log(error);
               if (error.response.status === 405) {
                 setErr("You must create a trip first");
               } else if (error.response.status === 422) {
@@ -125,7 +128,6 @@ function AddDetailBody() {
             setSuccess("Add Detail Successfully!");
             setErr("");
             dispatch(createLocation(res));
-
             console.log("res: ", res);
           }
         };
@@ -153,38 +155,59 @@ function AddDetailBody() {
             console.log("res: ", res);
           }
         };
-
-        const handleCreateLocationImages = async () => {
-          let res = await api
-            .post(
-              `/trips/${tripInfo.tripID}/locations/${tripInfoLoc[0].locationID}/images`,
-              {
-                url: urlImg,
-              },
-              config
-            )
-            .catch((error) => {
-              console.log(error);
-            });
-          if (res) {
-            console.log(res);
-          }
-        };
-
         if (edit) {
           handleEditLocation();
         } else {
           handleCreateLocation();
-          handleCreateLocationImages();
         }
       }
     });
     console.log(data);
   };
 
-  const [locations, setLocations] = useState([
-    { key: uuidv4(), coordinate: {}, num: 1 },
-  ]);
+  useEffect(() => {
+    tripInfoLoc.map((tripLoc, index) => {
+      console.log("i: ", index);
+      listImg.map((img) => {
+        console.log(img.id);
+        if (img.id === index + 1) {
+          console.log(tripLoc.locationID);
+        }
+      });
+    });
+  }, [tripInfoLoc]);
+
+  const handleCreateImages = async () => {
+    tripInfoLoc.map((tripLoc, index) => {
+      listImg.map((img) => {
+        if (img.id === index + 1) {
+          const createImages = async () => {
+            let res = await api
+              .post(
+                `/trips/${tripInfo.tripID}/locations/${tripLoc.locationID}/images`,
+                {
+                  url: img.url,
+                },
+                config
+              )
+              .catch((error) => {
+                console.log(error);
+              });
+            if (res) {
+              console.log("Images: ", res);
+            }
+          };
+          createImages();
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (success) {
+      handleCreateImages();
+    }
+  }, [success, tripInfoLoc]);
 
   const handleAddLoc = () => {
     let temp = [...locations];
@@ -220,17 +243,13 @@ function AddDetailBody() {
   }, [selectKey]);
 
   const handleUploadImg = (e) => {
-    uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
+    uploadFileToBlob(e.target.files[0]).then((result) => {
+      let temp = [...listImg];
+      temp.push({ id: parseInt(e.target.id), url: result });
+      setUrlImg(result);
+      setListImg(temp);
+    });
   };
-
-  useEffect(() => {
-    let temp = [...listImg];
-    if (urlImg) {
-      temp.push(urlImg);
-    }
-    setListImg(temp);
-    console.log(temp);
-  }, [urlImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -312,21 +331,24 @@ function AddDetailBody() {
                   <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
                     {listImg.length > 0 ? (
                       listImg.map((img) => {
-                        return (
-                          <img
-                            className="w-[120px] h-[120px] object-cover mr-1 mb-1"
-                            key={uuidv4()}
-                            src={img}
-                            alt=""
-                          />
-                        );
+                        if (img.id === location.num) {
+                          return (
+                            <img
+                              className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                              key={uuidv4()}
+                              src={img.url}
+                              alt=""
+                            />
+                          );
+                        }
                       })
                     ) : (
                       <></>
                     )}
                     <input
+                      id={location.num}
                       type="file"
-                      {...register(`imageList${location.num}`)}
+                      {...register(`${location.num}`)}
                       onChange={(e) => handleUploadImg(e)}
                       className="ml-4"
                     />

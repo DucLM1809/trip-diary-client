@@ -7,20 +7,29 @@ import { FaMapMarkerAlt, FaMapPin, FaRegComment } from "react-icons/fa";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import destination1 from "../../assests/images/Destination1.png";
 import unknown from "../../assests/images/unknown.png";
 import { v4 as uuidv4 } from "uuid";
 import api from "../../api/axios";
 
 const CreatedOverview = () => {
+  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
+
   const [like, setLike] = useState(false);
   const [numLike, setNumLike] = useState(0);
   const [comments, setComments] = useState([]);
   const [displayComment, setDisplayComment] = useState(false);
   const [replies, setReplies] = useState([]);
   const [displayReply, setDisplayReply] = useState(false);
-  const [trips, setTrips] = useState([]);
+  const [trip, setTrip] = useState();
+  const [trips, setTrips] = useState();
+
+  const [departure, setDeparture] = useState();
+  const [destination, setDestination] = useState();
+
   const userName = localStorage.getItem("username");
+  const location = useLocation();
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -36,15 +45,24 @@ const CreatedOverview = () => {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
 
-  const tripInfo = useSelector((state) => state.trip);
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${location.pathname.split("/")[3]}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+      console.log("res: ", res);
+    }
+  };
+
   useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
+    handleGetTrip();
+  }, [location]);
 
   const handleGetTrips = async () => {
     let res = await api.get("/trips", config);
     if (res) {
-      console.log("Trips: ", res.data);
+      // console.log("Trips: ", res.data);
       setTrips(res.data);
     }
   };
@@ -52,8 +70,49 @@ const CreatedOverview = () => {
     handleGetTrips();
   }, []);
 
+  useEffect(() => {
+    try {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${trip.fromLat},${trip.fromLng}&key=${ApiKey}`;
+      fetch(urlDep)
+        .then((response) => response.json())
+        .then((data) => {
+          try {
+            console.log("dep: ", data);
+            setDeparture(
+              data.results[data.results.length - 2].formatted_address ||
+                data.results[0].formatted_address
+            );
+          } catch (error) {}
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {}
+  }, [location, trip]);
+
+  useEffect(() => {
+    try {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${trip.toLat},${trip.toLng}&key=${ApiKey}`;
+      fetch(urlDep)
+        .then((response) => response.json())
+        .then((data) => {
+          try {
+            console.log("des: ", data);
+            setDestination(
+              data.results[data.results.length - 2].formatted_address ||
+                data.results[0].formatted_address
+            );
+          } catch (error) {}
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {}
+  }, [location, trip]);
+
+  const tripInfo = useSelector((state) => state.trip);
+  useEffect(() => {
+    console.log(tripInfo);
+  }, [tripInfo]);
+
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
+    googleMapsApiKey: ApiKey,
     libraries: "places",
   });
 
@@ -110,7 +169,7 @@ const CreatedOverview = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center mx-auto mt-10 max-w-[1100px]">
+    <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
       <div
         className="w-full h-96 relative 
           after:absolute after:content-[''] 
@@ -118,34 +177,46 @@ const CreatedOverview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={banner}
+          src={trip ? trip.coverImgUrl : banner}
           className="min-w-full h-full object-cover rounded-10 relative"
         />
       </div>
       <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 rounded-10">
-        <h1 className="text-3xl text-center mb-14">My Trip to the Future</h1>
-        <div className="flex justify-between items-center mx-10 relative font-bold text-xl">
-          <div>From: HoChiMinh City</div>
-          <div className="absolute left-[36%]">
-            <FaMapMarkerAlt />
+        <h1 className="text-3xl text-center mb-14">{trip ? trip.name : ""}</h1>
+        <div className="flex justify-between items-start mx-10 relative font-bold text-base">
+          <div className="flex flex-col justify-center">
+            <span className="">From: {trip ? trip.startAt : ""}</span>
+            <span className="flex items-center justify-center">
+              <FaMapMarkerAlt /> {departure}
+            </span>
           </div>
-          <div className="text-green before:w-[100px] before:h-[1px] before:bg-black before:absolute before:top-[50%] before:left-[40%] after:w-[100px] after:h-[1px] after:bg-black after:absolute after:top-[50%] after:right-[33%]">
+
+          <div className="text-green m-auto -translate-x-1/2">
             <IoAirplane />
           </div>
-          <div className="absolute right-[29%]">
-            <FaMapPin />
+          <div className=""></div>
+          <div className="flex flex-col justify-center">
+            <span>To: {trip ? trip.backTripAt : ""}</span>
+            <span className="flex items-center justify-center">
+              <FaMapPin /> {destination}
+            </span>
           </div>
-          <div>To: DaLat City</div>
         </div>
         <div className="w-full h-[500px] my-10">
           {isLoaded ? (
             <GoogleMap
               mapContainerStyle={containerStyle}
-              center={center}
+              center={trip ? { lat: trip.fromLat, lng: trip.fromLng } : center}
               zoom={6}
             >
-              <Marker position={center} />
-              {/* <Marker position={coordinate2} /> */}
+              <Marker
+                position={
+                  trip ? { lat: trip.fromLat, lng: trip.fromLng } : center
+                }
+              />
+              <Marker
+                position={trip ? { lat: trip.toLat, lng: trip.toLng } : center}
+              />
             </GoogleMap>
           ) : (
             <></>
@@ -153,46 +224,32 @@ const CreatedOverview = () => {
         </div>
         <div className="flex flex-col items-start mx-10 mb-10 relative text-xl">
           <h1 className="mb-2">Visited Places</h1>
-          <div className="flex flex-wrap gap-1">
-            <div className="relative">
-              <img src={destination1} alt="" className="w-[250px] h-[250px]" />
-              <div className="flex justify-center items-center absolute bottom-5 left-5 text-2xl">
-                <FaMapMarkerAlt className="text-green" />
-                <span className="text-xl text-white ml-1">Singapore</span>
-              </div>
-            </div>
-            <div className="relative">
-              <img src={destination1} alt="" className="w-[250px] h-[250px]" />
-              <div className="flex justify-center items-center absolute bottom-5 left-5 text-2xl">
-                <FaMapMarkerAlt className="text-green" />
-                <span className="text-xl text-white ml-1">Singapore</span>
-              </div>
-            </div>
-            <div className="relative">
-              <img src={destination1} alt="" className="w-[250px] h-[250px]" />
-              <div className="flex justify-center items-center absolute bottom-5 left-5 text-2xl">
-                <FaMapMarkerAlt className="text-green" />
-                <span className="text-xl text-white ml-1">Singapore</span>
-              </div>
-            </div>
-            {/* className="relative before:absolute before:rounded-5 before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-black before:opacity-25" */}
-            <div className="relative">
-              <img src={destination1} alt="" className="w-[250px] h-[250px]" />
-              <div className="flex justify-center items-center absolute bottom-5 left-5 text-2xl">
-                <FaMapMarkerAlt className="text-green" />
-                <span className="text-xl text-white ml-1">Singapore</span>
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-8">
+            {trips ? (
+              trips.map((trip) => {
+                return (
+                  <div className="relative">
+                    <img
+                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      alt=""
+                      className="w-[250px] h-[250px] object-cover rounded-5"
+                    />
+                    <div className="flex justify-center items-center absolute bottom-5 left-5 text-xl">
+                      <FaMapMarkerAlt className="text-green" />
+                      <span className="text-xl text-white ml-1">{trip.name}</span>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-start mx-10 relative">
           <h1 className="mb-2 text-xl">Description</h1>
           <div className="mb-6">
-            <p className="font-medium">This is a beautiful day!</p>
-            <p className="font-medium">This is a beautiful day!</p>
-            <p className="font-medium">This is a beautiful day!</p>
-            <p className="font-medium">This is a beautiful day!</p>
-            <p className="font-medium">This is a beautiful day!</p>
+            <p className="font-medium">{trip ? trip.description : ""}</p>
           </div>
           <div className="w-full border-1 border-gray rounded-5">
             <div className="w-full flex border-b-1 border-b-gray">
