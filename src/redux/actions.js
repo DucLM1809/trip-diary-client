@@ -72,6 +72,21 @@ export const createLocation = (data) => {
   }
 }
 
+export const updateLocation = (data) => {
+  return {
+    type: "UPDATE_LOCATION",
+    payload: data
+  }
+}
+
+export const updateLocations = (data) => {
+  return {
+    type: "UPDATE_LOCATIONS",
+    payload: data
+  }
+}
+
+
 export const createChecklist = (data) => {
   return {
     type: "CREATE_CHECKLIST",

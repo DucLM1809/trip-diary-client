@@ -1,5 +1,5 @@
 import "@reach/combobox/styles.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { AiFillCaretUp } from "react-icons/ai";
@@ -9,14 +9,20 @@ import { FreeMode, Pagination } from "swiper";
 import api from "../../api/axios";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateLocations } from "../../redux/actions";
 
 function CreatedItinerary() {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
+  const dispatch = useDispatch();
 
   const location = useLocation();
   const [locations, setLocations] = useState([]);
+  const [images, setImages] = useState([]);
+  const [departures, setDepartures] = useState([]);
 
   const tripID = location.pathname.split("/")[3];
+  const tripInfoLoc = useSelector((state) => state.locations);
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -39,17 +45,20 @@ function CreatedItinerary() {
       .catch((error) => console.log(error));
     if (res) {
       setLocations(res.data);
+      dispatch(updateLocations(res.data));
     }
   };
 
   const handleGetImages = async () => {
+    let temp = [];
     locations.map((location) => {
       let getImages = async () => {
         let res = await api
           .get(`/trips/${tripID}/locations/${location.id}/images`, config)
           .catch((error) => console.log(error));
         if (res) {
-          location.images = res.data;
+          temp.push(res.data);
+          setImages(temp);
         }
       };
       getImages();
@@ -57,13 +66,18 @@ function CreatedItinerary() {
   };
 
   const handleGetDepartures = async () => {
+    let temp = [];
     locations.map((location) => {
       let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${ApiKey}`;
       let getDepatures = async () => {
         let res = await axios.get(urlDep).catch((error) => console.log(error));
         if (res) {
-          location.departure =
-            res.data.results[res.data.results.length - 2].formatted_address;
+          temp.push({
+            departure:
+              res.data.results[res.data.results.length - 2].formatted_address,
+            id: location.id,
+          });
+          setDepartures(temp);
         }
       };
       getDepatures();
@@ -75,9 +89,12 @@ function CreatedItinerary() {
   }, []);
 
   useEffect(() => {
-    handleGetImages();
+    console.log("Locs: ", tripInfoLoc);
+  }, [tripInfoLoc]);
+
+  useEffect(() => {
     handleGetDepartures();
-    console.log(locations);
+    handleGetImages();
   }, [locations]);
 
   return (
@@ -106,7 +123,16 @@ function CreatedItinerary() {
                 <div className="flex flex-col items-center mb-5">
                   <div className="flex justify-left w-4/5 mt-3">
                     <HiLocationMarker className="my-auto" />
-                    <span className="text-base ml-2">{location.departure}</span>
+
+                    {departures.map((dep) => {
+                      if (dep.id === location.id) {
+                        return (
+                          <span key={dep.id} className="text-base ml-2">
+                            {dep.departure}
+                          </span>
+                        );
+                      }
+                    })}
                   </div>
                   <div className="flex justify-left w-4/5 mt-3">
                     <span className="text-base ml-2 font-light">
@@ -136,23 +162,26 @@ function CreatedItinerary() {
                           </SwiperSlide>
                         );
                       })} */}
-                    {location.images.length > 0 ? (
-                      location.images.map((img) => {
+                    {images.length > 0 ? (
+                      images.map((imgs) => {
                         return (
                           <div
                             key={uuidv4()}
                             className="flex justify-start flex-wrap gap-2"
                           >
                             {" "}
-                            {img?.url ? (
-                              <img
-                                src={img?.url}
-                                alt=""
-                                className="w-[250px] h-[250px] object-cover"
-                              />
-                            ) : (
-                              <></>
-                            )}
+                            {imgs.map((img) => {
+                              if (img.locationId === location.id) {
+                                return (
+                                  <img
+                                    key={uuidv4()}
+                                    src={img.url}
+                                    alt=""
+                                    className="w-[250px] h-[250px] object-cover"
+                                  />
+                                );
+                              }
+                            })}
                           </div>
                         );
                       })

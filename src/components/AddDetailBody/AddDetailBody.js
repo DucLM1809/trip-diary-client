@@ -22,7 +22,11 @@ import "@reach/combobox/styles.css";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { createLocation } from "../../redux/actions";
+import {
+  createLocation,
+  updateLocation,
+  updateLocations,
+} from "../../redux/actions";
 import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 
@@ -32,11 +36,11 @@ function AddDetailBody() {
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [edit, setEdit] = useState(false);
-  const [urlImg, setUrlImg] = useState();
   const [listImg, setListImg] = useState([]);
   const [locations, setLocations] = useState([
-    { key: uuidv4(), coordinate: {}, num: 1 },
+    { id: uuidv4(), coordinate: {}, num: 1 },
   ]);
+  const [tripId, setTripId] = useState();
 
   const dispatch = useDispatch();
 
@@ -59,6 +63,7 @@ function AddDetailBody() {
   useEffect(() => {
     if (location.pathname.split("/")[1] === "edit") {
       setEdit(true);
+      setTripId(location.pathname.split("/")[3]);
     } else {
       setEdit(false);
     }
@@ -72,26 +77,32 @@ function AddDetailBody() {
   const tripInfo = useSelector((state) => state.trip);
 
   const tripInfoLoc = useSelector((state) => state.locations);
-  useEffect(() => {
-    console.log("Trip: ", tripInfoLoc);
-  }, [tripInfoLoc]);
+  // useEffect(() => {
+  //   tripInfoLoc.map((tripLoc) => {console.log(tripLoc.id);})
+  // }, [tripInfoLoc]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    resetField,
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(data);
     let temp = [];
-    locations.map((location) => {
-      location.date = data[`date${location.num}`];
-      location.images = [data[`imageList${location.num}`]];
-      location.description = data[`description${location.num}`];
-      temp.push(location);
+    locations.map((location, index) => {
+      console.log("LOCATE: ", location);
+      let loc = { ...location };
+      loc.startAt = data[`date${index || location.num}`];
+      loc.images = [data[`imageList${index || location.num}`]];
+      loc.review = data[`description${index || location.num}`];
+      console.log("Loc: ", loc);
+      temp.push(loc);
     });
+    console.log("Temp: ", temp);
     data.locations = temp;
+    console.log(data.locations);
     data.locations.map((location) => {
       if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
         setErr("You choose a day before start day");
@@ -105,8 +116,8 @@ function AddDetailBody() {
             .post(
               `/trips/${tripInfo.tripID}/locations`,
               {
-                startAt: location.date,
-                review: location.description,
+                startAt: location.startAt,
+                review: location.review,
                 lat: location.coordinate.lat,
                 lng: location.coordinate.lng,
               },
@@ -120,38 +131,48 @@ function AddDetailBody() {
                 setErr("You must enter location & choose date");
               }
               setSuccess("");
+              setEdit(false);
             });
           if (res) {
             setSuccess("Add Detail Successfully!");
             setErr("");
-            dispatch(createLocation(res));
+            setEdit(true);
+            dispatch(createLocation(res.data));
             console.log("res: ", res);
           }
         };
 
         const handleEditLocation = async () => {
-          let res = await api
-            .put(
-              `/trips/${tripInfo.tripID}/locations/${112}`,
-              {
-                startAt: location.date,
-                review: location.description,
-                lat: location.coordinate.lat,
-                lng: location.coordinate.lng,
-              },
-              config
-            )
-            .catch((error) => {
-              console.log(error);
-              setSuccess("");
-            });
-          if (res) {
-            setSuccess("Edit Detail Successfully!");
-            setErr("");
-            dispatch(createLocation(res.data));
-            console.log("res: ", res);
-          }
+          tripInfoLoc.map((tripLoc) => {
+            const editTripInfoLoc = async () => {
+              let res = await api
+                .put(
+                  `/trips/${tripId || tripInfo.tripID}/locations/${
+                    tripLoc.id || tripLoc.locationID
+                  }`,
+                  {
+                    startAt: location.startAt,
+                    review: location.review,
+                    lat: location.lat,
+                    lng: location.lng,
+                  },
+                  config
+                )
+                .catch((error) => {
+                  console.log(error);
+                  setSuccess("");
+                });
+              if (res) {
+                setSuccess("Edit Detail Successfully!");
+                setErr("");
+                dispatch(updateLocation(res.data));
+                console.log("res: ", res.data);
+              }
+            };
+            editTripInfoLoc();
+          });
         };
+
         if (edit) {
           handleEditLocation();
         } else {
@@ -159,20 +180,24 @@ function AddDetailBody() {
         }
       }
     });
-    console.log(data);
+    // console.log(data);
+  };
+
+  const handleGetLocations = async () => {
+    let res = await api
+      .get(`/trips/${tripId || tripInfo.tripID}/locations`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setLocations(res.data);
+      dispatch(updateLocations(res.data));
+    }
   };
 
   useEffect(() => {
-    tripInfoLoc.map((tripLoc, index) => {
-      console.log("i: ", index);
-      listImg.map((img) => {
-        console.log(img.id);
-        if (img.id === index + 1) {
-          console.log(tripLoc.locationID);
-        }
-      });
-    });
-  }, [tripInfoLoc]);
+    if (edit && tripId) {
+      handleGetLocations();
+    }
+  }, [edit]);
 
   const handleCreateImages = async () => {
     tripInfoLoc.map((tripLoc, index) => {
@@ -201,15 +226,15 @@ function AddDetailBody() {
   };
 
   useEffect(() => {
-    if (success) {
+    if (success && edit === false) {
       handleCreateImages();
     }
-  }, [success, tripInfoLoc]);
+  }, [tripInfoLoc]);
 
   const handleAddLoc = () => {
     let temp = [...locations];
     temp.push({
-      key: uuidv4(),
+      id: uuidv4(),
       coordinate: {},
       date: "",
       image: "",
@@ -217,22 +242,27 @@ function AddDetailBody() {
       num: locations.length + 1,
     });
     setLocations(temp);
-    resetField("date");
-    resetField("location");
-    resetField("image");
-    resetField("description");
   };
 
-  const handleDel = (key) => {
+  const handleDel = (id) => {
     let temp = [...locations];
-    temp = temp.filter((location) => !(location.key === key));
+    temp = temp.filter((location) => !(location.id === id));
     setLocations(temp);
   };
+
+  // useEffect(() => {
+  //   if (edit) {
+  //     locations.map((location, index) => {
+  //       setValue(`date${index + 1}`, location.startAt);
+  //       setValue(`description${index + 1}`, location.review);
+  //     });
+  //   }
+  // }, [edit, locations]);
 
   useEffect(() => {
     let temp = [...locations];
     temp.map((item) => {
-      if (item.key === selectKey) {
+      if (item.id === selectKey) {
         item.coordinate = { ...selected };
       }
     });
@@ -243,7 +273,6 @@ function AddDetailBody() {
     uploadFileToBlob(e.target.files[0]).then((result) => {
       let temp = [...listImg];
       temp.push({ id: parseInt(e.target.id), url: result });
-      setUrlImg(result);
       setListImg(temp);
     });
   };
@@ -272,13 +301,13 @@ function AddDetailBody() {
               <></>
             )}
             <div className="flex justify-between">
-              <button
+              <div
                 className="flex items-center hover:text-medium-blue cursor-pointer"
                 onClick={handleAddLoc}
               >
                 <AiFillPlusCircle className="text-4xl inline-block pl-4" />
                 <h1 className="text-xl ml-2">Add location</h1>
-              </button>
+              </div>
 
               <div>
                 <button
@@ -291,18 +320,20 @@ function AddDetailBody() {
             </div>
           </div>
 
-          {locations.map((location) => {
+          {locations.map((location, index) => {
             return (
-              <form key={location.key} onSubmit={handleSubmit(onSubmit)}>
+              <form key={location.id} onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between w-100 py-[5px] ">
-                  <span className="text-xl pl-4">Location {location.num}</span>
+                  <span className="text-xl pl-4">
+                    Location {location.num || index + 1}
+                  </span>
                   <div className="flex-grow border-t-[0.7px] my-auto mx-4"></div>
                   <span className="flex justify-end pr-4 align-middle w-[12rem] items-center">
                     <FaCalendarAlt className=" my-auto" />
                     <p className="ml-2 pr-2">Date</p>
                     <input
                       type="date"
-                      {...register(`date${location.num}`)}
+                      {...register(`date${index + 1}`)}
                       className="border-solid border-gray border-2 w-[7rem] rounded-3 font-normal text-sm outline-medium-blue"
                     />
                   </span>
@@ -316,7 +347,7 @@ function AddDetailBody() {
                   <div className="w-4/5 flex">
                     <PlacesAutocomplete
                       setSelected={setSelected}
-                      selectkey={location.key}
+                      selectkey={location.id}
                       setSelectKey={setSelectKey}
                     />
                   </div>
@@ -345,7 +376,7 @@ function AddDetailBody() {
                     <input
                       id={location.num}
                       type="file"
-                      {...register(`${location.num}`)}
+                      {...register(`${index + 1}`)}
                       onChange={(e) => handleUploadImg(e)}
                       className="ml-4"
                     />
@@ -359,23 +390,23 @@ function AddDetailBody() {
                       rows="5"
                       cols="50"
                       name="description"
-                      {...register(`description${location.num}`)}
+                      {...register(`description${index + 1}`)}
                       placeholder="Description"
                       className="border-solid border-gray border-2 w-full p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue"
                     />
                   </div>
                 </div>
                 <div
-                  key={location.key}
+                  key={location.id}
                   className="flex justify-betwwen w-2/5 mt-3 mb-3 pb-3 mx-auto"
                 >
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
-                  <button
-                    onClick={() => handleDel(location.key)}
+                  <div
+                    onClick={() => handleDel(location.id || location.id)}
                     className="hover:text-medium-blue cursor-pointer"
                   >
                     <AiFillCloseCircle className="flex justify-center py-auto text-4xl" />
-                  </button>
+                  </div>
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
                 </div>
               </form>

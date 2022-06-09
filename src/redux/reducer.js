@@ -159,19 +159,38 @@ const rootReducer = (state = initState, action) => {
       };
     }
     case "CREATE_LOCATION": {
-      console.log(action.payload);
       return {
         ...state,
         locations: [
           ...state.locations,
           {
-            review: action.payload.data.review,
-            lat: action.payload.data.lat,
-            lng: action.payload.data.lng,
-            startAt: action.payload.data.startAt,
-            locationID: action.payload.data.id,
+            review: action.payload.review,
+            lat: action.payload.lat,
+            lng: action.payload.lng,
+            startAt: action.payload.startAt,
+            locationID: action.payload.id,
           },
         ],
+      };
+    }
+    case "UPDATE_LOCATION": {
+      return {
+        ...state,
+        locations: [
+          {
+            review: action.payload.review,
+            lat: action.payload.lat,
+            lng: action.payload.lng,
+            startAt: action.payload.startAt,
+            locationID: action.payload.id,
+          },
+        ],
+      };
+    }
+    case "UPDATE_LOCATIONS": {
+      return {
+        ...state,
+        locations: action.payload,
       };
     }
     default:

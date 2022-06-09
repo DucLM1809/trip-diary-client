@@ -9,9 +9,10 @@ export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as AddDetailBody } from "./AddDetailBody/AddDetailBody";
 export { default as Overview } from "./Overivew/Overview";
 export { default as Itinerary } from "./Itinerary/Itinerary";
-export { default as Checklist } from "./Checklist/Checklist"
+export { default as Checklist } from "./Checklist/Checklist";
 export { default as FooterPub } from "./FooterPub/Footer";
 export { default as User } from "./User/User";
 export { default as Trip } from "./Trip/Trip";
 export { default as CreatedOverview } from "./CreatedOverview/CreatedOverview";
 export { default as CreatedItinerary } from "./CreatedItinerary/CreatedItinerary";
+export { default as CreatedChecklist } from "./CreatedChecklist/CreatedChecklist";

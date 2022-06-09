@@ -20,6 +20,7 @@ import { createTrip } from "../../redux/actions";
 import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Overview = () => {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
@@ -35,6 +36,7 @@ const Overview = () => {
   useEffect(() => {
     if (location.pathname.split("/")[1] === "edit") {
       setEdit(true);
+      setTripId(location.pathname.split("/")[3]);
     } else {
       setEdit(false);
     }
@@ -54,6 +56,7 @@ const Overview = () => {
   const [urlImg, setUrlImg] = useState();
   const [edit, setEdit] = useState(false);
   const [trip, setTrip] = useState();
+  const [tripId, setTripId] = useState();
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
@@ -116,6 +119,7 @@ const Overview = () => {
       "Content-Type": "application/json",
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
@@ -141,11 +145,13 @@ const Overview = () => {
       .catch((error) => {
         setErr(error.response.data.detail);
         setSuccess("");
+        setEdit(false);
         console.log(error);
       });
     if (res) {
       setSuccess("Create Trip Successfully!");
       setErr("");
+      setEdit(true);
       // console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
@@ -154,7 +160,7 @@ const Overview = () => {
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
-        `/trips/${tripInfo.tripID}`,
+        `/trips/${tripId || tripInfo.tripID}`,
         {
           name: data.tripname,
           type: data.type,
@@ -196,66 +202,38 @@ const Overview = () => {
 
   const handleGetTrip = async () => {
     let res = await api
-      .get(`/trips/${tripInfo.tripID}`, config)
+      .get(`/trips/${tripId || tripInfo.tripID}`, config)
       .catch((error) => console.log(error));
     if (res) {
+      console.log("RES: ", res);
       setTrip(res.data);
-      console.log(res);
     }
   };
 
   useEffect(() => {
-    if (success) {
-      setEdit(true);
-    } else {
-      setEdit(false);
-    }
-  }, [success]);
-
-  useEffect(() => {
+    console.log("Edit: ", edit);
     if (edit) {
       handleGetTrip();
     }
   }, [edit]);
 
-  // useEffect(() => {
-  //   try {
-  //     let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
-  //     fetch(urlDep)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         try {
-  //           setDeparture(data.results[0].formatted_address);
-  //         } catch (error) {}
-  //       })
-  //       .catch((error) => console.log(error));
-  //   } catch (error) {}
-  // }, [location, coordinate1]);
+  const handleGetDeparture = async () => {
+    let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+    let res = await axios.get(urlDep).catch((error) => console.log(error));
+    if (res) {
+      setDeparture(res.data.results[2].formatted_address);
+    }
+  };
 
-  // useEffect(() => {
-  //   try {
-  //     let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
-  //     fetch(urlDes)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         try {
-  //           setDestination(data.results[0].formatted_address);
-  //         } catch (error) {}
-  //       })
-  //       .catch((error) => console.log(error));
-  //   } catch (error) {}
-  // }, [location, coordinate2]);
-
-  // useEffect(() => {
-  //   console.log(departure);
-  // }, [coordinate1]);
-
-  // useEffect(() => {
-  //   console.log(destination);
-  // }, [coordinate2]);
+  const handleGetDestination = async () => {
+    let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+    let res = await axios.get(urlDes).catch((error) => console.log(error));
+    if (res) {
+      setDestination(res.data.results[2].formatted_address);
+    }
+  };
 
   useEffect(() => {
-    console.log(trip);
     if (edit && trip) {
       setValue("tripname", trip.name);
       if (trip.backtripAt) {
@@ -275,7 +253,19 @@ const Overview = () => {
       resetField("to");
       resetField("description");
     }
-  }, [edit]);
+  }, [edit, trip]);
+
+  useEffect(() => {
+    if (edit && coordinate1) {
+      handleGetDeparture();
+    }
+  }, [edit, coordinate1]);
+
+  useEffect(() => {
+    if (edit && coordinate2) {
+      handleGetDestination();
+    }
+  }, [edit, coordinate2]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
@@ -473,13 +463,11 @@ const Overview = () => {
           <></>
         )}
       </div>
-      <Link to={`/edit/trip/${113}`}>Edit</Link>
     </div>
   );
 };
 
 const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
-  // console.log("Dep: ", departure);
   const {
     ready,
     value,
@@ -495,6 +483,14 @@ const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
+
+  useEffect(() => {
+    setValue();
+  }, []);
+
+  useEffect(() => {
+    setValue(departure);
+  }, [departure]);
 
   return (
     <Combobox onSelect={handleSelect}>
@@ -519,7 +515,6 @@ const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
 };
 
 const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
-  // console.log("Des: ", destination);
   const {
     ready,
     value,
@@ -535,6 +530,14 @@ const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
     const { lat, lng } = getLatLng(results[0]);
     setSelected2({ lat, lng });
   };
+
+  useEffect(() => {
+    setValue();
+  }, []);
+
+  useEffect(() => {
+    setValue(destination);
+  }, [destination]);
 
   return (
     <Combobox onSelect={handleSelect}>
