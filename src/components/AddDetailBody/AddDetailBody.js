@@ -90,18 +90,18 @@ function AddDetailBody() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("DATA: ", data);
     let temp = [];
     locations.map((location, index) => {
       console.log("LOCATE: ", location);
       let loc = { ...location };
-      loc.startAt = data[`date${index || location.num}`];
-      loc.images = [data[`imageList${index || location.num}`]];
-      loc.review = data[`description${index || location.num}`];
-      console.log("Loc: ", loc);
+      loc.startAt = data[`date${index + 1 || location.num}`];
+      loc.images = [data[`imageList${index + 1 || location.num}`]];
+      loc.review = data[`description${index + 1 || location.num}`];
+      console.log("LOC: ", loc);
       temp.push(loc);
     });
-    console.log("Temp: ", temp);
+    console.log("TEMP: ", temp);
     data.locations = temp;
     console.log(data.locations);
     data.locations.map((location) => {
@@ -227,7 +227,7 @@ function AddDetailBody() {
   };
 
   useEffect(() => {
-    if (success && edit === false) {
+    if (success) {
       handleCreateImages();
     }
   }, [tripInfoLoc]);
