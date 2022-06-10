@@ -5,6 +5,7 @@ const initState = {
     password: "",
     status: null,
     auth: localStorage.getItem("accessToken") ? true : false,
+    sasToken: null,
   },
   page: {
     path: [],
@@ -191,6 +192,16 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         locations: action.payload,
+      };
+    }
+
+    case "ADD_SAS_TOKEN": {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          sasToken: action.payload,
+        },
       };
     }
     default:

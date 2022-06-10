@@ -43,6 +43,7 @@ function AddDetailBody() {
   const [tripId, setTripId] = useState();
 
   const dispatch = useDispatch();
+  const sasToken = useSelector((state) => state.user.sasToken);
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -270,7 +271,7 @@ function AddDetailBody() {
   }, [selectKey]);
 
   const handleUploadImg = (e) => {
-    uploadFileToBlob(e.target.files[0]).then((result) => {
+    uploadFileToBlob(e.target.files[0], sasToken).then((result) => {
       let temp = [...listImg];
       temp.push({ id: parseInt(e.target.id), url: result });
       setListImg(temp);

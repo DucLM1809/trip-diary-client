@@ -23,6 +23,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Overview = () => {
+  const sasToken = useSelector((state) => state.user.sasToken);
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: ApiKey,
@@ -197,7 +198,9 @@ const Overview = () => {
   }, [selected2]);
 
   const handleUploadImg = (e) => {
-    uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
+    uploadFileToBlob(e.target.files[0], sasToken).then((result) =>
+      setUrlImg(result)
+    );
   };
 
   const handleGetTrip = async () => {

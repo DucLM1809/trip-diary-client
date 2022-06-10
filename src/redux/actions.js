@@ -61,35 +61,41 @@ export const getPath = (data) => {
 export const createTrip = (data) => {
   return {
     type: "CREATE_TRIP",
-    payload: data
-  }
-}
+    payload: data,
+  };
+};
 
 export const createLocation = (data) => {
   return {
     type: "CREATE_LOCATION",
-    payload: data
-  }
-}
+    payload: data,
+  };
+};
 
 export const updateLocation = (data) => {
   return {
     type: "UPDATE_LOCATION",
-    payload: data
-  }
-}
+    payload: data,
+  };
+};
 
 export const updateLocations = (data) => {
   return {
     type: "UPDATE_LOCATIONS",
-    payload: data
-  }
-}
-
+    payload: data,
+  };
+};
 
 export const createChecklist = (data) => {
   return {
     type: "CREATE_CHECKLIST",
-    payload: data
-  }
-}
+    payload: data,
+  };
+};
+
+export const addSasToken = (payload) => {
+  return {
+    type: "ADD_SAS_TOKEN",
+    payload,
+  };
+};
