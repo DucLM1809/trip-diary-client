@@ -98,12 +98,12 @@ function AddDetailBody() {
       loc.startAt = data[`date${index + 1 || location.num}`];
       loc.images = [data[`imageList${index + 1 || location.num}`]];
       loc.review = data[`description${index + 1 || location.num}`];
+      loc.coordinate = location.coordinate;
       console.log("LOC: ", loc);
       temp.push(loc);
     });
     console.log("TEMP: ", temp);
     data.locations = temp;
-    console.log(data.locations);
     data.locations.map((location) => {
       if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
         setErr("You choose a day before start day");
@@ -154,8 +154,8 @@ function AddDetailBody() {
                   {
                     startAt: location.startAt,
                     review: location.review,
-                    lat: location.lat,
-                    lng: location.lng,
+                    lat: location.coordinate.lat,
+                    lng: location.coordinate.lat,
                   },
                   config
                 )
