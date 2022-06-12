@@ -61,9 +61,6 @@ const Overview = () => {
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
 
   const containerStyle = {
     width: "100%",
@@ -153,7 +150,6 @@ const Overview = () => {
       setSuccess("Create Trip Successfully!");
       setErr("");
       setEdit(true);
-      // console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
   };
@@ -184,7 +180,6 @@ const Overview = () => {
     if (res) {
       setSuccess("Edit Trip Successfully!");
       setErr("");
-      // console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
   };
@@ -208,13 +203,11 @@ const Overview = () => {
       .get(`/trips/${tripId || tripInfo.tripID}`, config)
       .catch((error) => console.log(error));
     if (res) {
-      console.log("RES: ", res);
       setTrip(res.data);
     }
   };
 
   useEffect(() => {
-    console.log("Edit: ", edit);
     if (edit) {
       handleGetTrip();
     }

@@ -228,9 +228,9 @@ const CreatedOverview = () => {
             {trips ? (
               trips.map((trip) => {
                 return (
-                  <div className="relative">
+                  <div key={trip.id} className="relative">
                     <img
-                      src={trip?.coverImgUrl || banner}
+                      src={trip?.coverImgUrl}
                       alt=""
                       className="w-[250px] h-[250px] object-cover rounded-5"
                     />

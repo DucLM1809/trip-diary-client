@@ -42,14 +42,10 @@ const UserHomePage = () => {
   }
 
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
 
   const handleGetTrips = async () => {
     let res = await api.get("/trips", config);
     if (res) {
-      console.log("Trips: ", res.data);
       setTrips(res.data);
       setIsDeleted(false);
     }

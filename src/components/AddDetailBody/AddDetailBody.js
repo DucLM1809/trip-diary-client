@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useState, useEffect } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -28,6 +28,7 @@ import {
   updateLocations,
 } from "../../redux/actions";
 import api from "../../api/axios";
+import axios from "axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 
 function AddDetailBody() {
@@ -35,6 +36,7 @@ function AddDetailBody() {
   const [selectKey, setSelectKey] = useState("");
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
+  const [isCreated, setIsCreated] = useState(false);
   const [edit, setEdit] = useState(false);
   const [listImg, setListImg] = useState([]);
   const [locations, setLocations] = useState([
@@ -44,6 +46,8 @@ function AddDetailBody() {
 
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
+
+  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -79,7 +83,7 @@ function AddDetailBody() {
 
   const tripInfoLoc = useSelector((state) => state.locations);
   // useEffect(() => {
-  //   tripInfoLoc.map((tripLoc) => {console.log(tripLoc.id);})
+  //   console.log("TRIP LOCA: ", tripInfoLoc);
   // }, [tripInfoLoc]);
 
   const {
@@ -90,20 +94,18 @@ function AddDetailBody() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("DATA: ", data);
     let temp = [];
     locations.map((location, index) => {
-      console.log("LOCATE: ", location);
       let loc = { ...location };
       loc.startAt = data[`date${index + 1 || location.num}`];
       loc.images = [data[`imageList${index + 1 || location.num}`]];
       loc.review = data[`description${index + 1 || location.num}`];
       loc.coordinate = location.coordinate;
-      console.log("LOC: ", loc);
       temp.push(loc);
     });
     console.log("TEMP: ", temp);
-    data.locations = temp;
+    data.locations = [...temp];
+    console.log("DATA LOCATIONS: ", data.locations);
     data.locations.map((location) => {
       if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
         setErr("You choose a day before start day");
@@ -112,93 +114,77 @@ function AddDetailBody() {
         setErr("You choose a day after finish day");
         setSuccess("");
       } else {
-        const handleCreateLocation = async () => {
-          let res = await api
-            .post(
-              `/trips/${tripInfo.tripID}/locations`,
-              {
-                startAt: location.startAt,
-                review: location.review,
-                lat: location.coordinate.lat,
-                lng: location.coordinate.lng,
-              },
-              config
-            )
-            .catch((error) => {
-              console.log(error);
-              if (error.response.status === 405) {
-                setErr("You must create a trip first");
-              } else if (error.response.status === 422) {
-                setErr("You must enter location & choose date");
-              }
-              setSuccess("");
-              setEdit(false);
-            });
-          if (res) {
-            setSuccess("Add Detail Successfully!");
-            setErr("");
-            setEdit(true);
-            dispatch(createLocation(res.data));
-            console.log("res: ", res);
-          }
-        };
-
-        const handleEditLocation = async () => {
-          tripInfoLoc.map((tripLoc) => {
-            const editTripInfoLoc = async () => {
-              let res = await api
-                .put(
-                  `/trips/${tripId || tripInfo.tripID}/locations/${
-                    tripLoc.id || tripLoc.locationID
-                  }`,
-                  {
-                    startAt: location.startAt,
-                    review: location.review,
-                    lat: location.coordinate.lat,
-                    lng: location.coordinate.lat,
-                  },
-                  config
-                )
-                .catch((error) => {
-                  console.log(error);
-                  setSuccess("");
-                });
-              if (res) {
-                setSuccess("Edit Detail Successfully!");
-                setErr("");
-                dispatch(updateLocation(res.data));
-                console.log("res: ", res.data);
-              }
-            };
-            editTripInfoLoc();
-          });
-        };
-
         if (edit) {
-          handleEditLocation();
+          handleEditLocation(data.locations, location);
         } else {
-          handleCreateLocation();
+          handleCreateLocation(location);
         }
       }
     });
-    // console.log(data);
   };
 
-  const handleGetLocations = async () => {
+  const handleCreateLocation = async (location) => {
     let res = await api
-      .get(`/trips/${tripId || tripInfo.tripID}/locations`, config)
-      .catch((error) => console.log(error));
+      .post(
+        `/trips/${tripInfo.tripID}/locations`,
+        {
+          startAt: location.startAt,
+          review: location.review,
+          lat: location.coordinate.lat,
+          lng: location.coordinate.lng,
+        },
+        config
+      )
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 405) {
+          setErr("You must create a trip first");
+        } else if (error.response.status === 422) {
+          setErr("You must enter location & choose date");
+        }
+        setSuccess("");
+        setEdit(false);
+      });
     if (res) {
-      setLocations(res.data);
-      dispatch(updateLocations(res.data));
+      setSuccess("Add Detail Successfully!");
+      setErr("");
+      setEdit(true);
+      dispatch(createLocation(res.data));
+      setIsCreated(true);
     }
   };
 
-  useEffect(() => {
-    if (edit && tripId) {
-      handleGetLocations();
-    }
-  }, [edit]);
+  const handleEditLocation = async (locations, location) => {
+    console.log("LOCATION: ", location);
+    tripInfoLoc.map(() => {
+      const editTripInfoLoc = async () => {
+        let res = await api
+          .put(
+            `/trips/${tripId || tripInfo.tripID}/locations/${
+              location.id || location.locationID
+            }`,
+            {
+              startAt: location.startAt,
+              review: location.review,
+              lat: location.coordinate.lat,
+              lng: location.coordinate.lng,
+            },
+            config
+          )
+          .catch((error) => {
+            console.log(error);
+            setSuccess("");
+          });
+        if (res) {
+          setSuccess("Edit Detail Successfully!");
+          setErr("");
+        }
+      };
+      editTripInfoLoc();
+    });
+    console.log("LOCATIONS: ", locations);
+    dispatch(updateLocations(locations))
+  };
 
   const handleCreateImages = async () => {
     tripInfoLoc.map((tripLoc, index) => {
@@ -226,17 +212,82 @@ function AddDetailBody() {
     });
   };
 
+  const handleGetImages = async () => {
+    let temp = [];
+    tripInfoLoc.map((tripLoc) => {
+      let getImages = async () => {
+        let res = await api.get(
+          `/trips/${tripId || tripInfo.tripID}/locations/${
+            tripLoc.id || tripLoc.locationID
+          }/images`,
+          config
+        );
+        if (res) {
+          let images = [...res.data];
+          images.map((image) => {
+            temp.push(image);
+          });
+          setListImg(temp);
+        }
+      };
+      getImages();
+    });
+  };
+
   useEffect(() => {
-    if (success) {
+    if (isCreated) {
       handleCreateImages();
     }
-  }, [tripInfoLoc]);
+  }, [isCreated]);
+
+  const handleGetLocations = async () => {
+    let res = await api
+      .get(`/trips/${tripId || tripInfo.tripID}/locations`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setLocations(res.data);
+      dispatch(updateLocations(res.data));
+    }
+  };
+
+  useEffect(() => {
+    if (edit && tripId) {
+      handleGetLocations();
+    }
+    setIsCreated(false);
+  }, [edit]);
+
+  const handleGetDepartures = async (locations) => {
+    let temp = [...locations];
+    temp.map((item) => {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${item.lat},${item.lng}&key=${ApiKey}`;
+      let getDepatures = async () => {
+        let res = await axios.get(urlDep).catch((error) => console.log(error));
+        if (res) {
+          item.departure =
+            res.data.results[res.data.results.length - 2].formatted_address;
+        }
+      };
+      getDepatures();
+    });
+    setLocations(temp);
+  };
+
+  useLayoutEffect(() => {
+    tripInfoLoc.map((tripLoc, index) => {
+      setValue(`date${index + 1}`, tripLoc.startAt);
+      setValue(`description${index + 1}`, tripLoc.review);
+    });
+    handleGetDepartures(tripInfoLoc);
+    handleGetImages();
+  }, [edit, tripInfoLoc]);
 
   const handleAddLoc = () => {
     let temp = [...locations];
     temp.push({
       id: uuidv4(),
       coordinate: {},
+      departure: "",
       date: "",
       image: "",
       description: "",
@@ -250,15 +301,6 @@ function AddDetailBody() {
     temp = temp.filter((location) => !(location.id === id));
     setLocations(temp);
   };
-
-  // useEffect(() => {
-  //   if (edit) {
-  //     locations.map((location, index) => {
-  //       setValue(`date${index + 1}`, location.startAt);
-  //       setValue(`description${index + 1}`, location.review);
-  //     });
-  //   }
-  // }, [edit, locations]);
 
   useEffect(() => {
     let temp = [...locations];
@@ -350,6 +392,7 @@ function AddDetailBody() {
                       setSelected={setSelected}
                       selectkey={location.id}
                       setSelectKey={setSelectKey}
+                      departure={location.departure}
                     />
                   </div>
 
@@ -360,7 +403,11 @@ function AddDetailBody() {
                   <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
                     {listImg.length > 0 ? (
                       listImg.map((img) => {
-                        if (img.id === location.num) {
+                        if (
+                          img.locationId === location.id ||
+                          img.locationId === location.locationID ||
+                          img.id === location.num
+                        ) {
                           return (
                             <img
                               className="w-[120px] h-[120px] object-cover mr-1 mb-1"
@@ -403,7 +450,7 @@ function AddDetailBody() {
                 >
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
                   <div
-                    onClick={() => handleDel(location.id || location.id)}
+                    onClick={() => handleDel(location.id)}
                     className="hover:text-medium-blue cursor-pointer"
                   >
                     <AiFillCloseCircle className="flex justify-center py-auto text-4xl" />
@@ -419,7 +466,12 @@ function AddDetailBody() {
   );
 }
 
-const PlacesAutocomplete = ({ setSelected, selectkey, setSelectKey }) => {
+const PlacesAutocomplete = ({
+  setSelected,
+  selectkey,
+  setSelectKey,
+  departure,
+}) => {
   const {
     ready,
     value,
@@ -437,6 +489,16 @@ const PlacesAutocomplete = ({ setSelected, selectkey, setSelectKey }) => {
     setSelected({ lat, lng });
     setSelectKey(selectkey);
   };
+
+  useEffect(() => {
+    setValue();
+  }, []);
+
+  useEffect(() => {
+    if (departure) {
+      setValue(departure);
+    }
+  }, [departure]);
 
   return (
     <Combobox onSelect={handleSelect} className="w-full">

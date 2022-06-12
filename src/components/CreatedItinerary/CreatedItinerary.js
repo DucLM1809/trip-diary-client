@@ -22,7 +22,6 @@ function CreatedItinerary() {
   const [departures, setDepartures] = useState([]);
 
   const tripID = location.pathname.split("/")[3];
-  const tripInfoLoc = useSelector((state) => state.locations);
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -45,9 +44,12 @@ function CreatedItinerary() {
       .catch((error) => console.log(error));
     if (res) {
       setLocations(res.data);
-      dispatch(updateLocations(res.data));
     }
   };
+
+  useEffect(() => {
+    console.log("LOCATIONS: ", locations);
+  }, [locations])
 
   const handleGetImages = async () => {
     let temp = [];
@@ -87,10 +89,6 @@ function CreatedItinerary() {
   useEffect(() => {
     handleGetLocations();
   }, []);
-
-  useEffect(() => {
-    console.log("Locs: ", tripInfoLoc);
-  }, [tripInfoLoc]);
 
   useEffect(() => {
     handleGetDepartures();
