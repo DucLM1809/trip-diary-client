@@ -82,9 +82,6 @@ function AddDetailBody() {
   const tripInfo = useSelector((state) => state.trip);
 
   const tripInfoLoc = useSelector((state) => state.locations);
-  // useEffect(() => {
-  //   console.log("TRIP LOCA: ", tripInfoLoc);
-  // }, [tripInfoLoc]);
 
   const {
     register,
@@ -103,9 +100,7 @@ function AddDetailBody() {
       loc.coordinate = location.coordinate;
       temp.push(loc);
     });
-    console.log("TEMP: ", temp);
     data.locations = [...temp];
-    console.log("DATA LOCATIONS: ", data.locations);
     data.locations.map((location) => {
       if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
         setErr("You choose a day before start day");
@@ -114,7 +109,9 @@ function AddDetailBody() {
         setErr("You choose a day after finish day");
         setSuccess("");
       } else {
-        if (edit) {
+        if (edit && location.id) {
+          handleCreateLocation(location);
+        } else if (edit) {
           handleEditLocation(data.locations, location);
         } else {
           handleCreateLocation(location);
@@ -126,7 +123,7 @@ function AddDetailBody() {
   const handleCreateLocation = async (location) => {
     let res = await api
       .post(
-        `/trips/${tripInfo.tripID}/locations`,
+        `/trips/${tripId || tripInfo.tripID}/locations`,
         {
           startAt: location.startAt,
           review: location.review,
@@ -148,42 +145,35 @@ function AddDetailBody() {
     if (res) {
       setSuccess("Add Detail Successfully!");
       setErr("");
-      setEdit(true);
+      setEdit(Math.random() * 1 + 1);
       dispatch(createLocation(res.data));
       setIsCreated(true);
     }
   };
 
   const handleEditLocation = async (locations, location) => {
-    console.log("LOCATION: ", location);
-    tripInfoLoc.map(() => {
-      const editTripInfoLoc = async () => {
-        let res = await api
-          .put(
-            `/trips/${tripId || tripInfo.tripID}/locations/${
-              location.id || location.locationID
-            }`,
-            {
-              startAt: location.startAt,
-              review: location.review,
-              lat: location.coordinate.lat,
-              lng: location.coordinate.lng,
-            },
-            config
-          )
-          .catch((error) => {
-            console.log(error);
-            setSuccess("");
-          });
-        if (res) {
-          setSuccess("Edit Detail Successfully!");
-          setErr("");
-        }
-      };
-      editTripInfoLoc();
-    });
-    console.log("LOCATIONS: ", locations);
-    dispatch(updateLocations(locations))
+    let res = await api
+      .put(
+        `/trips/${tripId || tripInfo.tripID}/locations/${
+          location.id || location.locationID
+        }`,
+        {
+          startAt: location.startAt,
+          review: location.review,
+          lat: location.coordinate.lat,
+          lng: location.coordinate.lng,
+        },
+        config
+      )
+      .catch((error) => {
+        setSuccess("");
+      });
+    if (res) {
+      setSuccess("Edit Detail Successfully!");
+      setErr("");
+      setEdit(Math.random() * 1 + 1);
+    }
+    dispatch(updateLocations(locations));
   };
 
   const handleCreateImages = async () => {
@@ -193,7 +183,9 @@ function AddDetailBody() {
           const createImages = async () => {
             let res = await api
               .post(
-                `/trips/${tripInfo.tripID}/locations/${tripLoc.locationID}/images`,
+                `/trips/${tripId || tripInfo.tripID}/locations/${
+                  tripLoc.locationID
+                }/images`,
                 {
                   url: img.url,
                 },
@@ -212,16 +204,18 @@ function AddDetailBody() {
     });
   };
 
-  const handleGetImages = async () => {
+  const handleGetImages = async (locations) => {
     let temp = [];
-    tripInfoLoc.map((tripLoc) => {
+    locations.map((location) => {
       let getImages = async () => {
-        let res = await api.get(
-          `/trips/${tripId || tripInfo.tripID}/locations/${
-            tripLoc.id || tripLoc.locationID
-          }/images`,
-          config
-        );
+        let res = await api
+          .get(
+            `/trips/${tripId || tripInfo.tripID}/locations/${
+              location.id || location.locationID
+            }/images`,
+            config
+          )
+          .catch((error) => console.log(error));
         if (res) {
           let images = [...res.data];
           images.map((image) => {
@@ -273,13 +267,13 @@ function AddDetailBody() {
     setLocations(temp);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     tripInfoLoc.map((tripLoc, index) => {
       setValue(`date${index + 1}`, tripLoc.startAt);
       setValue(`description${index + 1}`, tripLoc.review);
     });
     handleGetDepartures(tripInfoLoc);
-    handleGetImages();
+    handleGetImages(tripInfoLoc);
   }, [edit, tripInfoLoc]);
 
   const handleAddLoc = () => {
@@ -296,10 +290,27 @@ function AddDetailBody() {
     setLocations(temp);
   };
 
+  const handleDelLocation = async (locations, locationID) => {
+    let res = await api
+      .delete(
+        `/trips/${tripId || tripInfo.tripID}/locations/${locationID}`,
+        config
+      )
+      .catch();
+    if (res) {
+      setLocations(locations);
+      setSuccess("DELETE SUCCESSFULLY!");
+      dispatch(updateLocations(locations));
+    }
+  };
+
   const handleDel = (id) => {
     let temp = [...locations];
-    temp = temp.filter((location) => !(location.id === id));
+    temp = temp.filter(
+      (location) => !((location.id || location.locationID) === id)
+    );
     setLocations(temp);
+    handleDelLocation(temp, id);
   };
 
   useEffect(() => {
@@ -319,6 +330,10 @@ function AddDetailBody() {
       setListImg(temp);
     });
   };
+
+  // useEffect(() => {
+  //   console.log("LIST: ", locations);
+  // }, [locations]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -404,8 +419,8 @@ function AddDetailBody() {
                     {listImg.length > 0 ? (
                       listImg.map((img) => {
                         if (
-                          img.locationId === location.id ||
-                          img.locationId === location.locationID ||
+                          img.locationId ===
+                            (location.id || location.locationID) ||
                           img.id === location.num
                         ) {
                           return (
@@ -450,7 +465,9 @@ function AddDetailBody() {
                 >
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
                   <div
-                    onClick={() => handleDel(location.id)}
+                    onClick={() =>
+                      handleDel(location.locationID || location.id)
+                    }
                     className="hover:text-medium-blue cursor-pointer"
                   >
                     <AiFillCloseCircle className="flex justify-center py-auto text-4xl" />
