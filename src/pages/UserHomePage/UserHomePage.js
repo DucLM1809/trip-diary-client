@@ -86,7 +86,9 @@ const UserHomePage = () => {
                   {/* <h3>/tungtung</h3> */}
                   {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
+                <Link to ="/aftersearchpage">
                 <button className="editProfile">Edit Profile</button>
+                </Link>
                 <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />

@@ -38,5 +38,9 @@
   {
     "key": "/pasttrip",
     "title":"Home"
+  },
+  {
+    "key": "/aftersearchpage",
+    "title": "Home"
   }
 ]

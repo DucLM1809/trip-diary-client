@@ -1,0 +1,15 @@
+.footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer button{
+    width: 150px;
+    height: 45px;
+    margin-left: 10px;
+    background-color: cornflowerblue;
+    border-radius: 8px;
+    font-size: 20px;
+  }
