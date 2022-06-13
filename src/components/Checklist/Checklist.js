@@ -160,12 +160,15 @@ const Checklist = () => {
             className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
             onClick={handleSubmit(onSubmitCheckbox)}
           >
-            CREATE
+            SAVE
           </button>
         </div>
         <form
           className="flex flex-col mx-16 mt-8"
-          onSubmit={handleSubmit(onSubmitCheckbox)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmitCheckbox);
+          }}
         >
           {items.length > 0 ? (
             items.map((item, index) => (
@@ -190,7 +193,11 @@ const Checklist = () => {
                       }}
                       onSubmit={handleSubmit(onSubmitItem)}
                     /> */}
-                    <span className="ml-4">{item.value}</span>
+                    {/* <span className="ml-4">{item.value}</span> */}
+                    <input
+                      className="ml-4 p-[2px] pl-2"
+                      defaultValue={item.value}
+                    />
                   </div>
                   <div className="flex justify-center items-center">
                     <div
