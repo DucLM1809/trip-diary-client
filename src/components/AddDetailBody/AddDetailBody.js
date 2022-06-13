@@ -42,7 +42,6 @@ function AddDetailBody() {
   const [locations, setLocations] = useState([
     { id: uuidv4(), coordinate: {}, num: 1 },
   ]);
-  const [tripId, setTripId] = useState();
 
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -65,10 +64,10 @@ function AddDetailBody() {
   }
 
   const location = useLocation();
+  const tripId = location.pathname.split("/")[3];
   useEffect(() => {
     if (location.pathname.split("/")[1] === "edit") {
       setEdit(true);
-      setTripId(location.pathname.split("/")[3]);
     } else {
       setEdit(false);
     }
