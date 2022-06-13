@@ -16,9 +16,17 @@ import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
+import { TiLocationOutline } from "react-icons/ti";
+import {FiCalendar} from "react-icons/fi";
+import {AiOutlineExclamationCircle} from "react-icons/ai";
+import { Scrollbars } from "react-custom-scrollbars";
+import { v4 as uuidv4 } from "uuid";
 
-const PastTrip = () => {
+
+
+const NextTrip = () => {
   const [trip, setTrip] = useState();
+  const [trips, setTrips] = useState([]);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -40,25 +48,15 @@ const PastTrip = () => {
     console.log(tripInfo);
   }, [tripInfo]);
 
-  // const handleGetTrips = async () => {
-  //   let res = await api.get("/trips", config);
-  //   if (res) {
-  //     console.log("Trips: ", res);
-  //   }
-  // };
-  // handleGetTrips();
-
-  const handleGetTrip = async () => {
-    let res = await api
-      .get(`/trips/${tripInfo.tripID}`, config)
-      .catch((error) => console.log(error));
+  const handleGetTrips = async () => {
+    let res = await api.get("/trips", config);
     if (res) {
-      setTrip(res.data);
-      // console.log("Trip: ", res);
+      console.log("Trips: ", res.data);
+      setTrips(res.data);
     }
   };
   useEffect(() => {
-    handleGetTrip();
+    handleGetTrips();
   }, []);
 
   return (
@@ -77,7 +75,7 @@ const PastTrip = () => {
                 <img src={unknown} alt="" className="profileUserImg" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{userName}</h4>
+                  <h3 className="profileInfoName">{userName}</h3>
                   {/* <h3>/tungtung</h3> */}
                   {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
@@ -123,47 +121,71 @@ const PastTrip = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1"></div>
-          <div className="trip2"></div>
-          <div className="trip3">
-            <Link to="/nexttrip">            <h1>My past trips</h1></Link>
-          </div>
-          <div className="trip4">
-            <button className="buttonShow">Show all</button>
-          </div>
-          {trip ? (
-            <>
-              <div className="trip5">
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                />
-              </div>
-              <div className="trip6">
-                <Link to="/create">
-                  <button>
-                    <AiFillPlusCircle size={"35px"} />
-                  </button>
-                </Link>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
 
-          <div className="trip7">
+          <div className="NextTripTitle">
             <h1>My past trips</h1>
-          </div>
-          <div className="trip8"></div>
+           
+          </div>          
 
-          <div className="trip10"></div>
-          <div className="trip11"></div>
+
+          <div className="NextTripContent">
+            <Scrollbars style={{height:"500px"}}>
+            {trips.length > 0 ? (
+                trips.map((trip) => (
+                    <div key={uuidv4()}>
+                      <div className="swiperNextTrip">
+                        <img
+                          className="imgNextTrip"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                        />
+
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="DetailTripLocation">
+                          <TiLocationOutline/>
+                        </div>
+                        <div className="DeatailTripDate">
+                          <FiCalendar/>
+                        </div>
+                        <div className="DetailTripType">
+                          <AiOutlineExclamationCircle/>
+                        </div>
+                        <div className="TripLocationText">
+                          tung
+                        </div>
+                        <div className="TripDateText">
+                          tugntung
+                        </div>
+                        <div className="TripTypeText">tungtung</div>
+                        <div className="swiperNextTripText">
+                          <h2 className="tripName">{trip.name}  </h2>
+                        </div>
+                        <div className="NextTripHr">
+                          <hr/>
+                        </div>
+                      </div>
+                    </div>
+                ))
+              ) : (
+                <></>
+              )}
+              
+
+            </Scrollbars>
+          </div>
+          
+
+        
           {trip ? (
             <>
               {" "}
               <div className="trip12">
-                <Link to="/homepage">
+                <Link to="/user">
                   <IoPersonCircleOutline />
                 </Link>
               </div>
@@ -185,128 +207,6 @@ const PastTrip = () => {
             <></>
           )}
 
-          <div className="trip15">
-            <hr className="hrTrip15" />
-          </div>
-          <div className="trip16"></div>
-          <div className="trip17">
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              freeMode={true}
-              pagination={{
-                clickable: true,
-              }}
-              modules={[FreeMode, Pagination]}
-              className="mySwiper"
-            >
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      class="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      class="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  class="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-            </Swiper>
-          </div>
-          <div className="trip18">
-            <button className="buttonShow">Show all</button>
-          </div>
         </div>
       </div>
       <Footer />
@@ -314,4 +214,4 @@ const PastTrip = () => {
   );
 };
 
-export default PastTrip;
+export default NextTrip;

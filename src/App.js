@@ -14,6 +14,8 @@ import Create from "./pages/Create/Create";
 import UserHomePage from "./pages/UserHomePage/UserHomePage";
 import Trips from "./pages/Trips/Trips";
 import NextTrip from "./pages/UserHomePage/NextTrip";
+import PastTrip from "./pages/UserHomePage/PastTrip";
+import RemindTrip from "./pages/RemindTrip/RemindTrip";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -52,15 +54,20 @@ function App() {
           element={<ResetPassword />}
         ></Route>
       </Route>
+      <Route
+        exact
+        path="/trips/:id/remind-again"
+        element={<RemindTrip />}
+      ></Route>
 
       <Route element={<RequireAuth auth={auth} />}>
         <Route exact path="/home" element={<Home />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
         <Route exact path="/edit/trip/:id" element={<Create />}></Route>
-        <Route exact path="/trips" element={<Trips />}></Route>
+        <Route exact path="/trips/trip/:id" element={<Trips />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
-
+        <Route exact path="/pasttrip" element={<PastTrip />}></Route>
       </Route>
     </Routes>
   );

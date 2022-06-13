@@ -1,15 +1,16 @@
-.profile {
+.profile{
   display: flex;
+
 }
 
-.profileRight {
+.profileRight{
   flex: 9;
 }
 
 .profileCover {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   height: 450px;
@@ -26,14 +27,16 @@
 }
 
 .profileUserImg {
+
   height: 170px;
   width: 170px;
   object-fit: cover;
   grid-area: 3 / 2 / 5 /3;
   border-radius: 50%;
   border: 3px solid white;
+
 }
-.profileInfo {
+.profileInfo{
   grid-area: 4 / 2 / 5 / 4;
   object-fit: cover;
   top: 280px;
@@ -41,19 +44,20 @@
   margin-bottom: 20px;
 }
 
-.profileInfoName {
+.profileInfoName{
   font-size: 24px;
 }
 
-.profileInfoDesc {
+
+.profileInfoDesc{
   font-weight: 300;
 }
 
-.profileBottom {
+.profileBottom{
   display: flex;
 }
 
-.share {
+.share{
   margin-top: 50px;
   width: 90%;
   height: 170px;
@@ -66,54 +70,56 @@
   padding-top: 8px;
 }
 
-.shareOptionText {
+.shareOptionText{
   text-decoration-line: underline;
   size: 50x;
+  
 }
 
-.shareInput {
+.shareInput{
   border-color: white;
   width: 100%;
   background-color: white;
   height: 30px;
 }
 
-.shareInput:focus {
+.shareInput:focus{
   outline: none;
 }
 
-.editProfile {
-  grid-area: 4 / 5 / 5 / 6;
+.editProfile{
+  grid-area: 4 / 5 / 5 / 6; 
   border: 3px solid white;
-  background-color: #ccd2e3;
+  background-color: #CCD2E3;
   font-size: 20px;
   border-radius: 15px;
   height: 40px;
   width: 225px;
   margin-left: 90px;
 }
-.iconcamera {
+.iconcamera{
   grid-area: 3 / 5 / 4 / 6;
   margin-top: 40px;
   margin-left: 220px;
 }
 
-.iconcamera1 {
+.iconcamera1{
   grid-area: 4 / 2 / 5 / 3;
   margin-top: 52px;
   margin-left: 200px;
 }
 
-.smallFilter {
+.smallFilter{
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      
 }
 
-.uploadFile1 {
+.uploadFile1{
   grid-area: 3 / 5 / 4 / 6;
   margin-top: 42px;
   margin-right: 0px;
@@ -121,7 +127,7 @@
   opacity: 0;
 }
 
-.uploadFile2 {
+.uploadFile2{
   grid-area: 4 / 2 / 5 / 3;
   margin-top: 55px;
   font-size: 20px;
@@ -129,28 +135,28 @@
   width: 110px;
 }
 
-.f1 {
+.f1{
   width: 25%;
   margin-left: 40%;
   grid-area: 1 / 1 / 2 / 2;
 }
-.f2 {
-  display: flex;
+.f2{
+  display:flex;
   margin-left: 40%;
   grid-area: 1 / 2 / 2 / 3;
 }
-.f3 {
+.f3{
   display: flex;
   margin-left: 40%;
   grid-area: 1 / 3 / 2 / 4;
 }
 
-.f4 {
+.f4{
   display: flex;
   margin-left: 40%;
   grid-area: 1 / 4 / 2 / 5;
 }
-.smallNavbar {
+.smallNavbar{
   margin-top: 30px;
   padding-left: 80px;
   width: 80%;
@@ -158,7 +164,7 @@
   font-size: 20px;
 }
 
-.trip {
+.trip{
   position: relative;
 }
 
@@ -174,79 +180,81 @@
   margin-left: 5%;
 }
 
-.trip1 {
-  grid-area: 2 / 1 / 4 / 6;
+.NextTripSwiper{
+  grid-area: 2 / 1 / 4 / 6; 
 }
-.trip2 {
+.trip2{
   grid-area: 4 / 1 / 7 / 6;
 }
-.trip3 {
-  margin-top: 35px;
+.NextTripTitle{
+  margin-top: 25px;
   grid-area: 1 / 1 / 2 / 2;
   font-size: 25px;
   margin-left: 61.55px;
 }
-.trip3_1 {
-  margin-top: 5px;
+
+.NextTripTitle_1{
+  margin-top: 15px;
   grid-area: 1 / 1 / 2 / 2;
-  font-size: 20px;
-  margin-left: 30.55px;
+  font-size: 25px;
+  margin-left: 61.55px;
 }
-.trip4 {
-  grid-area: 1 / 5 / 2 / 6;
+.NextTripButton{
+  grid-area: 1 / 5 / 2 / 6;   
 }
-.trip5 {
+.trip5{
+  
   grid-area: 2 / 1 / 4 / 3;
 }
-.trip6 {
+.NextTripCreate{
   grid-area: 1 / 4 / 2 / 5;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-left: 190px;
 }
-.trip7 {
+.PastTripTitle{
   font-size: 25px;
   margin-left: 61.55px;
   grid-area: 4 / 1 / 5 / 2;
   margin-top: 30px;
 }
-.trip8 {
+.trip8{
   grid-area: 1 / 1 / 2 / 6;
-  margin-top: 40px;
+  margin-top: 60px;
   width: 95%;
   margin-left: 2.5%;
 }
-.trip9 {
+.trip9{
   grid-area: 5 / 1 / 7 / 3;
 }
-.trip10 {
+.trip10{
   grid-area: 1 / 3 / 4 / 4;
   margin-top: 50px;
 }
-.trip10_1 {
+.trip10_1{
   grid-area: 1 / 3 / 4 / 4;
   margin-top: 50px;
   margin-left: 50px;
   font-size: 25px;
 }
-.trip11 {
+.trip11{
   grid-area: 1 / 3 / 4 / 4;
   font-size: 30px;
   margin-left: 5px;
   margin-top: 130px;
 }
-.trip11_1 {
+.trip11_1{
   grid-area: 1 / 3 / 4 / 4;
   font-size: 25px;
   margin-left: 50px;
   margin-top: 125px;
 }
-.buttonShow {
+.buttonShow{
   border: 3px solid white;
-  background-color: #ccd2e3;
+  background-color: #CCD2E3;
   font-size: 20px;
   border-radius: 10px;
   width: 150px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .imgTrip {
@@ -254,73 +262,63 @@
   width: 350px;
   margin-left: 61.55px;
   border-radius: 10px;
+
 }
 
-.trip12 {
+.trip12{
   grid-area: 2 / 1 / 3 / 2;
   font-size: 40px;
-  margin-left: 350px;
+  margin-left: 350px;    
   margin-top: 7px;
+  
 }
-.trip13 {
+.trip13{
   grid-area: 2 / 1 / 3 / 2;
   font-size: 40px;
-  margin-left: 70px;
+  margin-left: 70px;    
   margin-top: 15px;
 }
 
-.trip13Img {
+.CountryCircle{
   object-fit: cover;
   height: 30px;
   width: 30px;
   border-radius: 50%;
 }
-.trip14 {
+.trip14{
   grid-area: 3 / 1 / 4 / 2;
 }
-.trip14text {
-  color: white;
-  font-weight: bold;
+.tripName{
+  color: White;
+  font-weight:bold;
   margin-left: 80px;
-  margin-top: 50px;
+  margin-top: 40px;
   font-size: 18px;
 }
-
-.trip14text:hover {
-  cursor: pointer;
-  opacity: 0.8;
+.tripName:hover{
+  text-decoration: underline;
 }
-
-.trip15 {
-  grid-area: 1 / 3 / 4 / 4;
+.NextTripHr{
+  grid-area: 1 / 1 / 2 / 6;
   font-size: 30px;
   margin-left: 5px;
-  margin-top: 90px;
+  margin-top: 80px;
 }
 
-.trip15_1 {
-  grid-area: 1 / 3 / 4 / 4;
-  font-size: 25px;
-  margin-left: 50px;
-  margin-top: 85px;
-}
-.hrTrip15 {
-  margin-top: 20px;
-  width: 90%;
-  margin-left: 5%;
-}
-.trip16 {
+
+
+.trip16{
   grid-area: 5 / 1 / 6 / 2;
   font-size: 40px;
-  margin-left: 350px;
+  margin-left: 350px;    
   margin-top: 7px;
 }
-.trip17 {
+.PastTripSwiper{
   grid-area: 5 / 1 / 7 / 6;
   font-size: 40px;
   margin-top: 15px;
 }
-.trip18 {
+.PastTripButton{
   grid-area: 4 / 5 / 5 / 6;
 }
 
@@ -332,32 +330,41 @@
   grid-row-gap: 0px;
 }
 
-.swiperTrip1 {
+
+
+.swiperTrip1{
   grid-area: 1 / 1 / 3 / 4;
 }
-.swiperTrip2 {
+.swiperTrip2{
   grid-area: 1 / 3 / 2 / 4;
 }
-.swiperTrip3 {
+.swiperTrip3{
   grid-area: 2 / 1 / 3 / 4;
   margin-top: 10px;
 }
 
-.trip12_1 {
+.trip12_1{
   grid-area: 2 / 1 / 3 / 2;
   font-size: 40px;
-  margin-left: 70px;
+  margin-left: 70px;    
   margin-top: 7px;
 }
 
-.swiperImgIcon {
+.swiperImgIcon{
   grid-area: 1 / 3 / 2 / 4;
   font-size: 40px;
-  margin-left: 70px;
-  margin-top: 7px;
+  margin-left: 80px;    
+  margin-top: 10px;
 }
 
-.swiperNextTrip {
+.swiperDelete {
+  grid-area: 1 / 3 / 2 / 4;
+  font-size: 40px;
+  margin-left: 80px;    
+  margin-top: 40px;
+}
+
+.swiperNextTrip{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -369,16 +376,72 @@
   width: 350px;
   margin-left: 61.55px;
   border-radius: 10px;
-  grid-area: 1 / 1 / 3 / 4;
+  grid-area: 1 / 1 / 3 / 4; 
 }
 
-.CountryNextTrip {
+.CountryNextTrip{
   grid-area: 1 / 1 / 2 / 2;
   font-size: 40px;
-  margin-left: 70px;
+  margin-left: 70px;    
   margin-top: 15px;
 }
 
-.swiperNextTripText {
+.swiperNextTripText{
   grid-area: 2 / 1 / 3 / 4;
+  margin-bottom: 50px;
+}
+
+.NextTripContent{
+  grid-area: 2 / 1 / 6 / 6;
+}
+
+.DetailTripLocation{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 50px;
+  margin-left: 150px;
+  margin-top: 30px;
+}
+
+.DeatailTripDate{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 40px;
+  margin-left: 155px;
+  margin-top: 85px;
+}
+.DetailTripType{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 40px;
+  margin-left: 155px;
+  margin-top: 130px;
+}
+.TripLocationText{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 35px;
+}
+.TripDateText{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 85px;
+}
+.TripTypeText{
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 130px;
+}
+.NextTripHr{
+  grid-area: 2 / 1 / 3 / 4;
+  margin-top: 100px;
+  width: 90%;
+  margin-left: 5%;
+  opacity: 50%;
+}
+.UserNextTripHr{
+grid-area: 3 / 1 / 4 / 6;
+margin-top: 120px;
+width: 90%;
+margin-left: 5%;
 }

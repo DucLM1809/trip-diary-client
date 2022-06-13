@@ -32,12 +32,14 @@ const Checklist = () => {
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [note, setNote] = useState(false);
+  const [itemVal, setItemVal] = useState();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setFocus,
+    setValue,
     resetField,
   } = useForm({
     defaultValues: {
@@ -51,7 +53,7 @@ const Checklist = () => {
     console.log(data);
     data.list = [...items];
     data.list.map((item) => {
-      item.note = data[`note${item.key}`]
+      item.note = data[`note${item.key}`];
       const handleCreateChecklist = async () => {
         let res = await api
           .post(
@@ -82,15 +84,17 @@ const Checklist = () => {
   };
 
   const onSubmitItem = (data) => {
+    console.log(data);
     let temp = [...items];
     temp.push({
       key: uuidv4(),
       value: data.item.toString(),
-      check: data.check,
+      check: Boolean(data.check),
       note: data.note,
     });
     setItems(temp);
     setItem(data.item);
+    setItemVal(data.item);
     setDisplayAdd(false);
     resetField("item");
     resetField("check");
@@ -156,15 +160,18 @@ const Checklist = () => {
             className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
             onClick={handleSubmit(onSubmitCheckbox)}
           >
-            CREATE
+            SAVE
           </button>
         </div>
         <form
           className="flex flex-col mx-16 mt-8"
-          onSubmit={handleSubmit(onSubmitCheckbox)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmitCheckbox);
+          }}
         >
           {items.length > 0 ? (
-            items.map((item) => (
+            items.map((item, index) => (
               <div key={item.key}>
                 <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
                   <div>
@@ -177,7 +184,20 @@ const Checklist = () => {
                       className="scale-[1.8]"
                       onClick={() => handleCheck(item.key)}
                     />
-                    <span className="ml-4">{item.value}</span>
+                    {/* <input
+                      type="text"
+                      {...register("item")}
+                      value={itemVal}
+                      onChange={(e) => {
+                        setItemVal(e.target.value);
+                      }}
+                      onSubmit={handleSubmit(onSubmitItem)}
+                    /> */}
+                    {/* <span className="ml-4">{item.value}</span> */}
+                    <input
+                      className="ml-4 p-[2px] pl-2"
+                      defaultValue={item.value}
+                    />
                   </div>
                   <div className="flex justify-center items-center">
                     <div

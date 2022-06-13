@@ -5,6 +5,7 @@ const initState = {
     password: "",
     status: null,
     auth: localStorage.getItem("accessToken") ? true : false,
+    sasToken: null,
   },
   page: {
     path: [],
@@ -23,16 +24,11 @@ const initState = {
     tripID: "",
     coverImgUrl: "",
   },
-  location: {
-    review: "",
-    lat: "",
-    lng: "",
-    startAt: "",
-  },
+  locations: [],
   checklist: {
-    name: '',
-    notes: '',
-  }
+    name: "",
+    notes: "",
+  },
 };
 
 const rootReducer = (state = initState, action) => {
@@ -160,13 +156,51 @@ const rootReducer = (state = initState, action) => {
           coverImgUrl: action.payload.coverImgUrl,
           description: action.payload.description,
         },
+        locations: [],
       };
     }
     case "CREATE_LOCATION": {
       return {
         ...state,
-        location: {
-          ...state.location,
+        locations: [
+          ...state.locations,
+          {
+            review: action.payload.review,
+            lat: action.payload.lat,
+            lng: action.payload.lng,
+            startAt: action.payload.startAt,
+            locationID: action.payload.id,
+          },
+        ],
+      };
+    }
+    case "UPDATE_LOCATION": {
+      return {
+        ...state,
+        locations: [
+          {
+            review: action.payload.review,
+            lat: action.payload.lat,
+            lng: action.payload.lng,
+            startAt: action.payload.startAt,
+            locationID: action.payload.id,
+          },
+        ],
+      };
+    }
+    case "UPDATE_LOCATIONS": {
+      return {
+        ...state,
+        locations: action.payload,
+      };
+    }
+
+    case "ADD_SAS_TOKEN": {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          sasToken: action.payload,
         },
       };
     }

@@ -5,8 +5,10 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/FooterPub/Footer";
 import { AiFillCamera } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -19,8 +21,8 @@ import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
 
 const UserHomePage = () => {
-  const [trip, setTrip] = useState();
   const [trips, setTrips] = useState([]);
+  const [isDeleted, setIsDeleted] = useState(false);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -31,6 +33,8 @@ const UserHomePage = () => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
   };
   if (accessToken) {
@@ -38,33 +42,34 @@ const UserHomePage = () => {
   }
 
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
 
   const handleGetTrips = async () => {
     let res = await api.get("/trips", config);
     if (res) {
-      console.log("Trips: ", res.data);
       setTrips(res.data);
+      setIsDeleted(false);
     }
   };
+
   useEffect(() => {
     handleGetTrips();
   }, []);
 
-  // const handleGetTrip = async () => {
-  //   let res = await api
-  //     .get(`/trips/${tripInfo.tripID}`, config)
-  //     .catch((error) => console.log(error));
-  //   if (res) {
-  //     setTrip(res.data);
-  //     // console.log("Trip: ", res);
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleGetTrip();
-  // }, []);
+  const handleDeleteTrip = async (id) => {
+    let res = await api
+      .delete(`/trips/${id}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setIsDeleted(true);
+      console.log("DELETE SUCCESSFULL");
+    }
+  };
+
+  useEffect(() => {
+    if (isDeleted) {
+      handleGetTrips();
+    }
+  }, [isDeleted]);
 
   return (
     <>
@@ -128,7 +133,7 @@ const UserHomePage = () => {
         </div>
 
         <div className="tripgogo">
-          <div className="trip1">
+          <div className="NextTripSwiper">
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -141,26 +146,37 @@ const UserHomePage = () => {
             >
               {trips.length > 0 ? (
                 trips.map((trip) => (
-                  <SwiperSlide key={uuidv4()}>
+                  <SwiperSlide key={trip.id}>
                     <div className="swiperNextTrip">
                       <img
-                        className="imgNextTrip"
+                        className="imgNextTrip object-cover"
                         alt=""
                         src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                       />
                       <div className="CountryNextTrip">
                         <img
-                          className="trip13Img"
+                          className="CountryCircle"
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
                         />
                       </div>
                       <div className="swiperImgIcon">
-                        <Link to="/">
-                          <IoPersonCircleOutline />
+                        <Link
+                          to={`/edit/trip/${trip.id}`}
+                          className="text-3xl text-gray hover:opacity-80"
+                        >
+                          <FaEdit />
                         </Link>
                       </div>
+                      <div className="swiperDelete">
+                        <MdDelete
+                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                          onClick={() => handleDeleteTrip(trip.id)}
+                        />
+                      </div>
                       <div className="swiperNextTripText">
-                        <h2 className="trip14text">{trip.name}</h2>
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
                       </div>
                     </div>
                   </SwiperSlide>
@@ -170,17 +186,16 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
-          <div className="trip2"></div>
-          <div className="trip3">
-            <Link to="/nexttrip">
-              {" "}
-              <h1>My next trips</h1>
-            </Link>
+          <div className="NextTripTitle_1">
+            <Link to="/nexttrip">My next trips</Link>
           </div>
-          <div className="trip4">
+          <div className="UserNextTripHr">
+            <hr />
+          </div>
+          <div className="NextTripButton">
             <button className="buttonShow">Show all</button>
           </div>
-          <div className="trip6">
+          <div className="NextTripCreate">
             <Link to="/create">
               <button>
                 <AiFillPlusCircle size={"35px"} />
@@ -188,17 +203,13 @@ const UserHomePage = () => {
             </Link>
           </div>
 
-          <div className="trip7">
-            <h1>My past trips</h1>
+          <div className="PastTripTitle">
+            <Link to="/pasttrip">
+              <h1>My past trips</h1>
+            </Link>
           </div>
-          <div className="trip8"></div>
 
-          <div className="trip10"></div>
-          <div className="trip11"></div>
-
-          <div className="trip15"></div>
-          <div className="trip16"></div>
-          <div className="trip17">
+          <div className="PastTripSwiper">
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -213,7 +224,7 @@ const UserHomePage = () => {
                 <div className="swiperTrip">
                   <div className="swiperTrip1">
                     <img
-                      className="imgTrip"
+                      className="imgTrip object-cover"
                       alt=""
                       src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                     />
@@ -226,9 +237,7 @@ const UserHomePage = () => {
                     </div>
                   </div>
                   <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
+                    <h2 className="tripName">The United States of America </h2>
                   </div>
                 </div>
               </SwiperSlide>
@@ -249,9 +258,7 @@ const UserHomePage = () => {
                     </div>
                   </div>
                   <div className="swiperTrip3">
-                    <h2 className="trip14text">
-                      The United States of America{" "}
-                    </h2>
+                    <h2 className="tripName">The United States of America </h2>
                   </div>
                 </div>
               </SwiperSlide>
@@ -287,33 +294,9 @@ const UserHomePage = () => {
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
               </SwiperSlide>
-              {/* <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide> */}
             </Swiper>
           </div>
-          <div className="trip18">
+          <div className="PastTripButton">
             <button className="buttonShow">Show all</button>
           </div>
         </div>
