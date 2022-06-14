@@ -1,11 +1,14 @@
 import React, { useLayoutEffect } from "react";
 import { useState, useEffect } from "react";
-import { AiFillPlusCircle } from "react-icons/ai";
+import {
+  AiFillPlusCircle,
+  AiFillPicture,
+  AiFillCloseCircle,
+} from "react-icons/ai";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
-import { AiFillPicture } from "react-icons/ai";
 import { BsFillBookmarkHeartFill } from "react-icons/bs";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { TiDeleteOutline } from "react-icons/ti";
 import { useForm } from "react-hook-form";
 import usePlacesAutocomplete, {
   getGeocode,
@@ -178,7 +181,7 @@ function AddDetailBody() {
   const handleCreateImages = async () => {
     tripInfoLoc.map((tripLoc, index) => {
       listImg.map((img) => {
-        if (img.id === index + 1) {
+        if (img.locationId === index + 1) {
           const createImages = async () => {
             let res = await api
               .post(
@@ -194,7 +197,7 @@ function AddDetailBody() {
                 console.log(error);
               });
             if (res) {
-              console.log("Images: ", res);
+              console.log("Images: ", res.data);
             }
           };
           createImages();
@@ -232,6 +235,27 @@ function AddDetailBody() {
       handleCreateImages();
     }
   }, [isCreated]);
+
+  const handleDelImage = async (id, locationId) => {
+    let res = api
+      .delete(
+        `/trips/${
+          tripId || tripInfo.tripID
+        }/locations/${locationId}/images/${id}`,
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log("DELETE IMAGE SUCCESSFULLY");
+    }
+  };
+
+  const handleDeleteImage = (id, locationId) => {
+    let temp = [...listImg];
+    temp = temp.filter((item) => !((item.num || item.id) === id));
+    handleDelImage(id, locationId);
+    setListImg(temp);
+  };
 
   const handleGetLocations = async () => {
     let res = await api
@@ -325,14 +349,18 @@ function AddDetailBody() {
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0], sasToken).then((result) => {
       let temp = [...listImg];
-      temp.push({ id: parseInt(e.target.id), url: result });
+      temp.push({
+        locationId: parseInt(e.target.id),
+        url: result,
+        num: listImg.length + 1,
+      });
       setListImg(temp);
     });
   };
 
-  // useEffect(() => {
-  //   console.log("LIST: ", locations);
-  // }, [locations]);
+  useEffect(() => {
+    console.log("LIST: ", listImg);
+  }, [listImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -420,15 +448,25 @@ function AddDetailBody() {
                         if (
                           img.locationId ===
                             (location.id || location.locationID) ||
-                          img.id === location.num
+                          img.locationId === location.num
                         ) {
                           return (
-                            <img
-                              className="w-[120px] h-[120px] object-cover mr-1 mb-1"
-                              key={uuidv4()}
-                              src={img.url}
-                              alt=""
-                            />
+                            <div key={uuidv4()} className="relative">
+                              <img
+                                className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                src={img.url}
+                                alt=""
+                              />
+                              <TiDeleteOutline
+                                className="absolute top-1 right-1 text-dark-gray text-2xl hover:opacity-70 hover:cursor-pointer"
+                                onClick={() =>
+                                  handleDeleteImage(
+                                    img.num ? img.num : img.id,
+                                    location.id || location.locationID
+                                  )
+                                }
+                              />
+                            </div>
                           );
                         }
                       })
