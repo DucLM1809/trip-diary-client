@@ -23,6 +23,8 @@ import { v4 as uuidv4 } from "uuid";
 const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [type, setType] = useState("all");
+  const [display, setDisplay] = useState(false);
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -35,6 +37,9 @@ const UserHomePage = () => {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    },
+    params: {
+      type: type,
     },
   };
   if (accessToken) {
@@ -70,6 +75,38 @@ const UserHomePage = () => {
       handleGetTrips();
     }
   }, [isDeleted]);
+
+  const handleFilterType = async () => {
+    let res = await api
+      .get("/trips", config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrips(res.data);
+      setIsDeleted(false);
+    }
+  };
+
+  useEffect(() => {
+    handleFilterType();
+  }, [type]);
+
+  const handleChooseType = () => {
+    setDisplay(!display);
+  };
+
+  const handleType = (e) => {
+    console.log(e.target.textContent);
+    if (e.target.textContent === "Single") {
+      setType("single");
+      setDisplay(false);
+    } else if (e.target.textContent === "Around") {
+      setType("around");
+      setDisplay(false);
+    } else {
+      setType("all");
+      setDisplay(false);
+    }
+  };
 
   return (
     <>
@@ -118,12 +155,41 @@ const UserHomePage = () => {
             <br />
             <hr style={{ width: "90%", marginLeft: "5%" }} />
             <div className="smallFilter">
-              <div className="f1">All trip</div>
+              <div
+                className="f1 cursor-pointer"
+                onClick={(e) => handleType(e)}
+              >
+                All trip
+              </div>
               <div className="f2">
                 <BiFilter /> Filter area{" "}
               </div>
-              <div className="f3">
-                <BiFilter display={""} /> Filter type
+              <div className="f3 flex flex-col">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={handleChooseType}
+                >
+                  <BiFilter display={""} />
+                  <span>Filter type</span>
+                </div>
+                <div
+                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
+                    display ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleType(e)}
+                  >
+                    Single
+                  </div>
+                  <div
+                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handleType(e)}
+                  >
+                    Around
+                  </div>
+                </div>
               </div>
               <div className="f4">
                 <BiFilter display={""} /> Filter countries

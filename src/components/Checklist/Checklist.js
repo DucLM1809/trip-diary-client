@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import api from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { createChecklist } from "../../redux/actions";
+import { useLocation } from "react-router-dom";
 
 const Checklist = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Checklist = () => {
       "Content-Type": "application/json",
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
@@ -32,7 +34,18 @@ const Checklist = () => {
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [note, setNote] = useState(false);
-  const [itemVal, setItemVal] = useState();
+  const [edit, setEdit] = useState(false);
+  const [tripId, setTripId] = useState();
+
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname.split("/")[1] === "edit") {
+      setEdit(true);
+      setTripId(location.pathname.split("/")[3]);
+    } else {
+      setEdit(false);
+    }
+  }, [location]);
 
   const {
     register,
@@ -50,51 +63,93 @@ const Checklist = () => {
   });
 
   const onSubmitCheckbox = (data) => {
-    console.log(data);
+    console.log("DATA: ", data);
     data.list = [...items];
     data.list.map((item) => {
-      item.note = data[`note${item.key}`];
-      const handleCreateChecklist = async () => {
-        let res = await api
-          .post(
-            `/trips/${tripInfo.tripID}/checklist`,
-            {
-              name: item.value,
-              hasPrepared: item.check,
-              notes: item.note,
-            },
-            config
-          )
-          .catch((error) => {
-            console.log(error);
-            if (error.response.status === 405) {
-              setErr("You must create a trip first");
-            }
-            setSuccess("");
-          });
-        if (res) {
-          setSuccess("Add Checklist Successfully!");
-          setErr("");
-          dispatch(createChecklist(res));
-          console.log(res);
-        }
-      };
-      handleCreateChecklist();
+      item.note = data[`note${item.id}`];
+      item.name = data[`itemVal${item.id}`];
+      if (edit && typeof item.id === "string") {
+        handleCreateChecklist(item);
+      } else if (edit) {
+        handleEditChecklist(data.list, item);
+      } else {
+        handleCreateChecklist(item);
+      }
     });
   };
+
+  const handleCreateChecklist = async (item) => {
+    let res = await api
+      .post(
+        `/trips/${tripId || tripInfo.tripID}/checklist`,
+        {
+          name: item.value,
+          hasPrepared: item.check,
+          notes: item.note,
+        },
+        config
+      )
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 405) {
+          setErr("You must create a trip first");
+        }
+        setSuccess("");
+      });
+    if (res) {
+      setSuccess("Add Checklist Successfully!");
+      setErr("");
+      setEdit(Math.random() * 1 + 1);
+      console.log(res);
+    }
+  };
+
+  const handleEditChecklist = async (checklist, item) => {
+    let res = await api
+      .put(
+        `/trips/${tripId || tripInfo.tripID}/checklist/${item.id}`,
+        {
+          name: item.name,
+          hasPrepared: item.check,
+          notes: item.note,
+        },
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log("RES: ", res.data);
+      setSuccess("Edit Checklist Successfully");
+    }
+    setItems(checklist);
+  };
+
+  const handleGetChecklist = async () => {
+    let res = await api
+      .get(`/trips/${tripId || tripInfo.tripID}/checklist`, config)
+      .catch((error) => console.log(error));
+
+    if (res) {
+      setItems(res.data);
+    }
+  };
+
+  useEffect(() => {
+    if (edit) {
+      handleGetChecklist();
+    }
+  }, [edit]);
 
   const onSubmitItem = (data) => {
     console.log(data);
     let temp = [...items];
     temp.push({
-      key: uuidv4(),
+      id: uuidv4(),
       value: data.item.toString(),
       check: Boolean(data.check),
       note: data.note,
     });
     setItems(temp);
     setItem(data.item);
-    setItemVal(data.item);
     setDisplayAdd(false);
     resetField("item");
     resetField("check");
@@ -110,10 +165,10 @@ const Checklist = () => {
     setNote(false);
   };
 
-  const handleCheck = (key) => {
+  const handleCheck = (id) => {
     let temp = [...items];
-    let item = temp.find((item) => item.key === key);
-    temp.find((item) => item.key === key).check = !item.check;
+    let item = temp.find((item) => item.id === id);
+    temp.find((item) => item.id === id).check = !item.check;
     setItems(temp);
   };
 
@@ -121,8 +176,18 @@ const Checklist = () => {
     setDisplayAdd(false);
   };
 
-  const handleDeleteItem = (key) => {
-    let temp = items.filter((item) => !(item.key === key));
+  const handleDelItem = async (id) => {
+    let res = await api
+      .delete(`/trips/${tripId || tripInfo.tripID}/checklist/${id}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setSuccess("DELETE SUCCESSFULLY!");
+    }
+  };
+
+  const handleDeleteItem = (id) => {
+    let temp = items.filter((item) => !(item.id === id));
+    handleDelItem(id);
     setItems(temp);
   };
 
@@ -160,7 +225,7 @@ const Checklist = () => {
             className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
             onClick={handleSubmit(onSubmitCheckbox)}
           >
-            SAVE
+            {edit ? "SAVE" : "CREATE"}
           </button>
         </div>
         <form
@@ -172,31 +237,22 @@ const Checklist = () => {
         >
           {items.length > 0 ? (
             items.map((item, index) => (
-              <div key={item.key}>
+              <div key={item.id}>
                 <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
                   <div>
                     <input
-                      key={item.key}
+                      key={item.id}
                       type="checkbox"
                       value={item.value}
-                      checked={item.check}
+                      checked={item.check || item.hasPrepared}
                       {...register("checklist")}
                       className="scale-[1.8]"
-                      onClick={() => handleCheck(item.key)}
+                      onClick={() => handleCheck(item.id)}
                     />
-                    {/* <input
-                      type="text"
-                      {...register("item")}
-                      value={itemVal}
-                      onChange={(e) => {
-                        setItemVal(e.target.value);
-                      }}
-                      onSubmit={handleSubmit(onSubmitItem)}
-                    /> */}
-                    {/* <span className="ml-4">{item.value}</span> */}
                     <input
                       className="ml-4 p-[2px] pl-2"
-                      defaultValue={item.value}
+                      {...register(`itemVal${item.id}`)}
+                      defaultValue={item.value || item.name}
                     />
                   </div>
                   <div className="flex justify-center items-center">
@@ -208,7 +264,7 @@ const Checklist = () => {
                     </div>
                     <div
                       className="hover:cursor-pointer"
-                      onClick={() => handleDeleteItem(item.key)}
+                      onClick={() => handleDeleteItem(item.id)}
                     >
                       <FaTrashAlt className="text-2xl" />
                     </div>
@@ -217,10 +273,11 @@ const Checklist = () => {
                 <textarea
                   id="note"
                   rows={1}
-                  {...register(`note${item.key}`)}
+                  {...register(`note${item.id}`)}
                   className={`border-1 border-gray w-full rounded-5 mt-2 py-2 px-2 ${
                     note ? "block" : "hidden"
                   }`}
+                  defaultValue={item.notes}
                 />
               </div>
             ))

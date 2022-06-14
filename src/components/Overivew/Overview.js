@@ -350,7 +350,7 @@ const Overview = () => {
                     Single Trip
                   </div>
                   <div
-                    className="w-full px-2 py-1 h-full hover:bg-gray rounded-br-3 rounded-bl-3"
+                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
                     onClick={(e) => handleType(e)}
                   >
                     Around Trip
