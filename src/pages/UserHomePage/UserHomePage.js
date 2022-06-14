@@ -19,12 +19,16 @@ import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
+import { Modal } from "../../components";
 
 const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [type, setType] = useState("all");
   const [display, setDisplay] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [delId, setDelId] = useState();
+
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -42,9 +46,15 @@ const UserHomePage = () => {
       type: type,
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
+
+  const openModal = (tripId) => {
+    setShowModal((prev) => !prev);
+    setDelId(tripId);
+  };
 
   const tripInfo = useSelector((state) => state.trip);
 
@@ -60,15 +70,15 @@ const UserHomePage = () => {
     handleGetTrips();
   }, []);
 
-  const handleDeleteTrip = async (id) => {
-    let res = await api
-      .delete(`/trips/${id}`, config)
-      .catch((error) => console.log(error));
-    if (res) {
-      setIsDeleted(true);
-      console.log("DELETE SUCCESSFULL");
-    }
-  };
+  // const handleDeleteTrip = async (id) => {
+  //   let res = await api
+  //     .delete(`/trips/${id}`, config)
+  //     .catch((error) => console.log(error));
+  //   if (res) {
+  //     setIsDeleted(true);
+  //     console.log("DELETE SUCCESSFULL");
+  //   }
+  // };
 
   useEffect(() => {
     if (isDeleted) {
@@ -108,9 +118,19 @@ const UserHomePage = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(showModal);
+  }, [showModal]);
+
   return (
     <>
       <Navbar />
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setIsDeleted={setIsDeleted}
+        delId={delId}
+      />
       <div style={{ backgroundColor: "#F1F5FF" }} className="pb-10">
         <div className="profile">
           <div className="profileRight">
@@ -155,10 +175,7 @@ const UserHomePage = () => {
             <br />
             <hr style={{ width: "90%", marginLeft: "5%" }} />
             <div className="smallFilter">
-              <div
-                className="f1 cursor-pointer"
-                onClick={(e) => handleType(e)}
-              >
+              <div className="f1 cursor-pointer" onClick={(e) => handleType(e)}>
                 All trip
               </div>
               <div className="f2">
@@ -212,7 +229,7 @@ const UserHomePage = () => {
             >
               {trips.length > 0 ? (
                 trips.map((trip) => (
-                  <SwiperSlide key={trip.id}>
+                  <SwiperSlide key={trip.id} className="z-0">
                     <div className="swiperNextTrip">
                       <img
                         className="imgNextTrip object-cover"
@@ -236,7 +253,8 @@ const UserHomePage = () => {
                       <div className="swiperDelete">
                         <MdDelete
                           className="text-3xl text-gray hover:opacity-80 cursor-pointer"
-                          onClick={() => handleDeleteTrip(trip.id)}
+                          // onClick={() => handleDeleteTrip(trip.id)}
+                          onClick={() => openModal(trip.id)}
                         />
                       </div>
                       <div className="swiperNextTripText">
@@ -276,7 +294,7 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripSwiper">
-            <Swiper
+            {/* <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
@@ -360,7 +378,7 @@ const UserHomePage = () => {
                   src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
                 />
               </SwiperSlide>
-            </Swiper>
+            </Swiper> */}
           </div>
           <div className="PastTripButton">
             <button className="buttonShow">Show all</button>

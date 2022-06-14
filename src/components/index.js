@@ -16,3 +16,4 @@ export { default as Trip } from "./Trip/Trip";
 export { default as CreatedOverview } from "./CreatedOverview/CreatedOverview";
 export { default as CreatedItinerary } from "./CreatedItinerary/CreatedItinerary";
 export { default as CreatedChecklist } from "./CreatedChecklist/CreatedChecklist";
+export { default as Modal } from "./Modal/Modal"
