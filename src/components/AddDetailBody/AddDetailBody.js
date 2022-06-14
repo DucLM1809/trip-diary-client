@@ -111,7 +111,7 @@ function AddDetailBody() {
         setErr("You choose a day after finish day");
         setSuccess("");
       } else {
-        if (edit && location.id) {
+        if (edit && typeof location.id === "string") {
           handleCreateLocation(location);
         } else if (edit) {
           handleEditLocation(data.locations, location);
@@ -359,8 +359,8 @@ function AddDetailBody() {
   };
 
   useEffect(() => {
-    console.log("LIST: ", listImg);
-  }, [listImg]);
+    console.log("LIST: ", locations);
+  }, [locations]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -474,7 +474,7 @@ function AddDetailBody() {
                       <></>
                     )}
                     <input
-                      id={location.num}
+                      id={location.num || index + 1}
                       type="file"
                       {...register(`${index + 1}`)}
                       onChange={(e) => handleUploadImg(e)}
