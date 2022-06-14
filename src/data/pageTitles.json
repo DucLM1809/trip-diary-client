@@ -38,5 +38,9 @@
   {
     "key": "/pasttrip",
     "title":"Home"
+  },
+  {
+    "key": "/tripbeforesearch",
+    "title": "Trip"
   }
 ]

@@ -1,6 +1,7 @@
 export { default as NavbarLandingPage } from "./NavbarLandingPage/NavbarLandingPage";
 export { default as AboutSection } from "./AboutSection/AboutSection";
 export { default as HeroSection } from "./HeroSection/HeroSection";
+export { default as HeroSearch } from "./HeroSearch/HeroSearch";
 export { default as ServicesSection } from "./ServicesSection/ServicesSection";
 export { default as DestinationsSection } from "./DestinationsSection/DestinationsSection";
 export { default as Footer } from "./Footer/Footer";
@@ -16,3 +17,4 @@ export { default as Trip } from "./Trip/Trip";
 export { default as CreatedOverview } from "./CreatedOverview/CreatedOverview";
 export { default as CreatedItinerary } from "./CreatedItinerary/CreatedItinerary";
 export { default as CreatedChecklist } from "./CreatedChecklist/CreatedChecklist";
+export { default as TripSearch } from "./TripSearch/TripSearch";
