@@ -5,7 +5,7 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 const Footer = () => {
   return (
     <div className="mx-28 mt-16">
-      <div className="flex justify-around items-center w-full h-20 bg-slate-400 mb-10 rounded-10">
+      <div className="flex justify-around items-center w-full h-20 bg-light-purple mb-10 rounded-10">
         <p>Copyright © 2022 TriPari’s. All rights reserved</p>
         <ul className="flex p-8 text-base">
           <li className="mx-8 cursor-pointer hover:text-light-blue">
