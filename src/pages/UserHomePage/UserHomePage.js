@@ -59,7 +59,7 @@ const UserHomePage = () => {
   const tripInfo = useSelector((state) => state.trip);
 
   const handleGetTrips = async () => {
-    let res = await api.get("/trips", config);
+    let res = await api.get("/trips/me", config);
     if (res) {
       setTrips(res.data);
       setIsDeleted(false);
@@ -88,7 +88,7 @@ const UserHomePage = () => {
 
   const handleFilterType = async () => {
     let res = await api
-      .get("/trips", config)
+      .get("/trips/me", config)
       .catch((error) => console.log(error));
     if (res) {
       setTrips(res.data);
@@ -117,10 +117,6 @@ const UserHomePage = () => {
       setDisplay(false);
     }
   };
-
-  useEffect(() => {
-    console.log(showModal);
-  }, [showModal]);
 
   return (
     <>

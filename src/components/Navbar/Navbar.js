@@ -8,7 +8,9 @@ import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FiChevronDown } from "react-icons/fi";
 import { AiFillSetting } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { logOut } from "../../redux/actions";
+import { getSearchResponse, logOut } from "../../redux/actions";
+import { useForm } from "react-hook-form";
+import api from "../../api/axios";
 
 const Navbar = () => {
   const homeRef = useRef();
@@ -16,13 +18,15 @@ const Navbar = () => {
   const createRef = useRef();
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
+  const [searchInfo, setSearchInfo] = useState('');
+  const [searchRes, setSearchRes] = useState([])
   const userName = localStorage.getItem("username");
 
-  const clickColor = "text-medium-blue"
+  const clickColor = "text-medium-blue";
 
   const handleClick = useEffect(() => {
     if (location.pathname === "/home") {
@@ -33,7 +37,10 @@ const Navbar = () => {
       tripRef.current.classList.add(clickColor);
       homeRef.current.classList.remove(clickColor);
       createRef.current.classList.remove(clickColor);
-    } else if (location.pathname === "/create" || location.hash === "#overview") {
+    } else if (
+      location.pathname === "/create" ||
+      location.hash === "#overview"
+    ) {
       createRef.current.classList.add(clickColor);
       homeRef.current.classList.remove(clickColor);
       tripRef.current.classList.remove(clickColor);
@@ -44,11 +51,59 @@ const Navbar = () => {
     }
   }, [location]);
 
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    },
+    params: {
+      search: searchInfo,
+    },
+  };
+
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  useEffect(() => {
+    setSearchInfo('');
+  }, []);
+
+  const onSubmit = (data) => {
+    console.log(data);
+    setSearchInfo(data.search);
+    handleSearch();
+  };
+
+  const handleSearch = async () => {
+    let res = await api
+      .get("/trips", config)
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log(res.data);
+      setSearchRes(res.data)
+      dispatch(getSearchResponse(res.data))
+      navigate("/trips/search");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
     dispatch(logOut());
-    navigate("/sign-in")
+    navigate("/sign-in");
   };
 
   const handleDisplayOut = () => {
@@ -66,10 +121,11 @@ const Navbar = () => {
             </span>
           </Link>
           <div>
-            <form className="flex relative">
+            <form className="flex relative" onSubmit={handleSubmit(onSubmit)}>
               <input
                 type="text"
                 placeholder="Search"
+                {...register("search")}
                 className="pl-3 py-3 w-96 rounded-10 border-[0.2px]  border-gray focus:outline-double bg-aqua font-normal"
               ></input>
               <button className="absolute top-3 right-2 text-2xl ">

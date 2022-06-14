@@ -55,13 +55,11 @@ const Home = () => {
     <div>
       <Navbar userName={userName} />
       <div>
-        <h1 className="ml-4 mt-10 text-3xl font-extrabold">
-          Popular Travelers
-        </h1>
+        <h1 className="ml-4 mt-10 text-3xl font-extrabold">Travelers</h1>
         <User />
       </div>
       <div>
-        <h1 className="ml-4 mt-10 text-3xl font-extrabold">Popular Trips</h1>
+        <h1 className="ml-4 mt-10 text-3xl font-extrabold">Trips</h1>
         <Trip />
       </div>
       <FooterPub />

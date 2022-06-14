@@ -99,3 +99,10 @@ export const addSasToken = (payload) => {
     payload,
   };
 };
+
+export const getSearchResponse = (payload) => {
+  return {
+    type: "GET_SEARCH_RESPONSE",
+    payload,
+  };
+};
