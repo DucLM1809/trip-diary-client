@@ -155,7 +155,12 @@ const UserHomePage = () => {
             <br />
             <hr style={{ width: "90%", marginLeft: "5%" }} />
             <div className="smallFilter">
-              <div className="f1">All trip</div>
+              <div
+                className="f1 cursor-pointer"
+                onClick={(e) => handleType(e)}
+              >
+                All trip
+              </div>
               <div className="f2">
                 <BiFilter /> Filter area{" "}
               </div>
