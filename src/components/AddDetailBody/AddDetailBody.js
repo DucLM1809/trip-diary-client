@@ -145,7 +145,11 @@ function AddDetailBody() {
         setEdit(false);
       });
     if (res) {
-      setSuccess("Add Detail Successfully!");
+      if (edit) {
+        setSuccess("Edit Detail Successfully!");
+      } else {
+        setSuccess("Add Detail Successfully!");
+      }
       setErr("");
       setEdit(Math.random() * 1 + 1);
       dispatch(createLocation(res.data));
@@ -360,6 +364,7 @@ function AddDetailBody() {
 
   useEffect(() => {
     console.log("LIST: ", locations);
+    console.log("IMAGES: ", listImg);
   }, [locations]);
 
   return (
