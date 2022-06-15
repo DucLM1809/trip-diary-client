@@ -243,6 +243,7 @@ const Overview = () => {
       setValue("description", trip.description);
       setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
       setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
+      setUrlImg(trip.coverImgUrl)
     } else {
       resetField("tripname");
       setType("Single Trip");
