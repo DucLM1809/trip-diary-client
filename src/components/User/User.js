@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import des4 from "../../assests/images/Destination4.png";
 import unknown from "../../assests/images/unknown.png";
 import { FaSuitcaseRolling } from "react-icons/fa";
@@ -7,12 +7,28 @@ import { useSelector } from "react-redux";
 import pnf from "../../assests/images/pnf.png";
 
 const User = () => {
+  const [users, setUsers] = useState([]);
   const searchRes = useSelector((state) => state.searchRes);
+
+  const filterUser = (searchRes) => {
+    let temp = [];
+    temp = searchRes.filter((res) => {
+      if (!temp.includes(res?.author?.email)) {
+        return temp.push(res?.author?.email);
+      }
+    });
+    setUsers(temp);
+    // console.log("TEMP: ", temp);
+  };
+
+  useEffect(() => {
+    filterUser(searchRes);
+  }, [searchRes]);
 
   return (
     <div className="pt-8 flex px-3 flex-wrap">
-      {searchRes.length > 0 ? (
-        searchRes.map((res, index) => {
+      {users.length > 0 ? (
+        users.map((user, index) => {
           return (
             <div key={index} className="w-[360px] relative mb-8">
               <Link to="/home">
@@ -22,7 +38,9 @@ const User = () => {
         flex flex-col items-center justify-center
         "
                 >
-                  <h1 className="text-xl mt-3">{res?.author?.email}</h1>
+                  <h1 className="text-xl mt-3">
+                    {user?.author?.email.split("@")[0]}
+                  </h1>
                   <h2 className="opacity-40">United States</h2>
                   <div className="mt-3 flex justify-center items-center gap-2">
                     <FaSuitcaseRolling className="text-2xl" />
