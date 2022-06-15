@@ -53,7 +53,7 @@ const Navbar = () => {
 
   const accessToken = localStorage
     .getItem("accessToken")
-    .toString()
+    ?.toString()
     .split('"')[1];
 
   const config = {
