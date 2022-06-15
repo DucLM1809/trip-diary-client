@@ -230,11 +230,12 @@ const Overview = () => {
   };
 
   useEffect(() => {
+    console.log("TRIP: ", trip);
     if (edit && trip) {
       setValue("tripname", trip.name);
-      if (trip.backtripAt) {
+      if (trip.backTripAt) {
         setType("Around Trip");
-        setValue("to", trip.backtripAt);
+        setValue("to", trip.backTripAt);
       } else {
         setType("Single Trip");
       }
