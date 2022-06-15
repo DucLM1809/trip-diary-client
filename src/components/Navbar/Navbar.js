@@ -22,8 +22,8 @@ const Navbar = () => {
 
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
-  const [searchInfo, setSearchInfo] = useState('');
-  const [searchRes, setSearchRes] = useState([])
+  const [searchInfo, setSearchInfo] = useState("");
+  const [searchRes, setSearchRes] = useState([]);
   const userName = localStorage.getItem("username");
 
   const clickColor = "text-medium-blue";
@@ -78,23 +78,33 @@ const Navbar = () => {
   } = useForm();
 
   useEffect(() => {
-    setSearchInfo('');
+    setSearchInfo("");
   }, []);
 
   const onSubmit = (data) => {
     console.log(data);
-    setSearchInfo(data.search);
-    handleSearch();
+    // setSearchInfo(data.search);
+    handleSearch(data.search);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (info) => {
     let res = await api
-      .get("/trips", config)
+      .get("/trips", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Authorization": `bearer ${accessToken}`
+        },
+        params: {
+          search: info,
+        },
+      })
       .catch((error) => console.log(error));
     if (res) {
       console.log(res.data);
-      setSearchRes(res.data)
-      dispatch(getSearchResponse(res.data))
+      setSearchRes(res.data);
+      dispatch(getSearchResponse(res.data));
       navigate("/trips/search");
     }
   };

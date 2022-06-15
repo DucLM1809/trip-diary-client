@@ -22,7 +22,7 @@ const User = () => {
         flex flex-col items-center justify-center
         "
                 >
-                  <h1 className="text-xl mt-3">{res.user.email}</h1>
+                  <h1 className="text-xl mt-3">{res?.author?.email}</h1>
                   <h2 className="opacity-40">United States</h2>
                   <div className="mt-3 flex justify-center items-center gap-2">
                     <FaSuitcaseRolling className="text-2xl" />
