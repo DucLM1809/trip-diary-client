@@ -18,7 +18,6 @@ const User = () => {
       }
     });
     setUsers(temp);
-    // console.log("TEMP: ", temp);
   };
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const User = () => {
                   <div className="mt-3 flex justify-center items-center gap-2">
                     <FaSuitcaseRolling className="text-2xl" />
                     <div className="flex flex-col justify-center">
-                      <span className="leading-4">33</span>
+                      <span className="leading-4">{user?.author?.numOfTrips}</span>
                       <span className="leading-4 opacity-40">Trips</span>
                     </div>
                   </div>
