@@ -243,8 +243,8 @@ const Checklist = () => {
                     <input
                       key={item.id}
                       type="checkbox"
-                      value={item.value}
-                      checked={item.check || item.hasPrepared}
+                      defaultValue={item.value}
+                      defaultChecked={item.check || item.hasPrepared}
                       {...register("checklist")}
                       className="scale-[1.8]"
                       onClick={() => handleCheck(item.id)}
