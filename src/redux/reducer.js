@@ -29,6 +29,7 @@ const initState = {
     name: "",
     notes: "",
   },
+  searchRes: [],
 };
 
 const rootReducer = (state = initState, action) => {
@@ -202,6 +203,12 @@ const rootReducer = (state = initState, action) => {
           ...state.user,
           sasToken: action.payload,
         },
+      };
+    }
+    case "GET_SEARCH_RESPONSE": {
+      return {
+        ...state,
+        searchRes: action.payload,
       };
     }
     default:

@@ -17,6 +17,7 @@ import NextTrip from "./pages/UserHomePage/NextTrip";
 import PastTrip from "./pages/UserHomePage/PastTrip";
 import RemindTrip from "./pages/RemindTrip/RemindTrip";
 import TripBeforeSearch from "./pages/TripBeforeSearch/TripBeforeSearch";
+import AfterSearch from "./pages/AfterSearch/AfterSearch";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -62,11 +63,12 @@ function App() {
       ></Route>
 
       <Route element={<RequireAuth auth={auth} />}>
-        <Route exact path="/home" element={<Home />}></Route>
+        <Route exact path="/home" element={<TripBeforeSearch />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
         <Route exact path="/edit/trip/:id" element={<Create />}></Route>
         <Route exact path="/trips/trip/:id" element={<Trips />}></Route>
-        <Route exact path="/trips" element={<TripBeforeSearch />}></Route>
+        <Route exact path="/trips" element={<Home />}></Route>
+        <Route exact path="/trips/search" element={<AfterSearch />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
         <Route exact path="/tripbeforesearch" element={<TripBeforeSearch />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>

@@ -22,15 +22,15 @@ const TripSearch = () => {
   return (
     <div>
       <div className="flex flex-col">
-        <h1 className="ml-4 mt-10 text-3xl font-extrabold">
+        <h1 className="ml-4 mt-14 text-4xl font-extrabold mb-10">
           Go with TriPari's
         </h1>
         <div className="pt-8 flex px-3 flex-between bg-[#f2f4f5]">
           <div className="w-1/3 flex flex-col items-center justify-left pr-4">
-            <h1 className="flex  text-left text-5xl w-3/4 mb-20 mt-20 font-black">
+            <h1 className="flex  text-left text-4xl w-3/4 mb-14 mt-20 font-black">
               Take a trip with TripPari’s
             </h1>
-            <p className="flex  text-left text-2xl w-3/4 font-medium">
+            <p className="flex  text-left text-xl w-3/4 font-medium">
               TriPari’s is a platform that connects you with an experienced
               traveler or with an expat living in that corner of the world you
               are interested in. You can buy the trip as a package with a
@@ -42,75 +42,27 @@ const TripSearch = () => {
             <div className="w-[450px] relative mb-8  hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
                 <img src={des5} alt="" className="opacity-100" />
-                <div className="w-[435px] h-[315px] bg-black absolute top-[4px] left-[7.3px] opacity-20 rounded-10"></div>
-                <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
-                  Hawaii 2022
-                </div>
-                <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  1000 likes
-                </div>
-                <img
-                  src={unknown}
-                  alt=""
-                  className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
-                />
               </Link>
             </div>
             <div className="w-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
                 <img src={des5} alt="" className="opacity-100" />
-                <div className="w-[435px] h-[315px] bg-black absolute top-[4px] left-[7.3px] opacity-20 rounded-10"></div>
-                <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
-                  Hawaii 2022
-                </div>
-                <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  1000 likes
-                </div>
-                <img
-                  src={unknown}
-                  alt=""
-                  className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
-                />
               </Link>
             </div>
             <div className="w-[450px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
                 <img src={des5} alt="" className="opacity-100" />
-                <div className="w-[435px] h-[315px] bg-black absolute top-[4px] left-[7.3px] opacity-20 rounded-10"></div>
-                <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
-                  Hawaii 2022
-                </div>
-                <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  1000 likes
-                </div>
-                <img
-                  src={unknown}
-                  alt=""
-                  className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
-                />
               </Link>
             </div>
             <div className="w-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
                 <img src={des5} alt="" className="opacity-100" />
-                <div className="w-[435px] h-[315px] bg-black absolute top-[4px] left-[7.3px] opacity-20 rounded-10"></div>
-                <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
-                  Hawaii 2022
-                </div>
-                <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  1000 likes
-                </div>
-                <img
-                  src={unknown}
-                  alt=""
-                  className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
-                />
               </Link>
             </div>
           </div>
         </div>
-        <h1 className="ml-4 mt-20 text-3xl font-extrabold">
-          Can’t decid where? Get inspired
+        <h1 className="ml-4 mt-20 mb-12 text-3xl font-extrabold">
+          Can’t decide where? Get inspired
         </h1>
         <div className="pt-8 flex px-3 flex-between bg-[#f2f4f5]">
           {destinations(des3)}

@@ -25,7 +25,9 @@ const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [type, setType] = useState("all");
+  const [scope, setScope] = useState("all");
   const [display, setDisplay] = useState(false);
+  const [displayArea, setDisplayArea] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [delId, setDelId] = useState();
 
@@ -44,6 +46,7 @@ const UserHomePage = () => {
     },
     params: {
       type: type,
+      scope: scope,
     },
   };
 
@@ -59,7 +62,7 @@ const UserHomePage = () => {
   const tripInfo = useSelector((state) => state.trip);
 
   const handleGetTrips = async () => {
-    let res = await api.get("/trips", config);
+    let res = await api.get("/trips/me", config);
     if (res) {
       setTrips(res.data);
       setIsDeleted(false);
@@ -88,7 +91,7 @@ const UserHomePage = () => {
 
   const handleFilterType = async () => {
     let res = await api
-      .get("/trips", config)
+      .get("/trips/me", config)
       .catch((error) => console.log(error));
     if (res) {
       setTrips(res.data);
@@ -100,8 +103,16 @@ const UserHomePage = () => {
     handleFilterType();
   }, [type]);
 
+  useEffect(() => {
+    handleFilterType();
+  }, [scope]);
+
   const handleChooseType = () => {
     setDisplay(!display);
+  };
+
+  const handleChooseScope = () => {
+    setDisplayArea(!displayArea);
   };
 
   const handleType = (e) => {
@@ -118,9 +129,19 @@ const UserHomePage = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(showModal);
-  }, [showModal]);
+  const handleScope = (e) => {
+    console.log(e.target.textContent);
+    if (e.target.textContent === "Local") {
+      setScope("local");
+      setDisplayArea(false);
+    } else if (e.target.textContent === "Global") {
+      setScope("global");
+      setDisplayArea(false);
+    } else {
+      setScope("all");
+      setDisplayArea(false);
+    }
+  };
 
   return (
     <>
@@ -178,22 +199,61 @@ const UserHomePage = () => {
               <div className="f1 cursor-pointer" onClick={(e) => handleType(e)}>
                 All trip
               </div>
-              <div className="f2">
-                <BiFilter /> Filter area{" "}
+              
+              <div className="f2 flex flex-col">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={handleChooseScope}
+                >
+                  <BiFilter display={""} />
+                  <span>Filter area</span>
+                </div>
+                <div
+                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
+                    displayArea ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleScope(e)}
+                  >
+                    All
+                  </div>
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleScope(e)}
+                  >
+                    Local
+                  </div>
+                  <div
+                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handleScope(e)}
+                  >
+                    Global
+                  </div>
+                </div>
               </div>
+
+
               <div className="f3 flex flex-col">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={handleChooseType}
                 >
                   <BiFilter display={""} />
-                  <span>Filter type</span>
+                  <span>{type}</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
                     display ? "block" : "hidden"
                   }`}
                 >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleType(e)}
+                  >
+                    All
+                  </div>
                   <div
                     className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
                     onClick={(e) => handleType(e)}
@@ -236,6 +296,7 @@ const UserHomePage = () => {
                         alt=""
                         src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                       />
+                      
                       <div className="CountryNextTrip">
                         <img
                           className="CountryCircle"

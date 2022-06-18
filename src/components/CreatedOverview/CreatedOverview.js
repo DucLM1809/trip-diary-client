@@ -177,7 +177,7 @@ const CreatedOverview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={trip?.coverImgUrl}
+          src={trip?.coverImgUrl || banner}
           className="min-w-full h-full object-cover rounded-10 relative"
         />
       </div>
@@ -230,7 +230,7 @@ const CreatedOverview = () => {
                 return (
                   <div key={trip.id} className="relative">
                     <img
-                      src={trip?.coverImgUrl}
+                      src={trip?.coverImgUrl || banner}
                       alt=""
                       className="w-[250px] h-[250px] object-cover rounded-5"
                     />
