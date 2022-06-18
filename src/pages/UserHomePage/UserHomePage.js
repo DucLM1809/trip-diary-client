@@ -206,7 +206,7 @@ const UserHomePage = () => {
                   onClick={handleChooseScope}
                 >
                   <BiFilter display={""} />
-                  <span>Filter area</span>
+                  <span>{scope}</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${

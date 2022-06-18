@@ -52,6 +52,8 @@ const Overview = () => {
   const [coordinate2, setCoordinate2] = useState({});
   const [departure, setDeparture] = useState();
   const [destination, setDestination] = useState();
+  const [dep, setDep] = useState();
+  const [dest, setDest] = useState()
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [urlImg, setUrlImg] = useState();
@@ -109,7 +111,7 @@ const Overview = () => {
 
   const accessToken = localStorage
     .getItem("accessToken")
-    .toString()
+    ?.toString()
     .split('"')[1];
 
   const config = {
@@ -137,6 +139,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
+          scope: dest === dep,
         },
         config
       )
@@ -153,7 +156,7 @@ const Overview = () => {
       dispatch(createTrip(res.data));
     }
   };
-
+  
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
@@ -169,6 +172,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
+          scope: dest === dep,
         },
         config
       )
@@ -217,7 +221,9 @@ const Overview = () => {
     let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
     let res = await axios.get(urlDep).catch((error) => console.log(error));
     if (res) {
-      setDeparture(res.data.results[2].formatted_address);
+      setDeparture(
+        res.data.results[res.data.results.length - 2].formatted_address
+      );
     }
   };
 
@@ -225,7 +231,9 @@ const Overview = () => {
     let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
     let res = await axios.get(urlDes).catch((error) => console.log(error));
     if (res) {
-      setDestination(res.data.results[2].formatted_address);
+      setDestination(
+        res.data.results[res.data.results.length - 2].formatted_address
+      );
     }
   };
 
@@ -243,7 +251,7 @@ const Overview = () => {
       setValue("description", trip.description);
       setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
       setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
-      setUrlImg(trip.coverImgUrl)
+      setUrlImg(trip.coverImgUrl);
     } else {
       resetField("tripname");
       setType("Single Trip");
@@ -369,6 +377,7 @@ const Overview = () => {
               <PlacesAutocomplete1
                 setSelected1={setSelected1}
                 departure={departure}
+                setDep={setDep}
               />
             </div>
             <div className="flex flex-col">
@@ -378,6 +387,7 @@ const Overview = () => {
               <PlacesAutocomplete2
                 setSelected2={setSelected2}
                 destination={destination}
+                setDest={setDest}
               />
             </div>
           </div>
@@ -465,7 +475,7 @@ const Overview = () => {
   );
 };
 
-const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
+const PlacesAutocomplete1 = ({ setSelected1, departure, setDep }) => {
   const {
     ready,
     value,
@@ -478,6 +488,8 @@ const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
     setValue(address, false);
     clearSuggestions();
     const results = await getGeocode({ address });
+    let temp = results[0].formatted_address.split(",");
+    setDep(temp[temp.length - 1])
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
@@ -512,7 +524,7 @@ const PlacesAutocomplete1 = ({ setSelected1, departure }) => {
   );
 };
 
-const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
+const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
   const {
     ready,
     value,
@@ -525,6 +537,8 @@ const PlacesAutocomplete2 = ({ setSelected2, destination }) => {
     setValue(address, false);
     clearSuggestions();
     const results = await getGeocode({ address });
+    let temp = results[0].formatted_address.split(",");
+    setDest(temp[temp.length - 1])
     const { lat, lng } = getLatLng(results[0]);
     setSelected2({ lat, lng });
   };
