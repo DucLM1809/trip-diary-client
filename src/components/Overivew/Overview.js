@@ -111,7 +111,7 @@ const Overview = () => {
 
   const accessToken = localStorage
     .getItem("accessToken")
-    .toString()
+    ?.toString()
     .split('"')[1];
 
   const config = {
@@ -156,11 +156,7 @@ const Overview = () => {
       dispatch(createTrip(res.data));
     }
   };
-
-  useEffect(() => {
-    console.log(dest === dep);
-  }, [dest, dep])
-
+  
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
