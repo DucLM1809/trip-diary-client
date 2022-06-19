@@ -171,7 +171,7 @@
 .tripgogo {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: 80px 1fr 1fr 70px 1fr 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     background-color: white;
@@ -315,7 +315,6 @@
 }
 .PastTripSwiper{
     grid-area: 5 / 1 / 7 / 6;
-    font-size: 40px;
     margin-top: 15px;
 }
 .PastTripButton{

@@ -17,10 +17,12 @@ import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 const UserHomePage = () => {
   const [trip, setTrip] = useState();
   const [trips, setTrips] = useState([]);
+  
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -47,11 +49,31 @@ const UserHomePage = () => {
     if (res) {
       console.log("Trips: ", res.data);
       setTrips(res.data);
+
     }
   };
+
+  
+  const currentdate = moment().format("YYYY-MM-DD");
+
   useEffect(() => {
     handleGetTrips();
   }, []);
+
+  const nexttrips = [];
+  const pasttrips = [];
+
+  for(let x of trips){
+    if(x.startAt>currentdate){
+      nexttrips.push(x);
+    }
+    else if(x.startAt<currentdate){
+      pasttrips.push(x);
+    }
+  }
+
+ 
+  
 
   // const handleGetTrip = async () => {
   //   let res = await api
@@ -139,8 +161,8 @@ const UserHomePage = () => {
               modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
-              {trips.length > 0 ? (
-                trips.map((trip) => (
+              {nexttrips.length > 0 ? (
+                nexttrips.map((trip) => (
                   <SwiperSlide>
                     
                     <div key={uuidv4()}>
@@ -176,7 +198,7 @@ const UserHomePage = () => {
             </Swiper>
           </div>
           <div className="NextTripTitle_1">
-            <Link to="/nexttrip">My next trips</Link>
+            My next trips
           </div>
           <div className="UserNextTripHr">
             <hr/>
@@ -202,7 +224,7 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripSwiper">
-            <Swiper
+                        <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
@@ -212,108 +234,40 @@ const UserHomePage = () => {
               modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      className="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
+              {pasttrips.length > 0 ? (
+                pasttrips.map((trip) => (
+                  <SwiperSlide>
+                    
+                    <div key={uuidv4()}>
+                      <div className="swiperNextTrip">
+                        <img
+                          className="imgNextTrip"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                        />
+
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="swiperImgIcon">
+                          <Link to="/">
+                            <IoPersonCircleOutline />
+                          </Link>
+                        </div>
+                        <div className="swiperNextTripText">
+                          <h2 className="tripName">{trip.name}  </h2>
+                          
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="tripName">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="swiperTrip">
-                  <div className="swiperTrip1">
-                    <img
-                      className="imgTrip"
-                      alt=""
-                      src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                    />
-                  </div>
-                  <div className="swiperTrip2">
-                    <div className="trip12_1">
-                      <Link to="/homepage">
-                        <IoPersonCircleOutline />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="swiperTrip3">
-                    <h2 className="tripName">
-                      The United States of America{" "}
-                    </h2>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              {/* <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <img
-                  className="imgTrip"
-                  alt=""
-                  src="https://m.economictimes.com/thumb/msid-86044087,width-1200,height-900,resizemode-4,imgsize-99220/us.jpg"
-                />
-              </SwiperSlide> */}
+                  </SwiperSlide>
+                ))
+              ) : (
+                <></>
+              )}
             </Swiper>
           </div>
           <div className="PastTripButton">
