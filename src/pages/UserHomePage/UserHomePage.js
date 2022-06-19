@@ -45,7 +45,7 @@ const UserHomePage = () => {
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
     params: {
-      type: type,
+      type:type ,
       scope: scope,
     },
   };
@@ -124,7 +124,7 @@ const UserHomePage = () => {
       setType("around");
       setDisplay(false);
     } else {
-      setType("all");
+      setType(null);
       setDisplay(false);
     }
   };
@@ -138,7 +138,7 @@ const UserHomePage = () => {
       setScope("global");
       setDisplayArea(false);
     } else {
-      setScope("all");
+      setScope(null);
       setDisplayArea(false);
     }
   };
@@ -290,6 +290,7 @@ const UserHomePage = () => {
               {trips.length > 0 ? (
                 trips.map((trip) => (
                   <SwiperSlide key={trip.id} className="z-0">
+                    {console.log("Scope: " +trip.scope)}
                     <div className="swiperNextTrip">
                       <img
                         className="imgNextTrip object-cover"
@@ -303,6 +304,7 @@ const UserHomePage = () => {
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
                         />
                       </div>
+                      
                       <div className="swiperImgIcon">
                         <Link
                           to={`/edit/trip/${trip.id}`}
