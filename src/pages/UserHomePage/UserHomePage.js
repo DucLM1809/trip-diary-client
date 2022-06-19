@@ -86,9 +86,7 @@ const UserHomePage = () => {
                   {/* <h3>/tungtung</h3> */}
                   {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
-                <Link to ="/aftersearchpage">
                 <button className="editProfile">Edit Profile</button>
-                </Link>
                 <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />
@@ -165,9 +163,7 @@ const UserHomePage = () => {
                           </Link>
                         </div>
                         <div className="swiperNextTripText">
-                          <Link to="/nexttrip">
                           <h2 className="tripName">{trip.name}  </h2>
-                          </Link> 
                           
                         </div>
                       </div>
@@ -186,7 +182,9 @@ const UserHomePage = () => {
             <hr/>
           </div>
           <div className="NextTripButton">
+          <Link to="/nexttrip">
             <button className="buttonShow">Show all</button>
+            </Link>
           </div>
           <div className="NextTripCreate">
             <Link to="/create">

@@ -127,7 +127,6 @@ const NextTrip = () => {
            
           </div>          
           <div className="trip8">
-          <hr/>
           </div>
 
           <div className="NextTripContent">
@@ -158,12 +157,12 @@ const NextTrip = () => {
                           <AiOutlineExclamationCircle/>
                         </div>
                         <div className="TripLocationText">
-                          tung
+                          {trip.name}
                         </div>
                         <div className="TripDateText">
-                          tugntung
+                          {trip.startAt}
                         </div>
-                        <div className="TripTypeText">tungtung</div>
+                        <div className="TripTypeText">{trip.description}</div>
                         <div className="swiperNextTripText">
                           <h2 className="tripName">{trip.name}  </h2>
                         </div>
