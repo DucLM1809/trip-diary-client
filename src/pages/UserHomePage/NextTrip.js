@@ -21,8 +21,7 @@ import {FiCalendar} from "react-icons/fi";
 import {AiOutlineExclamationCircle} from "react-icons/ai";
 import { Scrollbars } from "react-custom-scrollbars";
 import { v4 as uuidv4 } from "uuid";
-
-
+import moment from "moment";
 
 const NextTrip = () => {
   const [trip, setTrip] = useState();
@@ -58,6 +57,18 @@ const NextTrip = () => {
   useEffect(() => {
     handleGetTrips();
   }, []);
+  const currentdate = moment().format("YYYY-MM-DD");
+  const nexttrips = [];
+  const pasttrips = [];
+
+  for(let x of trips){
+    if(x.startAt>currentdate){
+      nexttrips.push(x);
+    }
+    else if(x.startAt<currentdate){
+      pasttrips.push(x);
+    }
+  }
 
   return (
     <>
@@ -132,8 +143,8 @@ const NextTrip = () => {
 
           <div className="NextTripContent">
             <Scrollbars style={{height:"500px"}}>
-            {trips.length > 0 ? (
-                trips.map((trip) => (
+            {nexttrips.length > 0 ? (
+                nexttrips.map((trip) => (
                     <div key={uuidv4()}>
                       <div className="swiperNextTrip">
                         <img
@@ -158,12 +169,13 @@ const NextTrip = () => {
                           <AiOutlineExclamationCircle/>
                         </div>
                         <div className="TripLocationText">
-                          tung
+                        {trip.name}
+
                         </div>
                         <div className="TripDateText">
-                          tugntung
+                        {trip.startAt}
                         </div>
-                        <div className="TripTypeText">tungtung</div>
+                        <div className="TripTypeText">{trip.description}</div>
                         <div className="swiperNextTripText">
                           <h2 className="tripName">{trip.name}  </h2>
                         </div>
