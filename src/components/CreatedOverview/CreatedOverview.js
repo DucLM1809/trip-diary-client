@@ -51,7 +51,6 @@ const CreatedOverview = () => {
       .get(`/trips/${location.pathname.split("/")[3]}`, config)
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res.data);
       setTrip(res.data);
       setUserId(res.data?.author?.id);
       setNumLike(res.data?.numOfLikes);
@@ -186,17 +185,17 @@ const CreatedOverview = () => {
 
     if (res) {
       console.log("Num lIkes: ", res.data);
-      if (numLike > 1 && res.data.userId === userId) {
-        setLike(true)
+      if (res.data.find((like) => like.userId === userId)) {
+        setLike(true);
       } else {
-        setLike(false)
+        setLike(false);
       }
     }
   };
 
   useEffect(() => {
     handleGetLikes();
-  }, [trip]);
+  }, [trip, userId]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
