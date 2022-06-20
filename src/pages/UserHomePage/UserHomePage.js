@@ -73,16 +73,6 @@ const UserHomePage = () => {
     handleGetTrips();
   }, []);
 
-  const handleDeleteTrip = async (id) => {
-    let res = await api
-      .delete(`/trips/${id}`, config)
-      .catch((error) => console.log(error));
-    if (res) {
-      setIsDeleted(true);
-      console.log("DELETE SUCCESSFULL");
-    }
-  };
-
   useEffect(() => {
     if (isDeleted) {
       handleGetTrips();

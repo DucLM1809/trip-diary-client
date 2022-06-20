@@ -24,9 +24,9 @@ const CreatedOverview = () => {
   const [displayReply, setDisplayReply] = useState(false);
   const [trip, setTrip] = useState();
   const [trips, setTrips] = useState();
-
   const [departure, setDeparture] = useState();
   const [destination, setDestination] = useState();
+  const [userId, setUserId] = useState();
 
   const userName = localStorage.getItem("username");
   const location = useLocation();
@@ -41,6 +41,7 @@ const CreatedOverview = () => {
       "Content-Type": "application/json",
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
@@ -50,8 +51,10 @@ const CreatedOverview = () => {
       .get(`/trips/${location.pathname.split("/")[3]}`, config)
       .catch((error) => console.log(error));
     if (res) {
+      console.log(res.data);
       setTrip(res.data);
-      console.log("res: ", res);
+      setUserId(res.data?.author?.id);
+      setNumLike(res.data?.numOfLikes);
     }
   };
 
@@ -77,7 +80,6 @@ const CreatedOverview = () => {
         .then((response) => response.json())
         .then((data) => {
           try {
-            console.log("dep: ", data);
             setDeparture(
               data.results[data.results.length - 2].formatted_address ||
                 data.results[0].formatted_address
@@ -95,7 +97,6 @@ const CreatedOverview = () => {
         .then((response) => response.json())
         .then((data) => {
           try {
-            console.log("des: ", data);
             setDestination(
               data.results[data.results.length - 2].formatted_address ||
                 data.results[0].formatted_address
@@ -107,9 +108,6 @@ const CreatedOverview = () => {
   }, [location, trip]);
 
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: ApiKey,
@@ -146,18 +144,16 @@ const CreatedOverview = () => {
     resetField("reply");
   };
 
-  useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
   const handleLike = () => {
     setLike(true);
     setNumLike(numLike + 1);
+    handlePostLike();
   };
 
   const handleDisLike = () => {
     setLike(false);
     setNumLike(numLike - 1);
+    handleDelLike();
   };
 
   const handleDisplayComment = () => {
@@ -167,6 +163,40 @@ const CreatedOverview = () => {
   const handleDisplayReply = () => {
     setDisplayReply(!displayReply);
   };
+
+  const handlePostLike = async () => {
+    let res = await api
+      .post(`/trips/${location.pathname.split("/")[3]}/likes`, {}, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log("Likes: ", res.data);
+    }
+  };
+
+  const handleDelLike = async () => {
+    let res = await api
+      .delete(`/trips/${location.pathname.split("/")[3]}/likes`, config)
+      .catch((error) => console.log(error));
+  };
+
+  const handleGetLikes = async () => {
+    let res = await api
+      .get(`/trips/${location.pathname.split("/")[3]}/likes`, config)
+      .catch((error) => console.log(error));
+
+    if (res) {
+      console.log("Num lIkes: ", res.data);
+      if (numLike > 1 && res.data.userId === userId) {
+        setLike(true)
+      } else {
+        setLike(false)
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleGetLikes();
+  }, [trip]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -236,7 +266,9 @@ const CreatedOverview = () => {
                     />
                     <div className="flex justify-center items-center absolute bottom-5 left-5 text-xl">
                       <FaMapMarkerAlt className="text-green" />
-                      <span className="text-xl text-white ml-1">{trip?.name}</span>
+                      <span className="text-xl text-white ml-1">
+                        {trip?.name}
+                      </span>
                     </div>
                   </div>
                 );
@@ -298,50 +330,6 @@ const CreatedOverview = () => {
                 <IoSend />
               </button>
             </form>
-            <div
-              className={`mb-10 flex-col ${
-                displayComment ? "block" : "hidden"
-              }`}
-            >
-              <div className="flex">
-                <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
-                <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
-                  <div className="flex items-center gap-2">
-                    <h2>Tran Thanh Quang</h2>
-                    <span className="text-xs text-placeholder">
-                      06/06/2022, 03:21:17
-                    </span>
-                  </div>
-                  <p className="text-sm font-normal">You are so handsome</p>
-                </div>
-              </div>
-              <span className="ml-24 text-xs hover:opacity-80 cursor-pointer">
-                Reply
-              </span>
-              <div className="flex ml-20 mt-2">
-                <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
-                <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
-                  <div className="flex items-center gap-2">
-                    <h2>Tran Thanh Quang</h2>
-                    <span className="text-xs text-placeholder">
-                      06/06/2022, 03:21:17
-                    </span>
-                  </div>
-                  <p className="text-sm font-normal">You are so handsome</p>
-                </div>
-              </div>
-              <form className="ml-20 mt-4 flex relative">
-                <img src={unknown} alt="" className="w-[50px] h-[50px] ml-4" />
-                <input
-                  type="text"
-                  placeholder="Enter comment..."
-                  className="mx-4 px-4 border-1 border-gray w-full rounded-5"
-                />
-                <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
-                  <IoSend />
-                </button>
-              </form>
-            </div>
             {comments.length > 0 ? (
               comments.map((comment) => (
                 <div

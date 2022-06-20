@@ -97,10 +97,9 @@ function CreatedItinerary() {
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px]">
-      <div className="border-1 border-gray flex flex-col justify-between w-full h-full mb-10 rounded-10 shadow-lg overflow-y-auto pb-10">
-        <h1 className="text-3xl text-center mb-5 mt-10 "></h1>
+      <div className="border-1 border-gray flex flex-col justify-between w-full min-h-[100vh] mb-10 rounded-10 shadow-lg overflow-y-auto pb-10">
         <div className="flex justify-start w-full ">
-          <h1 className="text-2xl text-left justify-start font-bold ml-10 mb-5 ">
+          <h1 className="text-2xl text-left justify-start font-bold ml-10 mt-10 mb-5 ">
             Itinerary
           </h1>
         </div>
