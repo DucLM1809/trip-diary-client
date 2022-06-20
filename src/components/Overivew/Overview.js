@@ -139,7 +139,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep,
+          scope: dest === dep ? 'local' : 'global',
         },
         config
       )
@@ -172,7 +172,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep,
+          scope: dest === dep ? 'local' : 'global',
         },
         config
       )
