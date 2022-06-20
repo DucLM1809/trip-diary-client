@@ -206,7 +206,7 @@ const UserHomePage = () => {
                   onClick={handleChooseScope}
                 >
                   <BiFilter display={""} />
-                  <span>{scope}</span>
+                  <span>{scope ? scope : "all"}</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
@@ -241,7 +241,7 @@ const UserHomePage = () => {
                   onClick={handleChooseType}
                 >
                   <BiFilter display={""} />
-                  <span>{type}</span>
+                  <span>{type ? type : "all" }</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
