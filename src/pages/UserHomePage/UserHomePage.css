@@ -432,3 +432,14 @@
   width: 90%;
   margin-left: 5%;
 }
+
+.PastswiperImgIcon{
+  grid-area: 1 / 1 / 2 / 3; 
+  margin-left: 365px;
+  margin-top: 10px;
+}
+.PastswiperDelete{
+  grid-area: 1 / 1 / 2 / 3; 
+  margin-left: 365px;
+  margin-top: 40px;
+}
