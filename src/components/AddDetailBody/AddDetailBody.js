@@ -191,9 +191,10 @@ function AddDetailBody() {
               .post(
                 `/trips/${tripId || tripInfo.tripID}/locations/${
                   tripLoc.locationID
-                }/images`,
+                }/files`,
                 {
                   url: img.url,
+                  type: img.type,
                 },
                 config
               )
@@ -218,7 +219,7 @@ function AddDetailBody() {
           .get(
             `/trips/${tripId || tripInfo.tripID}/locations/${
               location.id || location.locationID
-            }/images`,
+            }/files`,
             config
           )
           .catch((error) => console.log(error));
@@ -245,7 +246,7 @@ function AddDetailBody() {
       .delete(
         `/trips/${
           tripId || tripInfo.tripID
-        }/locations/${locationId}/images/${id}`,
+        }/locations/${locationId}/files/${id}`,
         config
       )
       .catch((error) => console.log(error));
@@ -357,15 +358,16 @@ function AddDetailBody() {
         locationId: parseInt(e.target.id),
         url: result,
         num: listImg.length + 1,
+        type: e.target.files[0].type.split("/")[0],
       });
       setListImg(temp);
     });
   };
 
   useEffect(() => {
-    console.log("LIST: ", locations);
+    // console.log("LIST: ", locations);
     console.log("IMAGES: ", listImg);
-  }, [locations]);
+  }, [listImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -457,11 +459,20 @@ function AddDetailBody() {
                         ) {
                           return (
                             <div key={uuidv4()} className="relative">
-                              <img
-                                className="w-[120px] h-[120px] object-cover mr-1 mb-1"
-                                src={img.url}
-                                alt=""
-                              />
+                              {img.type === "image" ? (
+                                <img
+                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                  src={img.url}
+                                  alt=""
+                                />
+                              ) : (
+                                <video
+                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                  src={img.url}
+                                  controls
+                                />
+                              )}
+
                               <TiDeleteOutline
                                 className="absolute top-1 right-1 text-dark-gray text-2xl hover:opacity-70 hover:cursor-pointer"
                                 onClick={() =>

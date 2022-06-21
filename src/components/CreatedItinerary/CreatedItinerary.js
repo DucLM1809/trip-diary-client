@@ -49,14 +49,14 @@ function CreatedItinerary() {
 
   useEffect(() => {
     console.log("LOCATIONS: ", locations);
-  }, [locations])
+  }, [locations]);
 
   const handleGetImages = async () => {
     let temp = [];
     locations.map((location) => {
       let getImages = async () => {
         let res = await api
-          .get(`/trips/${tripID}/locations/${location.id}/images`, config)
+          .get(`/trips/${tripID}/locations/${location.id}/files`, config)
           .catch((error) => console.log(error));
         if (res) {
           temp.push(res.data);
@@ -94,6 +94,10 @@ function CreatedItinerary() {
     handleGetDepartures();
     handleGetImages();
   }, [locations]);
+
+  useEffect(() => {
+    console.log(images);
+  }, [images])
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px]">
@@ -169,11 +173,18 @@ function CreatedItinerary() {
                             {" "}
                             {imgs.map((img) => {
                               if (img.locationId === location.id) {
-                                return (
+                                return img.type === "image" ? (
                                   <img
                                     key={uuidv4()}
                                     src={img.url}
                                     alt=""
+                                    className="w-[250px] h-[250px] object-cover"
+                                  />
+                                ) : (
+                                  <video
+                                    key={uuidv4()}
+                                    src={img.url}
+                                    controls
                                     className="w-[250px] h-[250px] object-cover"
                                   />
                                 );

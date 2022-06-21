@@ -35,8 +35,6 @@ const CreatedOverview = () => {
   const [userId, setUserId] = useState();
   const [utility, setUtility] = useState({ id: "", value: "" });
   const [displayUtility, setDisplayUtility] = useState(false);
-
-  const userName = localStorage.getItem("username");
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -115,9 +113,6 @@ const CreatedOverview = () => {
     } catch (error) {}
   }, [location, trip]);
 
-  const tripInfo = useSelector((state) => state.trip);
-  const commentsInfo = useSelector((state) => state.comments);
-
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: ApiKey,
     libraries: "places",
@@ -145,7 +140,6 @@ const CreatedOverview = () => {
       handlePostComment(data);
     }
     resetField("comment");
-    resetField("editComment");
   };
 
   const handlePostComment = async (data) => {
@@ -160,7 +154,7 @@ const CreatedOverview = () => {
       .catch((error) => console.log(error));
     if (res) {
       dispatch(createComment(res.data));
-      setComments((prev) => [...prev, res.data]);
+      handleGetComments();
     }
   };
 
@@ -177,17 +171,13 @@ const CreatedOverview = () => {
 
   const handleGetComment = async (id) => {
     let res = await api
-      .get(
-        `/trips/${location.pathname.split("/")[3]}/comments/${id}`,
-        config
-      )
+      .get(`/trips/${location.pathname.split("/")[3]}/comments/${id}`, config)
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res);
       if (!res.data.commentId) {
-        setValue("editComment", res.data.content)
+        setValue("editComment", res.data.content);
       } else {
-        setValue("editReply", res.data.content)
+        setValue("editReply", res.data.content);
       }
     }
   };
@@ -216,9 +206,6 @@ const CreatedOverview = () => {
     let res = await api
       .post(`/trips/${location.pathname.split("/")[3]}/likes`, {}, config)
       .catch((error) => console.log(error));
-    if (res) {
-      console.log("Likes: ", res.data);
-    }
   };
 
   const handleDelLike = async () => {
@@ -310,6 +297,7 @@ const CreatedOverview = () => {
       )
       .catch((error) => console.log(error));
     if (res) {
+      console.log(res);
       setReplies((prev) => [...prev, res.data]);
     }
   };
@@ -343,14 +331,72 @@ const CreatedOverview = () => {
       handlePostReply(data);
     }
     resetField("reply");
-    resetField("editReply");
   };
 
   const handleDisplayReply = (e) => {
     setUtility({ id: e.target.id - 0, value: e.target.textContent });
     setReplyId(e.target.id);
+    handleGetComment(e.target.id);
     setDisplayReply(!displayReply);
   };
+
+  const handlePostLikeComment = async (id) => {
+    let res = await api
+      .post(
+        `/trips/${location.pathname.split("/")[3]}/comments/${id}/likes`,
+        {},
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log(res.data);
+      handleGetComments();
+    }
+  };
+
+  const handleDelLikeComment = async (id) => {
+    let res = await api
+      .delete(
+        `/trips/${location.pathname.split("/")[3]}/comments/${id}/likes`,
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      handleGetComments();
+    }
+  };
+
+  const handleLikeComment = (e) => {
+    console.log(e.target.id);
+    comments.map((comment) => {
+      console.log();
+      if (comment.id === e.target.id - 0 && !comment.hasLiked) {
+        handlePostLikeComment(e.target.id);
+      } else if (comment.id === e.target.id - 0 && comment.hasLiked) {
+        handleDelLikeComment(e.target.id);
+      }
+    });
+    replies.map((reply) => {
+      console.log();
+      if (reply.id === e.target.id - 0 && !reply.hasLiked) {
+        handlePostLikeComment(e.target.id);
+      } else if (reply.id === e.target.id - 0 && reply.hasLiked) {
+        handleDelLikeComment(e.target.id);
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log(utility);
+  }, [utility]);
+
+  useEffect(() => {
+    console.log(replies);
+  }, [replies]);
+
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -523,7 +569,7 @@ const CreatedOverview = () => {
                       />
                       <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
                         <div className="flex items-center gap-2">
-                          <h2>{userName}</h2>
+                          <h2>{(comment?.author?.email.split("@"))[0]}</h2>
                           <span className="text-xs text-placeholder">
                             {comment?.createdAt?.split("T")[0]}, 03:21:17
                           </span>
@@ -564,18 +610,28 @@ const CreatedOverview = () => {
                       </div>
                     </div>
                     <span
-                      className="ml-24 text-xs hover:opacity-80 cursor-pointer"
+                      className={`ml-24 text-xs hover:opacity-80 cursor-pointer ${
+                        comment.hasLiked ? "text-light-blue" : ""
+                      }`}
+                      id={comment.id}
+                      onClick={(e) => handleLikeComment(e)}
+                    >
+                      Like
+                    </span>
+                    <span
+                      className="ml-2 text-xs hover:opacity-80 cursor-pointer"
                       id={comment.id}
                       onClick={(e) => handleDisplayReply(e)}
                     >
                       Reply
                     </span>
                     {replies.length > 0 ? (
-                      replies.map((reply) =>
+                      replies.map((reply, i) =>
                         utility.value === "Edit" &&
                         utility.id === reply.id &&
                         reply.commentId === comment.id ? (
                           <form
+                            key={i}
                             className={`ml-20 mt-4 flex relative ${
                               utility.id === reply.id ? "block" : "hidden"
                             }`}
@@ -599,58 +655,121 @@ const CreatedOverview = () => {
                         ) : (
                           <>
                             {reply.commentId === comment.id ? (
-                              <div
-                                key={reply.id}
-                                className="flex items-center  ml-20 mt-2"
-                              >
-                                <img
-                                  src={unknown}
-                                  alt=""
-                                  className="w-[50px] h-[50px] ml-4"
-                                />
-                                <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
-                                  <div className="flex items-center gap-2">
-                                    <h2>{userName}</h2>
-                                    <span className="text-xs text-placeholder">
-                                      06/06/2022, 03:21:17
-                                    </span>
+                              <div>
+                                <div
+                                  key={reply.id}
+                                  className="flex items-center ml-20 mt-2"
+                                >
+                                  <img
+                                    src={unknown}
+                                    alt=""
+                                    className="w-[50px] h-[50px] ml-4"
+                                  />
+                                  <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
+                                    <div className="flex items-center gap-2">
+                                      <h2>
+                                        {(reply?.author?.email?.split("@"))[0]}
+                                      </h2>
+                                      <span className="text-xs text-placeholder">
+                                        06/06/2022, 03:21:17
+                                      </span>
+                                    </div>
+                                    <p className="text-sm font-normal">
+                                      {/* {users.map((user, index) =>
+                                      user.commentId === reply.id &&
+                                      i === index ? ( */}
+                                      <span key={i} className="text-light-blue">
+                                        @
+                                        {
+                                          (comment?.author?.email?.split(
+                                            "@"
+                                          ))[0]
+                                        }{" "}
+                                      </span>
+                                      {/* ) : (
+                                        <></>
+                                      )
+                                    )} */}
+                                      {reply.content}
+                                    </p>
                                   </div>
-                                  <p className="text-sm font-normal">
-                                    {reply.content}
-                                  </p>
-                                </div>
-                                <div className="relative">
-                                  <div
-                                    className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
-                                    id={reply.id}
-                                    onClick={(e) => handleDisplayUtil(e)}
-                                  >
-                                    <BsThreeDots
+
+                                  <div className="relative">
+                                    <div
+                                      className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
                                       id={reply.id}
                                       onClick={(e) => handleDisplayUtil(e)}
-                                    />
-                                  </div>
-                                  {displayUtility && utility.id === reply.id ? (
-                                    <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
-                                      <p
+                                    >
+                                      <BsThreeDots
                                         id={reply.id}
-                                        className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
-                                        onClick={(e) => handleChooseUtil(e)}
-                                      >
-                                        Edit
-                                      </p>
-                                      <p
-                                        id={reply.id}
-                                        className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                                        onClick={(e) => handleChooseUtil(e)}
-                                      >
-                                        Delete
-                                      </p>
+                                        onClick={(e) => handleDisplayUtil(e)}
+                                      />
                                     </div>
-                                  ) : (
-                                    <></>
-                                  )}
+                                    {displayUtility &&
+                                    utility.id === reply.id ? (
+                                      <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                                        <p
+                                          id={reply.id}
+                                          className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
+                                          onClick={(e) => handleChooseUtil(e)}
+                                        >
+                                          Edit
+                                        </p>
+                                        <p
+                                          id={reply.id}
+                                          className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
+                                          onClick={(e) => handleChooseUtil(e)}
+                                        >
+                                          Delete
+                                        </p>
+                                      </div>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </div>
                                 </div>
+                                <span
+                                  className={`ml-24 text-xs hover:opacity-80 cursor-pointer ${
+                                    reply.hasLiked ? "text-light-blue" : ""
+                                  }`}
+                                  id={reply.id}
+                                  onClick={(e) => handleLikeComment(e)}
+                                >
+                                  Like
+                                </span>
+                                <span
+                                  className="ml-2 text-xs hover:opacity-80 cursor-pointer"
+                                  id={reply.id}
+                                  onClick={(e) => handleDisplayReply(e)}
+                                >
+                                  Reply
+                                </span>
+                                {utility.value === "Reply" &&
+                                utility.id === reply.id ? (
+                                  <form
+                                    className={`ml-20 mt-4 flex relative ${
+                                      displayReply ? "block" : "hidden"
+                                    }`}
+                                    onSubmit={handleSubmit(onSubmitReply)}
+                                  >
+                                    <img
+                                      src={unknown}
+                                      alt=""
+                                      className="w-[50px] h-[50px] ml-4"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Enter comment..."
+                                      {...register(`reply`)}
+                                      className="mx-4 px-4 border-1 border-gray w-full rounded-5"
+                                    />
+                                    <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
+                                      <IoSend />
+                                    </button>
+                                  </form>
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             ) : (
                               <></>
