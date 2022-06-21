@@ -384,34 +384,43 @@ const UserHomePage = () => {
           <div className="PastTripSwiper">
           {pasttrips.length > 0 ? (
                 pasttrips.map((trip) => (
-                  <SwiperSlide>
+                                    <SwiperSlide key={trip.id} className="z-0">
+                    <div className="swiperNextTrip">
+                      <img
+                        className="imgNextTrip object-cover"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      />
 
-                    <div key={uuidv4()}>
-                      <div className="swiperNextTrip">
+                      <div className="CountryNextTrip">
                         <img
-                          className="imgNextTrip"
-                          alt=""
-                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                          className="CountryCircle"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
                         />
+                      </div>
 
-                        <div className="CountryNextTrip">
-                          <img
-                            className="CountryCircle"
-                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                          />
-                        </div>
-                        <div className="swiperImgIcon">
-                          <Link to="/">
-                            <IoPersonCircleOutline />
-                          </Link>
-                        </div>
-                        <div className="swiperNextTripText">
-                          <h2 className="tripName">{trip.name}  </h2>
-
-                        </div>
+                      <div className="PastswiperImgIcon">
+                        <Link
+                          to={`/edit/trip/${trip.id}`}
+                          className="text-3xl text-gray hover:opacity-80"
+                        >
+                          <FaEdit />
+                        </Link>
+                      </div>
+                      <div className="PastswiperDelete">
+                        <MdDelete
+                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                          // onClick={() => handleDeleteTrip(trip.id)}
+                          onClick={() => openModal(trip.id)}
+                        />
+                      </div>
+                      <div className="swiperNextTripText">
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
                       </div>
                     </div>
-                    </SwiperSlide>
+                  </SwiperSlide>
                 ))
               ) : (
                 <></>
