@@ -13,7 +13,6 @@ import unknown from "../../assests/images/unknown.png";
 import { v4 as uuidv4 } from "uuid";
 import api from "../../api/axios";
 import { createComment, getComments } from "../../redux/actions";
-import { Prev } from "react-bootstrap/esm/PageItem";
 
 const CreatedOverview = () => {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
@@ -25,9 +24,10 @@ const CreatedOverview = () => {
   const [displayComment, setDisplayComment] = useState(false);
   const [editComment, setEditComment] = useState(false);
   const [editId, setEditId] = useState();
-  const [editContent, setEditContent] = useState();
   const [replies, setReplies] = useState([]);
+  const [replyId, setReplyId] = useState();
   const [displayReply, setDisplayReply] = useState(false);
+  const [editReply, setEditReply] = useState(false);
   const [trip, setTrip] = useState();
   const [trips, setTrips] = useState();
   const [departure, setDeparture] = useState();
@@ -134,6 +134,7 @@ const CreatedOverview = () => {
     register,
     handleSubmit,
     resetField,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -144,6 +145,7 @@ const CreatedOverview = () => {
       handlePostComment(data);
     }
     resetField("comment");
+    resetField("editComment");
   };
 
   const handlePostComment = async (data) => {
@@ -168,7 +170,25 @@ const CreatedOverview = () => {
       .catch((error) => console.log(error));
     if (res) {
       dispatch(getComments(res.data));
-      setComments(res.data);
+      setComments(res.data.filter((comment) => !comment.commentId));
+      setReplies(res.data.filter((comment) => comment.commentId));
+    }
+  };
+
+  const handleGetComment = async (id) => {
+    let res = await api
+      .get(
+        `/trips/${location.pathname.split("/")[3]}/comments/${id}`,
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      console.log(res);
+      if (!res.data.commentId) {
+        setValue("editComment", res.data.content)
+      } else {
+        setValue("editReply", res.data.content)
+      }
     }
   };
 
@@ -179,13 +199,6 @@ const CreatedOverview = () => {
   useEffect(() => {
     setNumComments(comments.length);
   }, [comments]);
-
-  const onSubmitReply = (data) => {
-    let listReplies = [...replies];
-    listReplies.push({ id: uuidv4(), content: data.reply });
-    setReplies(listReplies);
-    resetField("reply");
-  };
 
   const handleLike = () => {
     setLike(true);
@@ -240,10 +253,6 @@ const CreatedOverview = () => {
     setDisplayComment(!displayComment);
   };
 
-  const handleDisplayReply = () => {
-    setDisplayReply(!displayReply);
-  };
-
   const handleDeleteComment = async (id) => {
     let res = await api
       .delete(
@@ -263,10 +272,8 @@ const CreatedOverview = () => {
       )
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res);
       setUtility({ id: "", value: "" });
       setEditComment(false);
-      setEditContent(null);
     }
   };
 
@@ -284,10 +291,66 @@ const CreatedOverview = () => {
     if (utility.value === "Delete") {
       handleDeleteComment(utility.id);
     } else if (utility.value === "Edit") {
+      handleGetComment(utility.id);
       setEditComment(true);
+      setEditReply(true);
       setEditId(utility.id);
     }
   }, [utility]);
+
+  const handlePostReply = async (data) => {
+    let res = await api
+      .post(
+        `/trips/${location.pathname.split("/")[3]}/comments`,
+        {
+          content: data.reply,
+          commentId: replyId,
+        },
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      setReplies((prev) => [...prev, res.data]);
+    }
+  };
+
+  const handleEditReply = async (data) => {
+    let res = await api
+      .put(
+        `/trips/${location.pathname.split("/")[3]}/comments/${editId}`,
+        {
+          content: data.editReply,
+          commentId: replyId,
+        },
+        config
+      )
+      .catch((error) => console.log(error));
+    if (res) {
+      setUtility({ id: "", value: "" });
+      setEditReply(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetComments();
+  }, [editReply]);
+
+  const onSubmitReply = (data) => {
+    console.log(data);
+    if (editReply) {
+      handleEditReply(data);
+    } else {
+      handlePostReply(data);
+    }
+    resetField("reply");
+    resetField("editReply");
+  };
+
+  const handleDisplayReply = (e) => {
+    setUtility({ id: e.target.id - 0, value: e.target.textContent });
+    setReplyId(e.target.id);
+    setDisplayReply(!displayReply);
+  };
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -423,6 +486,7 @@ const CreatedOverview = () => {
               comments.map((comment) =>
                 utility.value === "Edit" && utility.id === comment.id ? (
                   <form
+                    key={comment.id}
                     className={`my-4 flex relative ${
                       displayComment ? "block" : "hidden"
                     }`}
@@ -478,7 +542,7 @@ const CreatedOverview = () => {
                           />
                         </div>
                         {displayUtility && utility.id === comment.id ? (
-                          <div className="absolute left-3 border-1 border-gray rounded-5">
+                          <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
                             <p
                               id={comment.id}
                               className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
@@ -501,87 +565,127 @@ const CreatedOverview = () => {
                     </div>
                     <span
                       className="ml-24 text-xs hover:opacity-80 cursor-pointer"
-                      onClick={handleDisplayReply}
+                      id={comment.id}
+                      onClick={(e) => handleDisplayReply(e)}
                     >
                       Reply
                     </span>
                     {replies.length > 0 ? (
-                      replies.map((reply) => (
-                        <div key={reply.id} className="flex ml-20 mt-2">
-                          <img
-                            src={unknown}
-                            alt=""
-                            className="w-[50px] h-[50px] ml-4"
-                          />
-                          <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
-                            <div className="flex items-center gap-2">
-                              <h2>{userName}</h2>
-                              <span className="text-xs text-placeholder">
-                                06/06/2022, 03:21:17
-                              </span>
-                            </div>
-                            <p className="text-sm font-normal">
-                              {reply.content}
-                            </p>
-                          </div>
-                          <div className="relative">
-                            <div
-                              className="flex justify-center items-center cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
-                              id={comment.id}
-                              onClick={(e) => handleDisplayUtil(e)}
-                            >
-                              <BsThreeDots
-                                id={comment.id}
-                                onClick={(e) => handleDisplayUtil(e)}
-                              />
-                            </div>
-                            {displayUtility && utility.id === comment.id ? (
-                              <div className="absolute left-3 border-1 border-gray rounded-5">
-                                <p
-                                  id={comment.id}
-                                  className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
-                                  onClick={(e) => handleChooseUtil(e)}
-                                >
-                                  Edit
-                                </p>
-                                <p
-                                  id={comment.id}
-                                  className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                                  onClick={(e) => handleChooseUtil(e)}
-                                >
-                                  Delete
-                                </p>
+                      replies.map((reply) =>
+                        utility.value === "Edit" &&
+                        utility.id === reply.id &&
+                        reply.commentId === comment.id ? (
+                          <form
+                            className={`ml-20 mt-4 flex relative ${
+                              utility.id === reply.id ? "block" : "hidden"
+                            }`}
+                            onSubmit={handleSubmit(onSubmitReply)}
+                          >
+                            <img
+                              src={unknown}
+                              alt=""
+                              className="w-[50px] h-[50px] ml-4"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Enter comment..."
+                              {...register(`editReply`)}
+                              className="mx-4 px-4 border-1 border-gray w-full rounded-5"
+                            />
+                            <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
+                              <IoSend />
+                            </button>
+                          </form>
+                        ) : (
+                          <>
+                            {reply.commentId === comment.id ? (
+                              <div
+                                key={reply.id}
+                                className="flex items-center  ml-20 mt-2"
+                              >
+                                <img
+                                  src={unknown}
+                                  alt=""
+                                  className="w-[50px] h-[50px] ml-4"
+                                />
+                                <div className="ml-4 bg-aqua rounded-5 py-2 px-4">
+                                  <div className="flex items-center gap-2">
+                                    <h2>{userName}</h2>
+                                    <span className="text-xs text-placeholder">
+                                      06/06/2022, 03:21:17
+                                    </span>
+                                  </div>
+                                  <p className="text-sm font-normal">
+                                    {reply.content}
+                                  </p>
+                                </div>
+                                <div className="relative">
+                                  <div
+                                    className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
+                                    id={reply.id}
+                                    onClick={(e) => handleDisplayUtil(e)}
+                                  >
+                                    <BsThreeDots
+                                      id={reply.id}
+                                      onClick={(e) => handleDisplayUtil(e)}
+                                    />
+                                  </div>
+                                  {displayUtility && utility.id === reply.id ? (
+                                    <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                                      <p
+                                        id={reply.id}
+                                        className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
+                                        onClick={(e) => handleChooseUtil(e)}
+                                      >
+                                        Edit
+                                      </p>
+                                      <p
+                                        id={reply.id}
+                                        className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
+                                        onClick={(e) => handleChooseUtil(e)}
+                                      >
+                                        Delete
+                                      </p>
+                                    </div>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </div>
                               </div>
                             ) : (
                               <></>
                             )}
-                          </div>
-                        </div>
-                      ))
+                          </>
+                        )
+                      )
                     ) : (
                       <></>
                     )}
-                    <form
-                      className={`ml-20 mt-4 flex relative ${
-                        displayReply ? "block" : "hidden"
-                      }`}
-                      onSubmit={handleSubmit(onSubmitReply)}
-                    >
-                      <img
-                        src={unknown}
-                        alt=""
-                        className="w-[50px] h-[50px] ml-4"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Enter comment..."
-                        {...register("reply")}
-                        className="mx-4 px-4 border-1 border-gray w-full rounded-5"
-                      />
-                      <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
-                        <IoSend />
-                      </button>
-                    </form>
+                    {utility.value === "Reply" && utility.id === comment.id ? (
+                      <form
+                        className={`ml-20 mt-4 flex relative ${
+                          displayReply ? "block" : "hidden"
+                        }`}
+                        onSubmit={handleSubmit(onSubmitReply)}
+                      >
+                        <img
+                          src={unknown}
+                          alt=""
+                          className="w-[50px] h-[50px] ml-4"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Enter comment..."
+                          {...register(`reply`)}
+                          className="mx-4 px-4 border-1 border-gray w-full rounded-5"
+                        />
+                        <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
+                          <IoSend />
+                        </button>
+                      </form>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 )
               )
