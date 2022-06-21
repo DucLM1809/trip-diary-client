@@ -310,6 +310,9 @@ const UserHomePage = () => {
               {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
                   <SwiperSlide key={trip.id} className="z-0">
+
+                    {console.log(trip.scope)}
+
                     <div className="swiperNextTrip">
                       <img
                         className="imgNextTrip object-cover"
@@ -352,6 +355,7 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
+          
           <div className="NextTripTitle_1">
             <Link to="/nexttrip">My next trips</Link>
           </div>
