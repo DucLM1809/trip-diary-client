@@ -194,6 +194,7 @@ function AddDetailBody() {
                 }/files`,
                 {
                   url: img.url,
+                  type: img.type,
                 },
                 config
               )
@@ -357,17 +358,16 @@ function AddDetailBody() {
         locationId: parseInt(e.target.id),
         url: result,
         num: listImg.length + 1,
+        type: e.target.files[0].type.split("/")[0],
       });
       setListImg(temp);
     });
   };
 
   useEffect(() => {
-    console.log("LIST: ", locations);
+    // console.log("LIST: ", locations);
     console.log("IMAGES: ", listImg);
-  }, [locations]);
-
-  console.log("Ass:"+sasToken)
+  }, [listImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -449,7 +449,6 @@ function AddDetailBody() {
                     <p className="text-black mb-2">Images</p>
                     <AiFillPicture className="my-auto" />
                   </div>
-                  {console.log(listImg)}
                   <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
                     {listImg.length > 0 ? (
                       listImg.map((img) => {
@@ -460,11 +459,20 @@ function AddDetailBody() {
                         ) {
                           return (
                             <div key={uuidv4()} className="relative">
-                              <img
-                                className="w-[120px] h-[120px] object-cover mr-1 mb-1"
-                                src={img.url}
-                                alt=""
-                              />
+                              {img.type === "image" ? (
+                                <img
+                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                  src={img.url}
+                                  alt=""
+                                />
+                              ) : (
+                                <video
+                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                  src={img.url}
+                                  controls
+                                />
+                              )}
+
                               <TiDeleteOutline
                                 className="absolute top-1 right-1 text-dark-gray text-2xl hover:opacity-70 hover:cursor-pointer"
                                 onClick={() =>

@@ -49,7 +49,7 @@ function CreatedItinerary() {
 
   useEffect(() => {
     console.log("LOCATIONS: ", locations);
-  }, [locations])
+  }, [locations]);
 
   const handleGetImages = async () => {
     let temp = [];
@@ -95,9 +95,13 @@ function CreatedItinerary() {
     handleGetImages();
   }, [locations]);
 
+  useEffect(() => {
+    console.log(images);
+  }, [images])
+
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px]">
-      <div className="border-1 border-gray flex flex-col justify-between w-full min-h-[100vh] mb-10 rounded-10 shadow-lg overflow-y-auto pb-10">
+      <div className="border-1 border-gray flex flex-col justify-between w-full  mb-10 rounded-10 shadow-lg overflow-y-auto pb-10">
         <div className="flex justify-start w-full ">
           <h1 className="text-2xl text-left justify-start font-bold ml-10 mt-10 mb-5 ">
             Itinerary
@@ -107,7 +111,7 @@ function CreatedItinerary() {
         {locations ? (
           locations.map((location, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="">
                 <div className="flex justify-between w-100 py-[5px] ">
                   <AiFillCaretUp className="my-auto text-2xl ml-10"></AiFillCaretUp>
                   <span className="text-xl pl-4">Location {index + 1}</span>
@@ -169,11 +173,18 @@ function CreatedItinerary() {
                             {" "}
                             {imgs.map((img) => {
                               if (img.locationId === location.id) {
-                                return (
+                                return img.type === "image" ? (
                                   <img
                                     key={uuidv4()}
                                     src={img.url}
                                     alt=""
+                                    className="w-[250px] h-[250px] object-cover"
+                                  />
+                                ) : (
+                                  <video
+                                    key={uuidv4()}
+                                    src={img.url}
+                                    controls
                                     className="w-[250px] h-[250px] object-cover"
                                   />
                                 );
