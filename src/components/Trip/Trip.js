@@ -36,7 +36,7 @@ const Trip = () => {
                   {res?.name}
                 </div>
                 <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  1000 likes
+                  {res?.numOfLikes} {res?.numOfLikes > 1 ? 'likes' : 'like'}
                 </div>
                 <img
                   src={unknown}
