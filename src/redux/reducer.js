@@ -30,6 +30,7 @@ const initState = {
     notes: "",
   },
   searchRes: [],
+  comments: [],
 };
 
 const rootReducer = (state = initState, action) => {
@@ -209,6 +210,24 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         searchRes: action.payload,
+      };
+    }
+    case "CREATE_COMMENT": {
+      return {
+        ...state,
+        comments: [
+          ...state.comments,
+          {
+            id: action.payload.id,
+            content: action.payload.content,
+          },
+        ],
+      };
+    }
+    case "GET_COMMENTS": {
+      return {
+        ...state,
+        comments: action.payload,
       };
     }
     default:

@@ -106,3 +106,17 @@ export const getSearchResponse = (payload) => {
     payload,
   };
 };
+
+export const createComment = (data) => {
+  return {
+    type: "CREATE_COMMENT",
+    payload: data,
+  };
+};
+
+export const getComments = (data) => {
+  return {
+    type: "GET_COMMENTS",
+    payload: data,
+  };
+};
