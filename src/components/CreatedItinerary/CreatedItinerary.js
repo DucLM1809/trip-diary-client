@@ -56,7 +56,7 @@ function CreatedItinerary() {
     locations.map((location) => {
       let getImages = async () => {
         let res = await api
-          .get(`/trips/${tripID}/locations/${location.id}/images`, config)
+          .get(`/trips/${tripID}/locations/${location.id}/files`, config)
           .catch((error) => console.log(error));
         if (res) {
           temp.push(res.data);

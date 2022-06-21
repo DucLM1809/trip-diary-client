@@ -191,7 +191,7 @@ function AddDetailBody() {
               .post(
                 `/trips/${tripId || tripInfo.tripID}/locations/${
                   tripLoc.locationID
-                }/images`,
+                }/files`,
                 {
                   url: img.url,
                 },
@@ -218,7 +218,7 @@ function AddDetailBody() {
           .get(
             `/trips/${tripId || tripInfo.tripID}/locations/${
               location.id || location.locationID
-            }/images`,
+            }/files`,
             config
           )
           .catch((error) => console.log(error));
@@ -245,7 +245,7 @@ function AddDetailBody() {
       .delete(
         `/trips/${
           tripId || tripInfo.tripID
-        }/locations/${locationId}/images/${id}`,
+        }/locations/${locationId}/files/${id}`,
         config
       )
       .catch((error) => console.log(error));
@@ -367,6 +367,8 @@ function AddDetailBody() {
     console.log("IMAGES: ", listImg);
   }, [locations]);
 
+  console.log("Ass:"+sasToken)
+
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
       <div className="border-1 border-gray flex flex-col justify-between w-full h-full mb-10 rounded-10 shadow-lg overflow-y-auto">
@@ -447,6 +449,7 @@ function AddDetailBody() {
                     <p className="text-black mb-2">Images</p>
                     <AiFillPicture className="my-auto" />
                   </div>
+                  {console.log(listImg)}
                   <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
                     {listImg.length > 0 ? (
                       listImg.map((img) => {

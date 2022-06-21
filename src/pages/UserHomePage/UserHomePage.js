@@ -24,8 +24,8 @@ import { Modal } from "../../components";
 const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
-  const [type, setType] = useState("all");
-  const [scope, setScope] = useState("all");
+  const [type, setType] = useState(null);
+  const [scope, setScope] = useState(null);
   const [display, setDisplay] = useState(false);
   const [displayArea, setDisplayArea] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -44,10 +44,10 @@ const UserHomePage = () => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
-    params: {
-      type:type ,
-      scope: scope,
-    },
+    // params: {
+    //   type: type,
+    //   scope: scope,
+    // },
   };
 
   if (accessToken) {
@@ -73,15 +73,15 @@ const UserHomePage = () => {
     handleGetTrips();
   }, []);
 
-  // const handleDeleteTrip = async (id) => {
-  //   let res = await api
-  //     .delete(`/trips/${id}`, config)
-  //     .catch((error) => console.log(error));
-  //   if (res) {
-  //     setIsDeleted(true);
-  //     console.log("DELETE SUCCESSFULL");
-  //   }
-  // };
+  const handleDeleteTrip = async (id) => {
+    let res = await api
+      .delete(`/trips/${id}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setIsDeleted(true);
+      console.log("DELETE SUCCESSFULL");
+    }
+  };
 
   useEffect(() => {
     if (isDeleted) {
@@ -91,7 +91,37 @@ const UserHomePage = () => {
 
   const handleFilterType = async () => {
     let res = await api
-      .get("/trips/me", config)
+      .get("/trips/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+        params: {
+          type: type,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrips(res.data);
+      setIsDeleted(false);
+    }
+  };
+
+  const handleFilterScope = async () => {
+    let res = await api
+      .get("/trips/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+        params: {
+          scope: scope,
+        },
+      })
       .catch((error) => console.log(error));
     if (res) {
       setTrips(res.data);
@@ -104,7 +134,7 @@ const UserHomePage = () => {
   }, [type]);
 
   useEffect(() => {
-    handleFilterType();
+    handleFilterScope();
   }, [scope]);
 
   const handleChooseType = () => {
@@ -125,6 +155,7 @@ const UserHomePage = () => {
       setDisplay(false);
     } else {
       setType(null);
+      setScope(null);
       setDisplay(false);
     }
   };
@@ -138,6 +169,7 @@ const UserHomePage = () => {
       setScope("global");
       setDisplayArea(false);
     } else {
+      setType(null);
       setScope(null);
       setDisplayArea(false);
     }
@@ -166,8 +198,6 @@ const UserHomePage = () => {
 
                 <div className="profileInfo">
                   <h4 className="profileInfoName">{userName}</h4>
-                  {/* <h3>/tungtung</h3> */}
-                  {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
                 <button className="editProfile">Edit Profile</button>
                 <div className="iconcamera cursor-pointer">
@@ -199,26 +229,20 @@ const UserHomePage = () => {
               <div className="f1 cursor-pointer" onClick={(e) => handleType(e)}>
                 All trip
               </div>
-              
+
               <div className="f2 flex flex-col">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={handleChooseScope}
                 >
                   <BiFilter display={""} />
-                  <span>{scope ? scope : "all"}</span>
+                  <span>{scope || "Area"}</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
                     displayArea ? "block" : "hidden"
                   }`}
                 >
-                  <div
-                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
-                    onClick={(e) => handleScope(e)}
-                  >
-                    All
-                  </div>
                   <div
                     className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
                     onClick={(e) => handleScope(e)}
@@ -234,26 +258,19 @@ const UserHomePage = () => {
                 </div>
               </div>
 
-
               <div className="f3 flex flex-col">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={handleChooseType}
                 >
                   <BiFilter display={""} />
-                  <span>{type ? type : "all" }</span>
+                  <span>{type || "Type"}</span>
                 </div>
                 <div
                   className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
                     display ? "block" : "hidden"
                   }`}
                 >
-                  <div
-                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
-                    onClick={(e) => handleType(e)}
-                  >
-                    All
-                  </div>
                   <div
                     className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
                     onClick={(e) => handleType(e)}
@@ -290,21 +307,23 @@ const UserHomePage = () => {
               {trips.length > 0 ? (
                 trips.map((trip) => (
                   <SwiperSlide key={trip.id} className="z-0">
-                    {console.log("Scope: " +trip.scope)}
+
+                    {console.log(trip.scope)}
+
                     <div className="swiperNextTrip">
                       <img
                         className="imgNextTrip object-cover"
                         alt=""
                         src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                       />
-                      
+
                       <div className="CountryNextTrip">
                         <img
                           className="CountryCircle"
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
                         />
                       </div>
-                      
+
                       <div className="swiperImgIcon">
                         <Link
                           to={`/edit/trip/${trip.id}`}
@@ -333,6 +352,7 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
+          
           <div className="NextTripTitle_1">
             <Link to="/nexttrip">My next trips</Link>
           </div>
