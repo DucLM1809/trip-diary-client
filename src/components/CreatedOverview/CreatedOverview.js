@@ -9,6 +9,8 @@ import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { FacebookShareButton } from "react-share";
+import { RiShareForwardLine } from "react-icons/ri";
 import unknown from "../../assests/images/unknown.png";
 import { v4 as uuidv4 } from "uuid";
 import api from "../../api/axios";
@@ -398,6 +400,12 @@ const CreatedOverview = () => {
     console.log(comments);
   }, [comments]);
 
+  useEffect(() => {
+
+    console.log(location);
+  }, [])
+
+  const shareURL = "https://triparis.work";
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
       <div
@@ -509,6 +517,14 @@ const CreatedOverview = () => {
                 <span className="text-base ml-1">
                   {numComments} {numComments > 1 ? "Comments" : "Comment"}
                 </span>
+              </div>
+              <div className="flex items-center text-2xl m-2 ">
+                <FacebookShareButton url = {shareURL}>
+                  <RiShareForwardLine />
+                </FacebookShareButton>
+              </div>
+              <div className="flex items-center text-2xl">
+                <span className="text-base"> Share </span>
               </div>
             </div>
             <form
