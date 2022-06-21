@@ -1,15 +1,20 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import des5 from "../../assests/images/Destination5.png";
 import des6 from "../../assests/images/Destination6.jpg";
 import city from "../../assests/images/city.jpg";
-
+import api from "../../api/axios";
 import unknown from "../../assests/images/unknown.png";
 import { useSelector } from "react-redux";
 import pnf from "../../assests/images/pnf.png";
+import { v4 as uuidv4 } from "uuid";
+
 
 const Trip = () => {
+
   const searchRes = useSelector((state) => state.searchRes);
+
+
 
   return (
     <div className="pt-8 flex gap-4 px-3 flex-wrap">
@@ -20,7 +25,7 @@ const Trip = () => {
               key={index}
               className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in"
             >
-              <Link to="/home">
+              <Link to={`/trips/trip/${res.id}`} key={uuidv4()}>
                 <img
                   src={res?.coverImgUrl || city}
                   alt=""
