@@ -185,7 +185,7 @@ function CreatedItinerary() {
                                     key={uuidv4()}
                                     src={img.url}
                                     controls
-                                    className="w-[250px] h-[250px] object-cover"
+                                    className="w-[250px] h-[250px]"
                                   />
                                 );
                               }
