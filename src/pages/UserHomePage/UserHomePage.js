@@ -217,9 +217,7 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripTitle">
-            <Link to="/pasttrip">
             <h1>My past trips</h1>
-            </Link>
             
           </div>
 
@@ -271,7 +269,10 @@ const UserHomePage = () => {
             </Swiper>
           </div>
           <div className="PastTripButton">
+          <Link to="/pasttrip">
+
             <button className="buttonShow">Show all</button>
+          </Link>
           </div>
         </div>
       </div>
