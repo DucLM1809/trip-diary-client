@@ -189,7 +189,7 @@ const CreatedOverview = () => {
   }, [editComment]);
 
   useEffect(() => {
-    setNumComments(comments.length);
+    setNumComments(comments.length + replies.length);
   }, [comments]);
 
   const handleLike = () => {
@@ -401,9 +401,8 @@ const CreatedOverview = () => {
   }, [comments]);
 
   useEffect(() => {
-
     console.log(location);
-  }, [])
+  }, []);
 
   const shareURL = "https://triparis.work";
   return (
@@ -519,7 +518,7 @@ const CreatedOverview = () => {
                 </span>
               </div>
               <div className="flex items-center text-2xl m-2 ">
-                <FacebookShareButton url = {shareURL}>
+                <FacebookShareButton url={shareURL}>
                   <RiShareForwardLine />
                 </FacebookShareButton>
               </div>
@@ -587,7 +586,8 @@ const CreatedOverview = () => {
                         <div className="flex items-center gap-2">
                           <h2>{(comment?.author?.email.split("@"))[0]}</h2>
                           <span className="text-xs text-placeholder">
-                            {comment?.createdAt?.split("T")[0]}, 03:21:17
+                            {comment?.createdAt?.split("T")[0]},{" "}
+                            {comment?.createdAt?.split("T")[1].split(".")[0]}
                           </span>
                         </div>
                         <p className="text-sm font-normal">{comment.content}</p>
@@ -632,7 +632,8 @@ const CreatedOverview = () => {
                       id={comment.id}
                       onClick={(e) => handleLikeComment(e)}
                     >
-                      Like
+                      {comment?.numOfLikes || ""}{" "}
+                      {comment?.numOfLikes > 1 ? "Likes" : "Like"}
                     </span>
                     <span
                       className="ml-2 text-xs hover:opacity-80 cursor-pointer"
@@ -687,25 +688,23 @@ const CreatedOverview = () => {
                                         {(reply?.author?.email?.split("@"))[0]}
                                       </h2>
                                       <span className="text-xs text-placeholder">
-                                        06/06/2022, 03:21:17
+                                        {reply?.createdAt?.split("T")[0]},{" "}
+                                        {
+                                          reply?.createdAt
+                                            ?.split("T")[1]
+                                            .split(".")[0]
+                                        }
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal">
-                                      {/* {users.map((user, index) =>
-                                      user.commentId === reply.id &&
-                                      i === index ? ( */}
-                                      <span key={i} className="text-light-blue">
+                                      {/* <span key={i} className="text-light-blue">
                                         @
                                         {
                                           (comment?.author?.email?.split(
                                             "@"
                                           ))[0]
                                         }{" "}
-                                      </span>
-                                      {/* ) : (
-                                        <></>
-                                      )
-                                    )} */}
+                                      </span> */}
                                       {reply.content}
                                     </p>
                                   </div>
@@ -751,15 +750,16 @@ const CreatedOverview = () => {
                                   id={reply.id}
                                   onClick={(e) => handleLikeComment(e)}
                                 >
-                                  Like
+                                  {reply?.numOfLikes || ""}{" "}
+                                  {reply?.numOfLikes > 1 ? "Likes" : "Like"}
                                 </span>
-                                <span
+                                {/* <span
                                   className="ml-2 text-xs hover:opacity-80 cursor-pointer"
                                   id={reply.id}
                                   onClick={(e) => handleDisplayReply(e)}
                                 >
                                   Reply
-                                </span>
+                                </span> */}
                                 {utility.value === "Reply" &&
                                 utility.id === reply.id ? (
                                   <form
