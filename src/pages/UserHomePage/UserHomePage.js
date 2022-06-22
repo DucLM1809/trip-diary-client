@@ -174,9 +174,9 @@ const UserHomePage = () => {
     const currentdate = moment().format("YYYY-MM-DD");
     trips.map((trip) => {
       if (new Date(trip.startAt) > new Date()) {
-        setPastTrips((prev) => [...prev, trip]);
-      } else {
         setNextTrips((prev) => [...prev, trip]);
+      } else {
+        setPastTrips((prev) => [...prev, trip]);
       }
     });
   }, [trips]);
@@ -446,6 +446,13 @@ const UserHomePage = () => {
           <div className="PastTripButton">
             <Link to="/pasttrip">
               <button className="buttonShow">Show all</button>
+            </Link>
+          </div>
+          <div className="PastTripCreate">
+            <Link to="/create">
+              <button>
+                <AiFillPlusCircle size={"35px"} />
+              </button>
             </Link>
           </div>
         </div>

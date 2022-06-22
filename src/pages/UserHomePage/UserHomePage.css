@@ -94,8 +94,8 @@
 }
 .iconcamera {
   grid-area: 3 / 5 / 4 / 6;
-  margin-top: 40px;
-  margin-left: 220px;
+  margin-top: 20px;
+  margin-left: 290px;
 }
 
 .iconcamera1 {
@@ -117,7 +117,7 @@
 .uploadFile1 {
   grid-area: 3 / 5 / 4 / 6;
   margin-top: 42px;
-  margin-right: 0px;
+  margin-left: 50px;
   font-size: 20px;
   opacity: 0;
 }
@@ -202,6 +202,11 @@
 }
 .NextTripCreate {
   grid-area: 1 / 4 / 2 / 5;
+  margin-top: 20px;
+  margin-left: 190px;
+}
+.PastTripCreate{
+  grid-area: 4 / 4 / 5 / 5;
   margin-top: 20px;
   margin-left: 190px;
 }
