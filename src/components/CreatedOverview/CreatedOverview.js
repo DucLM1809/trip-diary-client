@@ -37,6 +37,7 @@ const CreatedOverview = () => {
   const [userId, setUserId] = useState();
   const [utility, setUtility] = useState({ id: "", value: "" });
   const [displayUtility, setDisplayUtility] = useState(false);
+  const [shareURL, setShareUrl] = useState();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -136,7 +137,11 @@ const CreatedOverview = () => {
   } = useForm();
 
   const onSubmitComment = (data) => {
-    if (editComment && data.editComment?.length && data.editComment?.length > 0) {
+    if (
+      editComment &&
+      data.editComment?.length &&
+      data.editComment?.length > 0
+    ) {
       handleEditComment(data);
     } else if (data.comment?.length && data.comment?.length > 0) {
       handlePostComment(data);
@@ -390,7 +395,14 @@ const CreatedOverview = () => {
     console.log(comments);
   }, [comments]);
 
-  const shareURL = "https://triparis.work";
+  useEffect(() => {
+    setShareUrl(`https://triparis.work/${location.pathname}`);
+  }, []);
+
+  useEffect(() => {
+    console.log(shareURL);
+  }, [shareURL]);
+
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
       <div
@@ -504,13 +516,15 @@ const CreatedOverview = () => {
                 </span>
               </div>
               <div className="flex items-center text-2xl m-2 ">
-                <FacebookShareButton url={shareURL}>
+                <FacebookShareButton
+                  className="flex items-center text-2xl"
+                  url={shareURL}
+                >
                   <RiShareForwardLine />
+                  <span className="text-base"> Share </span>
                 </FacebookShareButton>
               </div>
-              <div className="flex items-center text-2xl">
-                <span className="text-base"> Share </span>
-              </div>
+              <div className="flex items-center text-2xl"></div>
             </div>
             <form
               className={`my-4 flex relative ${
