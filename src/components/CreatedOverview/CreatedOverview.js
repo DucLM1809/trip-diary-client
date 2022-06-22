@@ -37,6 +37,7 @@ const CreatedOverview = () => {
   const [userId, setUserId] = useState();
   const [utility, setUtility] = useState({ id: "", value: "" });
   const [displayUtility, setDisplayUtility] = useState(false);
+  const [meId, setMeId] = useState();
   const [shareURL, setShareUrl] = useState();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -67,8 +68,18 @@ const CreatedOverview = () => {
     }
   };
 
+  const handleGetMe = async () => {
+    let res = await api
+      .get(`/users/me`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setMeId(res.data.id)
+    }
+  };
+
   useEffect(() => {
     handleGetTrip();
+    handleGetMe()
   }, [location]);
 
   const handleGetTrips = async () => {
@@ -304,7 +315,6 @@ const CreatedOverview = () => {
       )
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res);
       setReplies((prev) => [...prev, res.data]);
     }
   };
@@ -331,7 +341,6 @@ const CreatedOverview = () => {
   }, [editReply]);
 
   const onSubmitReply = (data) => {
-    console.log(data);
     if (editReply && data.editReply?.length && data.editReply?.length > 0) {
       handleEditReply(data);
     } else if (data.reply?.length && data.reply?.length > 0) {
@@ -373,7 +382,6 @@ const CreatedOverview = () => {
   };
 
   const handleLikeComment = (e) => {
-    console.log(e.target.id);
     comments.map((comment) => {
       console.log();
       if (comment.id === e.target.id - 0 && !comment.hasLiked) {
@@ -383,7 +391,6 @@ const CreatedOverview = () => {
       }
     });
     replies.map((reply) => {
-      console.log();
       if (reply.id === e.target.id - 0 && !reply.hasLiked) {
         handlePostLikeComment(e.target.id);
       } else if (reply.id === e.target.id - 0 && reply.hasLiked) {
@@ -393,16 +400,8 @@ const CreatedOverview = () => {
   };
 
   useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
-  useEffect(() => {
     setShareUrl(`https://triparis.work/${location.pathname}`);
   }, []);
-
-  useEffect(() => {
-    console.log(shareURL);
-  }, [shareURL]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -602,7 +601,7 @@ const CreatedOverview = () => {
                         </div>
                         <p className="text-sm font-normal">{comment.content}</p>
                       </div>
-                      {userId === comment?.author?.id ? (
+                      {comment?.author?.id === meId ? (
                         <div className="relative">
                           <div
                             className="flex justify-center items-center cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
@@ -731,7 +730,7 @@ const CreatedOverview = () => {
                                       {reply.content}
                                     </p>
                                   </div>
-                                  {userId === reply?.author?.id ? (
+                                  {reply?.author?.id === meId ? (
                                     <div className="relative">
                                       <div
                                         className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
