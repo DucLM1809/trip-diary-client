@@ -165,18 +165,25 @@ const UserHomePage = () => {
       setDisplayArea(false);
     }
   };
-  const currentdate = moment().format("YYYY-MM-DD");
-  const nexttrips = [];
-  const pasttrips = [];
+  const [nexttrips, setNextTrips] = useState([]);
+  const [pasttrips, setPastTrips] = useState([]);
 
-  for(let x of trips){
-    if(x.startAt>currentdate){
-      nexttrips.push(x);
-    }
-    else if(x.startAt<currentdate){
-      pasttrips.push(x);
-    }
-  }
+  useEffect(() => {
+    setNextTrips([]);
+    setPastTrips([]);
+    const currentdate = moment().format("YYYY-MM-DD");
+    trips.map((trip) => {
+      if (new Date(trip.startAt) > new Date()) {
+        setPastTrips((prev) => [...prev, trip]);
+      } else {
+        setNextTrips((prev) => [...prev, trip]);
+      }
+    });
+  }, [trips]);
+
+  useEffect(() => {
+    console.log(pasttrips);
+  }, [pasttrips]);
 
   return (
     <>
@@ -310,7 +317,6 @@ const UserHomePage = () => {
               {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
                   <SwiperSlide key={trip.id} className="z-0">
-
                     {console.log(trip.scope)}
 
                     <div className="swiperNextTrip">
@@ -355,7 +361,7 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
-          
+
           <div className="NextTripTitle_1">
             <Link to="/nexttrip">My next trips</Link>
           </div>
@@ -363,8 +369,8 @@ const UserHomePage = () => {
             <hr />
           </div>
           <div className="NextTripButton">
-            <Link to = "/nexttrip">
-            <button className="buttonShow">Show all</button>
+            <Link to="/nexttrip">
+              <button className="buttonShow">Show all</button>
             </Link>
           </div>
           <div className="NextTripCreate">
@@ -382,53 +388,53 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripSwiper">
-          {pasttrips.length > 0 ? (
-                pasttrips.map((trip) => (
-                                    <SwiperSlide key={trip.id} className="z-0">
-                    <div className="swiperNextTrip">
+            {pasttrips.length > 0 ? (
+              pasttrips.map((trip) => (
+                <SwiperSlide key={trip.id} className="z-0">
+                  <div className="swiperNextTrip">
+                    <img
+                      className="imgNextTrip object-cover"
+                      alt=""
+                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                    />
+
+                    <div className="CountryNextTrip">
                       <img
-                        className="imgNextTrip object-cover"
-                        alt=""
-                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                        className="CountryCircle"
+                        src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
                       />
-
-                      <div className="CountryNextTrip">
-                        <img
-                          className="CountryCircle"
-                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
-                      </div>
-
-                      <div className="PastswiperImgIcon">
-                        <Link
-                          to={`/edit/trip/${trip.id}`}
-                          className="text-3xl text-gray hover:opacity-80"
-                        >
-                          <FaEdit />
-                        </Link>
-                      </div>
-                      <div className="PastswiperDelete">
-                        <MdDelete
-                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
-                          // onClick={() => handleDeleteTrip(trip.id)}
-                          onClick={() => openModal(trip.id)}
-                        />
-                      </div>
-                      <div className="swiperNextTripText">
-                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
-                          <h2 className="tripName">{trip.name} </h2>
-                        </Link>
-                      </div>
                     </div>
-                  </SwiperSlide>
-                ))
-              ) : (
-                <></>
-              )}
+
+                    <div className="PastswiperImgIcon">
+                      <Link
+                        to={`/edit/trip/${trip.id}`}
+                        className="text-3xl text-gray hover:opacity-80"
+                      >
+                        <FaEdit />
+                      </Link>
+                    </div>
+                    <div className="PastswiperDelete">
+                      <MdDelete
+                        className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                        // onClick={() => handleDeleteTrip(trip.id)}
+                        onClick={() => openModal(trip.id)}
+                      />
+                    </div>
+                    <div className="swiperNextTripText">
+                      <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                        <h2 className="tripName">{trip.name} </h2>
+                      </Link>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <></>
+            )}
           </div>
           <div className="PastTripButton">
-            <Link to = "/pasttrip">
-            <button className="buttonShow">Show all</button>
+            <Link to="/pasttrip">
+              <button className="buttonShow">Show all</button>
             </Link>
           </div>
         </div>
