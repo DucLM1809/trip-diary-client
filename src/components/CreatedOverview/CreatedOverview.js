@@ -587,9 +587,9 @@ const CreatedOverview = () => {
                         <div className="flex items-center gap-2">
                           <h2>{(comment?.author?.email.split("@"))[0]}</h2>
                           <span className="text-xs text-placeholder">
-                            {comment?.uploadedAt
-                              ? `${comment?.uploadedAt?.split("T")[0]}, ${
-                                  String(new Date(comment?.uploadedAt)).split(
+                            {comment?.updatedAt
+                              ? `${comment?.updatedAt?.split("T")[0]}, ${
+                                  String(new Date(comment?.updatedAt)).split(
                                     " "
                                   )[4]
                                 }`
@@ -702,12 +702,12 @@ const CreatedOverview = () => {
                                         {(reply?.author?.email?.split("@"))[0]}
                                       </h2>
                                       <span className="text-xs text-placeholder">
-                                        {reply?.uploadedAt
+                                        {reply?.updatedAt
                                           ? `${
-                                              reply?.uploadedAt?.split("T")[0]
+                                              reply?.updatedAt?.split("T")[0]
                                             }, ${
                                               String(
-                                                new Date(reply?.uploadedAt)
+                                                new Date(reply?.updatedAt)
                                               ).split(" ")[4]
                                             }`
                                           : `${
