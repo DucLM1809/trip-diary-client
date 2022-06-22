@@ -331,9 +331,10 @@ const CreatedOverview = () => {
   }, [editReply]);
 
   const onSubmitReply = (data) => {
+    console.log(data);
     if (editReply && data.editReply?.length && data.editReply?.length > 0) {
       handleEditReply(data);
-    } else if (data.editReply?.length && data.reply?.length > 0) {
+    } else if (data.reply?.length && data.reply?.length > 0) {
       handlePostReply(data);
     }
     resetField("reply");
@@ -675,7 +676,7 @@ const CreatedOverview = () => {
                             <input
                               type="text"
                               placeholder="Enter comment..."
-                              {...register(`editReply`)}
+                              {...register("editReply")}
                               className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                             />
                             <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
@@ -801,7 +802,7 @@ const CreatedOverview = () => {
                                     <input
                                       type="text"
                                       placeholder="Enter comment..."
-                                      {...register(`reply`)}
+                                      {...register("reply")}
                                       className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                                     />
                                     <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
@@ -836,7 +837,7 @@ const CreatedOverview = () => {
                         <input
                           type="text"
                           placeholder="Enter comment..."
-                          {...register(`reply`)}
+                          {...register("reply")}
                           className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                         />
                         <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
