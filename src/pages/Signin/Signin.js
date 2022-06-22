@@ -59,6 +59,7 @@ const Signin = () => {
       console.log(res);
       localStorage.setItem("username", response.profileObj.name);
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+      localStorage.setItem("auth", true);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +110,7 @@ const Signin = () => {
       dispatch(loginAccount(data));
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
       localStorage.setItem("username", data.account.split("@")[0]);
-      localStorage.setItem("auth", true)
+      localStorage.setItem("auth", true);
     }
   };
 
