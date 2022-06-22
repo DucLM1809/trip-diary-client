@@ -388,6 +388,14 @@ const CreatedOverview = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
+  useEffect(() => {
+    console.log(userId);
+  }, [userId])
+
   const shareURL = "https://triparis.work";
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -585,38 +593,42 @@ const CreatedOverview = () => {
                         </div>
                         <p className="text-sm font-normal">{comment.content}</p>
                       </div>
-                      <div className="relative">
-                        <div
-                          className="flex justify-center items-center cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
-                          id={comment.id}
-                          onClick={(e) => handleDisplayUtil(e)}
-                        >
-                          <BsThreeDots
+                      {userId === comment?.author?.id ? (
+                        <div className="relative">
+                          <div
+                            className="flex justify-center items-center cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
                             id={comment.id}
                             onClick={(e) => handleDisplayUtil(e)}
-                          />
-                        </div>
-                        {displayUtility && utility.id === comment.id ? (
-                          <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
-                            <p
+                          >
+                            <BsThreeDots
                               id={comment.id}
-                              className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
-                              onClick={(e) => handleChooseUtil(e)}
-                            >
-                              Edit
-                            </p>
-                            <p
-                              id={comment.id}
-                              className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                              onClick={(e) => handleChooseUtil(e)}
-                            >
-                              Delete
-                            </p>
+                              onClick={(e) => handleDisplayUtil(e)}
+                            />
                           </div>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
+                          {displayUtility && utility.id === comment.id ? (
+                            <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                              <p
+                                id={comment.id}
+                                className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
+                                onClick={(e) => handleChooseUtil(e)}
+                              >
+                                Edit
+                              </p>
+                              <p
+                                id={comment.id}
+                                className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
+                                onClick={(e) => handleChooseUtil(e)}
+                              >
+                                Delete
+                              </p>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <span
                       className={`ml-24 text-xs hover:opacity-80 cursor-pointer ${
@@ -710,40 +722,43 @@ const CreatedOverview = () => {
                                       {reply.content}
                                     </p>
                                   </div>
-
-                                  <div className="relative">
-                                    <div
-                                      className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
-                                      id={reply.id}
-                                      onClick={(e) => handleDisplayUtil(e)}
-                                    >
-                                      <BsThreeDots
+                                  {userId === reply?.author?.id ? (
+                                    <div className="relative">
+                                      <div
+                                        className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
                                         id={reply.id}
                                         onClick={(e) => handleDisplayUtil(e)}
-                                      />
-                                    </div>
-                                    {displayUtility &&
-                                    utility.id === reply.id ? (
-                                      <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
-                                        <p
+                                      >
+                                        <BsThreeDots
                                           id={reply.id}
-                                          className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
-                                          onClick={(e) => handleChooseUtil(e)}
-                                        >
-                                          Edit
-                                        </p>
-                                        <p
-                                          id={reply.id}
-                                          className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                                          onClick={(e) => handleChooseUtil(e)}
-                                        >
-                                          Delete
-                                        </p>
+                                          onClick={(e) => handleDisplayUtil(e)}
+                                        />
                                       </div>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </div>
+                                      {displayUtility &&
+                                      utility.id === reply.id ? (
+                                        <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                                          <p
+                                            id={reply.id}
+                                            className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
+                                            onClick={(e) => handleChooseUtil(e)}
+                                          >
+                                            Edit
+                                          </p>
+                                          <p
+                                            id={reply.id}
+                                            className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
+                                            onClick={(e) => handleChooseUtil(e)}
+                                          >
+                                            Delete
+                                          </p>
+                                        </div>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <></>
+                                  )}
                                 </div>
                                 <span
                                   className={`ml-24 text-xs hover:opacity-80 cursor-pointer ${
