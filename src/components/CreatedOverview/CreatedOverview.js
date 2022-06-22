@@ -136,9 +136,9 @@ const CreatedOverview = () => {
   } = useForm();
 
   const onSubmitComment = (data) => {
-    if (editComment) {
+    if (editComment && data.editComment?.length && data.editComment?.length > 0) {
       handleEditComment(data);
-    } else {
+    } else if (data.comment?.length && data.comment?.length > 0) {
       handlePostComment(data);
     }
     resetField("comment");
@@ -326,10 +326,9 @@ const CreatedOverview = () => {
   }, [editReply]);
 
   const onSubmitReply = (data) => {
-    console.log(data);
-    if (editReply) {
+    if (editReply && data.editReply?.length && data.editReply?.length > 0) {
       handleEditReply(data);
-    } else {
+    } else if (data.editReply?.length && data.reply?.length > 0) {
       handlePostReply(data);
     }
     resetField("reply");
@@ -351,7 +350,6 @@ const CreatedOverview = () => {
       )
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res.data);
       handleGetComments();
     }
   };
@@ -391,10 +389,6 @@ const CreatedOverview = () => {
   useEffect(() => {
     console.log(comments);
   }, [comments]);
-
-  useEffect(() => {
-    console.log(userId);
-  }, [userId]);
 
   const shareURL = "https://triparis.work";
   return (
@@ -528,10 +522,9 @@ const CreatedOverview = () => {
               <input
                 type="text"
                 placeholder="Enter comment..."
-                {...register("comment", { required: " " })}
+                {...register("comment")}
                 className="mx-4 px-4 border-1 border-gray w-full rounded-5"
               />
-              {errors?.comment && <p>{errors.comment.message}</p>}
               <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                 <IoSend />
               </button>
@@ -554,11 +547,10 @@ const CreatedOverview = () => {
                     <input
                       type="text"
                       placeholder="Enter comment..."
-                      {...register("editComment", { required: " " })}
+                      {...register("editComment")}
                       defaultValue={comment.content}
                       className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                     />
-                    {errors?.editComment && <p>{errors.editComment.message}</p>}
                     <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                       <IoSend />
                     </button>
@@ -669,12 +661,9 @@ const CreatedOverview = () => {
                             <input
                               type="text"
                               placeholder="Enter comment..."
-                              {...register(`editReply`, { required: " " })}
+                              {...register(`editReply`)}
                               className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                             />
-                            {errors?.editReply && (
-                              <p>{errors.editReply.message}</p>
-                            )}
                             <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                               <IoSend />
                             </button>
@@ -798,12 +787,9 @@ const CreatedOverview = () => {
                                     <input
                                       type="text"
                                       placeholder="Enter comment..."
-                                      {...register(`reply`, { required: " " })}
+                                      {...register(`reply`)}
                                       className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                                     />
-                                    {errors?.reply && (
-                                      <p>{errors.reply.message}</p>
-                                    )}
                                     <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                                       <IoSend />
                                     </button>
@@ -836,10 +822,9 @@ const CreatedOverview = () => {
                         <input
                           type="text"
                           placeholder="Enter comment..."
-                          {...register(`reply`, { required: " " })}
+                          {...register(`reply`)}
                           className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                         />
-                        {errors?.reply && <p>{errors.reply.message}</p>}
                         <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                           <IoSend />
                         </button>
