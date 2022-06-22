@@ -112,6 +112,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
+    localStorage.removeItem("auth")
     dispatch(logOut());
     navigate("/sign-in");
   };

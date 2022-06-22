@@ -1,13 +1,15 @@
 import React from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 
-const UnAuth = ({ auth }) => {
+const UnAuth = () => {
   const location = useLocation();
+  console.log(location);
+  const auth = localStorage.getItem("auth");
 
   return (
     <>
       {auth ? (
-        <Navigate to="/home" state={{ from: location }} replace />
+        <Navigate to={"/home"} state={{ from: location }} replace />
       ) : (
         <Outlet />
       )}

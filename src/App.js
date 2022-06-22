@@ -41,7 +41,7 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<UnAuth auth={auth} />}>
+      <Route element={<UnAuth />}>
         <Route exact path="/" element={<LandingPage />}></Route>
         <Route exact path="/sign-in" element={<Signin />}></Route>
         <Route exact path="/sign-up" element={<Register />}></Route>
@@ -62,7 +62,7 @@ function App() {
         element={<RemindTrip />}
       ></Route>
 
-      <Route element={<RequireAuth auth={auth} />}>
+      <Route element={<RequireAuth />}>
         <Route exact path="/home" element={<TripBeforeSearch />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
         <Route exact path="/edit/trip/:id" element={<Create />}></Route>
@@ -70,7 +70,11 @@ function App() {
         <Route exact path="/trips" element={<Home />}></Route>
         <Route exact path="/trips/search" element={<AfterSearch />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
-        <Route exact path="/tripbeforesearch" element={<TripBeforeSearch />}></Route>
+        <Route
+          exact
+          path="/tripbeforesearch"
+          element={<TripBeforeSearch />}
+        ></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
         <Route exact path="/pasttrip" element={<PastTrip />}></Route>
       </Route>
