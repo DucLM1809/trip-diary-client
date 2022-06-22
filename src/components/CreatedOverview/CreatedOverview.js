@@ -190,7 +190,7 @@ const CreatedOverview = () => {
 
   useEffect(() => {
     setNumComments(comments.length + replies.length);
-  }, [comments]);
+  }, [comments, replies]);
 
   const handleLike = () => {
     setLike(true);
@@ -388,22 +388,6 @@ const CreatedOverview = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(utility);
-  }, [utility]);
-
-  useEffect(() => {
-    console.log(replies);
-  }, [replies]);
-
-  useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
-  useEffect(() => {
-    console.log(location);
-  }, []);
-
   const shareURL = "https://triparis.work";
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px] max-w-[1200px]">
@@ -586,8 +570,17 @@ const CreatedOverview = () => {
                         <div className="flex items-center gap-2">
                           <h2>{(comment?.author?.email.split("@"))[0]}</h2>
                           <span className="text-xs text-placeholder">
-                            {comment?.createdAt?.split("T")[0]},{" "}
-                            {comment?.createdAt?.split("T")[1].split(".")[0]}
+                            {comment?.uploadedAt
+                              ? `${comment?.uploadedAt?.split("T")[0]}, ${
+                                  String(new Date(comment?.uploadedAt)).split(
+                                    " "
+                                  )[4]
+                                }`
+                              : `${comment?.createdAt?.split("T")[0]}, ${
+                                  String(new Date(comment?.createdAt)).split(
+                                    " "
+                                  )[4]
+                                }`}
                           </span>
                         </div>
                         <p className="text-sm font-normal">{comment.content}</p>
@@ -688,12 +681,21 @@ const CreatedOverview = () => {
                                         {(reply?.author?.email?.split("@"))[0]}
                                       </h2>
                                       <span className="text-xs text-placeholder">
-                                        {reply?.createdAt?.split("T")[0]},{" "}
-                                        {
-                                          reply?.createdAt
-                                            ?.split("T")[1]
-                                            .split(".")[0]
-                                        }
+                                        {reply?.uploadedAt
+                                          ? `${
+                                              reply?.uploadedAt?.split("T")[0]
+                                            }, ${
+                                              String(
+                                                new Date(reply?.uploadedAt)
+                                              ).split(" ")[4]
+                                            }`
+                                          : `${
+                                              reply?.createdAt?.split("T")[0]
+                                            }, ${
+                                              String(
+                                                new Date(reply?.createdAt)
+                                              ).split(" ")[4]
+                                            }`}
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal">
