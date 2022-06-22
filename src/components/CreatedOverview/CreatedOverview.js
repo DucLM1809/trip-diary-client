@@ -394,7 +394,7 @@ const CreatedOverview = () => {
 
   useEffect(() => {
     console.log(userId);
-  }, [userId])
+  }, [userId]);
 
   const shareURL = "https://triparis.work";
   return (
@@ -528,9 +528,10 @@ const CreatedOverview = () => {
               <input
                 type="text"
                 placeholder="Enter comment..."
-                {...register("comment")}
+                {...register("comment", { required: " " })}
                 className="mx-4 px-4 border-1 border-gray w-full rounded-5"
               />
+              {errors?.comment && <p>{errors.comment.message}</p>}
               <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                 <IoSend />
               </button>
@@ -553,10 +554,11 @@ const CreatedOverview = () => {
                     <input
                       type="text"
                       placeholder="Enter comment..."
-                      {...register("editComment")}
+                      {...register("editComment", { required: " " })}
                       defaultValue={comment.content}
                       className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                     />
+                    {errors?.editComment && <p>{errors.editComment.message}</p>}
                     <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                       <IoSend />
                     </button>
@@ -667,9 +669,12 @@ const CreatedOverview = () => {
                             <input
                               type="text"
                               placeholder="Enter comment..."
-                              {...register(`editReply`)}
+                              {...register(`editReply`, { required: " " })}
                               className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                             />
+                            {errors?.editReply && (
+                              <p>{errors.editReply.message}</p>
+                            )}
                             <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                               <IoSend />
                             </button>
@@ -793,9 +798,12 @@ const CreatedOverview = () => {
                                     <input
                                       type="text"
                                       placeholder="Enter comment..."
-                                      {...register(`reply`)}
+                                      {...register(`reply`, { required: " " })}
                                       className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                                     />
+                                    {errors?.reply && (
+                                      <p>{errors.reply.message}</p>
+                                    )}
                                     <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                                       <IoSend />
                                     </button>
@@ -828,9 +836,10 @@ const CreatedOverview = () => {
                         <input
                           type="text"
                           placeholder="Enter comment..."
-                          {...register(`reply`)}
+                          {...register(`reply`, { required: " " })}
                           className="mx-4 px-4 border-1 border-gray w-full rounded-5"
                         />
+                        {errors?.reply && <p>{errors.reply.message}</p>}
                         <button className="absolute right-8 top-4 text-xl text-green hover:opacity-80">
                           <IoSend />
                         </button>
