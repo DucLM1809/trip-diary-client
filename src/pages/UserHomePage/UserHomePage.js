@@ -388,7 +388,7 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripSwiper">
-          <Swiper
+            <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
@@ -398,49 +398,49 @@ const UserHomePage = () => {
               modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
-            {pasttrips.length > 0 ? (
-              pasttrips.map((trip) => (
-                <SwiperSlide key={trip.id} className="z-0">
-                  <div className="swiperNextTrip">
-                    <img
-                      className="imgNextTrip object-cover"
-                      alt=""
-                      src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                    />
-
-                    <div className="CountryNextTrip">
+              {pasttrips.length > 0 ? (
+                pasttrips.map((trip) => (
+                  <SwiperSlide key={trip.id} className="z-0">
+                    <div className="swiperNextTrip">
                       <img
-                        className="CountryCircle"
-                        src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        className="imgNextTrip object-cover"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                       />
-                    </div>
 
-                    <div className="PastswiperImgIcon">
-                      <Link
-                        to={`/edit/trip/${trip.id}`}
-                        className="text-3xl text-gray hover:opacity-80"
-                      >
-                        <FaEdit />
-                      </Link>
+                      <div className="CountryNextTrip">
+                        <img
+                          className="CountryCircle"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        />
+                      </div>
+
+                      <div className="PastswiperImgIcon">
+                        <Link
+                          to={`/edit/trip/${trip.id}`}
+                          className="text-3xl text-gray hover:opacity-80"
+                        >
+                          <FaEdit />
+                        </Link>
+                      </div>
+                      <div className="PastswiperDelete">
+                        <MdDelete
+                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                          // onClick={() => handleDeleteTrip(trip.id)}
+                          onClick={() => openModal(trip.id)}
+                        />
+                      </div>
+                      <div className="swiperNextTripText">
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="PastswiperDelete">
-                      <MdDelete
-                        className="text-3xl text-gray hover:opacity-80 cursor-pointer"
-                        // onClick={() => handleDeleteTrip(trip.id)}
-                        onClick={() => openModal(trip.id)}
-                      />
-                    </div>
-                    <div className="swiperNextTripText">
-                      <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
-                        <h2 className="tripName">{trip.name} </h2>
-                      </Link>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))
-            ) : (
-              <></>
-            )}
+                  </SwiperSlide>
+                ))
+              ) : (
+                <></>
+              )}
             </Swiper>
           </div>
           <div className="PastTripButton">
