@@ -11,15 +11,17 @@ import { v4 as uuidv4 } from "uuid";
 
 
 const Trip = () => {
-
   const searchRes = useSelector((state) => state.searchRes);
+  const [visible, setVisible] = useState(6);
 
-
+  const showMoreTrips = () =>{
+    setVisible(prevValue => prevValue + 6); 
+  }
 
   return (
     <div className="pt-8 flex gap-4 px-3 flex-wrap">
       {searchRes.length > 0 ? (
-        searchRes.map((res, index) => {
+        searchRes.slice(0 , visible).map((res, index) => {
           return (
             <div
               key={index}
@@ -43,15 +45,25 @@ const Trip = () => {
                   alt=""
                   className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
                 />
+                
               </Link>
             </div>
+            
+
           );
+
         })
+        
       ) : (
         <>
           <img src={pnf} alt="" className="m-auto" />
         </>
       )}
+      <div className="flex mx-auto">
+      <button onClick={showMoreTrips}
+       className=" flex justify-center">LOAD MORE
+       </button>
+       </div>
 
       {/* <button className="block bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10">
         LOAD MORE
