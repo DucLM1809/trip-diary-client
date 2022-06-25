@@ -18,6 +18,7 @@ import PastTrip from "./pages/UserHomePage/PastTrip";
 import RemindTrip from "./pages/RemindTrip/RemindTrip";
 import TripBeforeSearch from "./pages/TripBeforeSearch/TripBeforeSearch";
 import AfterSearch from "./pages/AfterSearch/AfterSearch";
+import Profile from "./pages/UserHomePage/Profile";
 
 function App() {
   // const [title, setTitle] = useState("");
@@ -70,13 +71,10 @@ function App() {
         <Route exact path="/trips" element={<Home />}></Route>
         <Route exact path="/trips/search" element={<AfterSearch />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
-        <Route
-          exact
-          path="/tripbeforesearch"
-          element={<TripBeforeSearch />}
-        ></Route>
+        <Route exact path="/tripbeforesearch" element={<TripBeforeSearch />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
         <Route exact path="/pasttrip" element={<PastTrip />}></Route>
+        <Route exact path="/profile" element={<Profile />}></Route>
       </Route>
     </Routes>
   );
