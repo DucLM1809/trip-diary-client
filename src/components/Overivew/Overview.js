@@ -53,7 +53,7 @@ const Overview = () => {
   const [departure, setDeparture] = useState();
   const [destination, setDestination] = useState();
   const [dep, setDep] = useState();
-  const [dest, setDest] = useState()
+  const [dest, setDest] = useState();
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [urlImg, setUrlImg] = useState();
@@ -139,7 +139,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep ? 'local' : 'global',
+          scope: dest === dep ? "local" : "global",
         },
         config
       )
@@ -156,7 +156,7 @@ const Overview = () => {
       dispatch(createTrip(res.data));
     }
   };
-  
+
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
@@ -172,7 +172,7 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep ? 'local' : 'global',
+          scope: dest === dep ? "local" : "global",
         },
         config
       )
@@ -218,22 +218,26 @@ const Overview = () => {
   }, [edit]);
 
   const handleGetDeparture = async () => {
-    let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
-    let res = await axios.get(urlDep).catch((error) => console.log(error));
-    if (res) {
-      setDeparture(
-        res.data.results[res.data.results.length - 2].formatted_address
-      );
+    if (coordinate1?.lat && coordinate1?.lng) {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDep).catch((error) => console.log(error));
+      if (res) {
+        setDeparture(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
     }
   };
 
   const handleGetDestination = async () => {
-    let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
-    let res = await axios.get(urlDes).catch((error) => console.log(error));
-    if (res) {
-      setDestination(
-        res.data.results[res.data.results.length - 2].formatted_address
-      );
+    if (coordinate2?.lat && coordinate2?.lng) {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDes).catch((error) => console.log(error));
+      if (res) {
+        setDestination(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
     }
   };
 
@@ -489,17 +493,18 @@ const PlacesAutocomplete1 = ({ setSelected1, departure, setDep }) => {
     clearSuggestions();
     const results = await getGeocode({ address });
     let temp = results[0].formatted_address.split(",");
-    setDep(temp[temp.length - 1])
+    setDep(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
 
-  useEffect(() => {
-    setValue();
-  }, []);
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
 
   useEffect(() => {
-    setValue(departure);
+    // setValue(departure);
+    handleSelect(departure);
   }, [departure]);
 
   return (
@@ -538,17 +543,18 @@ const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
     clearSuggestions();
     const results = await getGeocode({ address });
     let temp = results[0].formatted_address.split(",");
-    setDest(temp[temp.length - 1])
+    setDest(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected2({ lat, lng });
   };
 
-  useEffect(() => {
-    setValue();
-  }, []);
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
 
   useEffect(() => {
-    setValue(destination);
+    // setValue(destination);
+    handleSelect(destination)
   }, [destination]);
 
   return (
