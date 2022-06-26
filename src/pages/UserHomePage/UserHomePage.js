@@ -137,7 +137,6 @@ const UserHomePage = () => {
   };
 
   const handleType = (e) => {
-    console.log(e.target.textContent);
     if (e.target.textContent === "Single") {
       setType("single");
       setDisplay(false);
@@ -152,7 +151,6 @@ const UserHomePage = () => {
   };
 
   const handleScope = (e) => {
-    console.log(e.target.textContent);
     if (e.target.textContent === "Local") {
       setScope("local");
       setDisplayArea(false);
@@ -180,10 +178,6 @@ const UserHomePage = () => {
       }
     });
   }, [trips]);
-
-  useEffect(() => {
-    console.log(pasttrips);
-  }, [pasttrips]);
 
   return (
     <>
@@ -317,8 +311,6 @@ const UserHomePage = () => {
               {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
                   <SwiperSlide key={trip.id} className="z-0">
-                    {console.log(trip.scope)}
-
                     <div className="swiperNextTrip">
                       <img
                         className="imgNextTrip object-cover"
