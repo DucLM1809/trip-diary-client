@@ -7,6 +7,7 @@ import { BsGenderAmbiguous, BsEnvelope } from "react-icons/bs";
 import { BiWorld } from "react-icons/bi";
 import { RiCake2Line} from "react-icons/ri";
 import { format } from "date-fns";
+import axios from "axios";
 
 const MyProfile = () => {
   const [infor, setInfor] = useState();
@@ -14,6 +15,8 @@ const MyProfile = () => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
   };
 
@@ -37,14 +40,12 @@ const MyProfile = () => {
 
   useEffect(() => {
     handleGetInfor();
-    console.log(infor)
+    
   }, []);
 
   return (
     <>
-      
-     
-      <div className="flex items-end absolute left-[410px] boder-1 border-gray w-[950px] h-[80px]  bg-[#2C3639] mt-4">
+      <div className="flex items-end absolute left-[410px] boder-1 border-gray w-[950px] h-[80px]  bg-[#2C3639] mt-4 z-10">
         <p className="font-black text-5xl text-white pb-2 pl-8 cursor-default">
           My Profile
         </p>
@@ -59,7 +60,7 @@ const MyProfile = () => {
                 className="mx-auto flex avatar h-[150px] w-[150px] "
               ></img>
               <div className="flex mx-auto mt-4 text-xl text-center font-black ">
-                <h1>{userName}</h1>
+                <h1>{infor ? (infor.username ? infor.username : userName) :userName}</h1>
               </div>
             </div>
             <div className="flex h-[150px] w-[650px] ">
@@ -138,6 +139,12 @@ const MyProfile = () => {
             </span>
             <p className="font-medium  text-lg">Day of birth: </p>
             {infor ? <span className="text-xl ml-2"> {infor.dateOfBirth ? format(Date.parse(infor.dateOfBirth), "MMMM do, yyyy ") : "N/A"}</span> : <></>}
+          </div>
+
+          <div className="flex justify-center flex-col items-center w-full  mt-8">
+           
+            <p className=" underline text-lg">About me </p>
+            {infor ? <div className="text-md ml-2 font-medium"> {infor.description ? infor.description : "N/A"}</div> : <></>}
           </div>
 
 
