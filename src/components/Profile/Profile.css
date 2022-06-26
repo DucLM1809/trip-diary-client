@@ -1,0 +1,31 @@
+.containner{
+    z-index: -1;
+    position: relative;
+    background:
+    linear-gradient(-45deg, transparent 3em, #DCD7C9 0) ;
+    box-shadow: -69px -20px 67px -16px rgba(0,0,0,0.49);
+    -webkit-box-shadow: -69px -20px 67px -16px rgba(0,0,0,0.49);
+    -moz-box-shadow: -69px -20px 67px -16px rgba(0,0,0,0.49);
+}
+
+.containner::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: inline-block;
+}
+
+.containner::after{
+    width: 4.3em;
+    height: 4.3em;
+    border-top-left-radius: 5px;
+    background:
+    linear-gradient(-45deg, transparent 3em, #a2946d 0) ;
+    
+}
+
+.avatar{
+    border-radius: 50%;
+   border: 3px solid white;
+}

@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import des5 from "../../assests/images/Destination5.png";
 import des6 from "../../assests/images/Destination6.jpg";
@@ -9,21 +9,23 @@ import { useSelector } from "react-redux";
 import pnf from "../../assests/images/pnf.png";
 import { v4 as uuidv4 } from "uuid";
 
-
 const Trip = () => {
-
   const searchRes = useSelector((state) => state.searchRes);
+  const [numOfShow, setNumOfShow] = useState(6);
 
-
+  const showMoreTrips = () => {
+    setNumOfShow((prevValue) => prevValue + 6);
+  };
 
   return (
-    <div className="pt-8 flex gap-4 px-3 flex-wrap">
+    <>
+    <div className="pt-8 flex gap-4 px-3 flex-wrap justify-center">
       {searchRes.length > 0 ? (
         searchRes.map((res, index) => {
-          return (
+          return index < numOfShow ? (
             <div
               key={index}
-              className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in"
+              className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "
             >
               <Link to={`/trips/trip/${res.id}`} key={uuidv4()}>
                 <img
@@ -36,7 +38,7 @@ const Trip = () => {
                   {res?.name}
                 </div>
                 <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                  {res?.numOfLikes} {res?.numOfLikes > 1 ? 'likes' : 'like'}
+                  {res?.numOfLikes} {res?.numOfLikes > 1 ? "likes" : "like"}
                 </div>
                 <img
                   src={unknown}
@@ -45,6 +47,8 @@ const Trip = () => {
                 />
               </Link>
             </div>
+          ) : (
+            <></>
           );
         })
       ) : (
@@ -52,11 +56,19 @@ const Trip = () => {
           <img src={pnf} alt="" className="m-auto" />
         </>
       )}
-
-      {/* <button className="block bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10">
-        LOAD MORE
-      </button> */}
+      
+      
+      
+      
     </div>
+    <button 
+    className={`block bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10 ${searchRes.length > 0 ? "block" : "hidden"}`}
+    onClick={showMoreTrips}
+    >
+    LOAD MORE
+  </button>
+  {console.log(numOfShow)}
+  </>
   );
 };
 

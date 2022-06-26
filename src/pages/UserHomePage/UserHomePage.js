@@ -203,7 +203,7 @@ const UserHomePage = () => {
                 <div className="profileInfo">
                   <h4 className="profileInfoName">{userName}</h4>
                 </div>
-                <button className="editProfile">Edit Profile</button>
+                <Link to="/Profile" className="editProfile">Edit Profile</Link>
                 <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />

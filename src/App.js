@@ -18,6 +18,7 @@ import TripBeforeSearch from "./pages/TripBeforeSearch/TripBeforeSearch";
 import AfterSearch from "./pages/AfterSearch/AfterSearch";
 import travelIconsMap from "./assests/images/11422-travel-icons-map.json";
 import Lottie from "lottie-react";
+import Profile from "./pages/UserHomePage/Profile";
 
 const Animation = () => {
   const navigate = useNavigate();
@@ -70,13 +71,10 @@ function App() {
         <Route exact path="/trips" element={<Home />}></Route>
         <Route exact path="/trips/search" element={<AfterSearch />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
-        <Route
-          exact
-          path="/tripbeforesearch"
-          element={<TripBeforeSearch />}
-        ></Route>
+        <Route exact path="/tripbeforesearch" element={<TripBeforeSearch />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
         <Route exact path="/pasttrip" element={<PastTrip />}></Route>
+        <Route exact path="/profile" element={<Profile />}></Route>
       </Route>
     </Routes>
   );
