@@ -57,7 +57,7 @@ const MyProfile = () => {
               <img
                 src={infor ? (infor.avatarUrl? infor.avatarUrl : unknown) : unknown}
                 alt="avatar"
-                className="mx-auto flex avatar h-[150px] w-[150px] "
+                className="mx-auto flex avatar  h-[150px] w-[150px] aspect-square "
               ></img>
               <div className="flex mx-auto mt-4 text-xl text-center font-black ">
                 <h1>{infor ? (infor.username ? infor.username : userName) :userName}</h1>
@@ -67,7 +67,7 @@ const MyProfile = () => {
               <img
                 src={infor ? (infor.coverImgUrl ? infor.coverImgUrl : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg") : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg" }
                 alt="cover"
-                className="cover object-cover h-[150px] w-[650px]  "
+                className="object-cover h-[150px] w-[650px]  "
               ></img>
             </div>
           </div>

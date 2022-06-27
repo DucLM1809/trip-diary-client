@@ -6,7 +6,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { BsGenderAmbiguous, BsEnvelope, BsInfoCircle,  } from "react-icons/bs";
 import { BiWorld } from "react-icons/bi";
 import { RiCake2Line} from "react-icons/ri";
-import { format } from "date-fns";
+
 import { useForm } from "react-hook-form";
 import { MdOutlineFemale,MdOutlineMale} from "react-icons/md"
 import { ImPencil2 } from "react-icons/im"
@@ -83,7 +83,7 @@ const EditProfile = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    
+    mail ? <></> : setMail(infor.Email)
     handleEditProfile(data);
   };
 
@@ -222,7 +222,7 @@ const EditProfile = () => {
             </span>
             <p className="font-medium  text-lg">Email: </p>
             <input type="text" {...register("Email", {
-                  required: "You must specify an email",
+                  
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: "Invalid email format",
