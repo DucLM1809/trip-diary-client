@@ -44,6 +44,7 @@ const Overview = () => {
   }, [location]);
 
   const [display, setDisplay] = useState(false);
+  const [displayPublic, setDisplayPublic] = useState(false);
   const [disable, setDisable] = useState(true);
   const [type, setType] = useState("Single Trip");
   const [selected1, setSelected1] = useState(null);
@@ -53,13 +54,14 @@ const Overview = () => {
   const [departure, setDeparture] = useState();
   const [destination, setDestination] = useState();
   const [dep, setDep] = useState();
-  const [dest, setDest] = useState()
+  const [dest, setDest] = useState();
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
   const [urlImg, setUrlImg] = useState();
   const [edit, setEdit] = useState(false);
   const [trip, setTrip] = useState();
   const [tripId, setTripId] = useState();
+  const [tripPublic, setTripPublic] = useState();
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
@@ -73,9 +75,18 @@ const Overview = () => {
     setDisplay(!display);
   };
 
+  const handleChoosePublic = () => {
+    setDisplayPublic(!displayPublic);
+  };
+
   const handleType = (e) => {
     setDisplay(false);
     setType(e.target.textContent);
+  };
+
+  const handlePublic = (e) => {
+    setDisplayPublic(false);
+    setTripPublic(e.target.textContent);
   };
 
   useEffect(() => {
@@ -102,6 +113,7 @@ const Overview = () => {
     data.from_lng = coordinate1.lng;
     data.to_lat = coordinate2.lat;
     data.to_lng = coordinate2.lng;
+    data.tripPublic = tripPublic;
     if (edit) {
       handleEditTrip(data);
     } else {
@@ -139,7 +151,8 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep ? 'local' : 'global',
+          scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
@@ -156,7 +169,7 @@ const Overview = () => {
       dispatch(createTrip(res.data));
     }
   };
-  
+
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
@@ -172,7 +185,8 @@ const Overview = () => {
           backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
-          scope: dest === dep ? 'local' : 'global',
+          scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
@@ -368,6 +382,41 @@ const Overview = () => {
                 </div>
               </div>
             </div>
+            <div className="flex flex-col">
+              <label htmlFor="tripPublic" className="mb-2">
+                Type
+              </label>
+              <div className="cursor-pointer w-[148px]">
+                <div
+                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center"
+                  onClick={handleChoosePublic}
+                >
+                  <span className="mr-2">
+                    {tripPublic ? tripPublic : "Public"}
+                  </span>
+                  <FiChevronDown />
+                </div>
+
+                <div
+                  className={`border-2 border-gray rounded-5 mb-1 ${
+                    displayPublic ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Public
+                  </div>
+                  <div
+                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Private
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
@@ -489,7 +538,7 @@ const PlacesAutocomplete1 = ({ setSelected1, departure, setDep }) => {
     clearSuggestions();
     const results = await getGeocode({ address });
     let temp = results[0].formatted_address.split(",");
-    setDep(temp[temp.length - 1])
+    setDep(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
@@ -538,7 +587,7 @@ const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
     clearSuggestions();
     const results = await getGeocode({ address });
     let temp = results[0].formatted_address.split(",");
-    setDest(temp[temp.length - 1])
+    setDest(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected2({ lat, lng });
   };

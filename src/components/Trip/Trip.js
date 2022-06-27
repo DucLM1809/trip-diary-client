@@ -59,9 +59,9 @@ const Trip = () => {
           <img src={pnf} alt="" className="m-auto" />
         </>
       )}
-      <div className="flex mx-auto">
+      <div className=" flex flex-col justify-around items-center w-full ">
       <button onClick={showMoreTrips}
-       className=" flex justify-center">LOAD MORE
+       className="bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mb-10">LOAD MORE
        </button>
        </div>
 
