@@ -5,8 +5,10 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/FooterPub/Footer";
 import { AiFillCamera } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -17,12 +19,26 @@ import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
+<<<<<<< HEAD
+=======
+import { Modal } from "../../components";
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 import moment from "moment";
 
 const UserHomePage = () => {
-  const [trip, setTrip] = useState();
   const [trips, setTrips] = useState([]);
+<<<<<<< HEAD
   
+=======
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [type, setType] = useState(null);
+  const [scope, setScope] = useState(null);
+  const [display, setDisplay] = useState(false);
+  const [displayArea, setDisplayArea] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [delId, setDelId] = useState();
+
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -33,22 +49,31 @@ const UserHomePage = () => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
+    // params: {
+    //   type: type,
+    //   scope: scope,
+    // },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
 
+  const openModal = (tripId) => {
+    setShowModal((prev) => !prev);
+    setDelId(tripId);
+  };
+
   const tripInfo = useSelector((state) => state.trip);
-  useEffect(() => {
-    console.log(tripInfo);
-  }, [tripInfo]);
 
   const handleGetTrips = async () => {
-    let res = await api.get("/trips", config);
+    let res = await api.get("/trips/me", config);
     if (res) {
-      console.log("Trips: ", res.data);
       setTrips(res.data);
+<<<<<<< HEAD
 
     }
   };
@@ -56,10 +81,17 @@ const UserHomePage = () => {
   
   const currentdate = moment().format("YYYY-MM-DD");
 
+=======
+      setIsDeleted(false);
+    }
+  };
+
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
   useEffect(() => {
     handleGetTrips();
   }, []);
 
+<<<<<<< HEAD
   const nexttrips = [];
   const pasttrips = [];
 
@@ -87,10 +119,122 @@ const UserHomePage = () => {
   // useEffect(() => {
   //   handleGetTrip();
   // }, []);
+=======
+  useEffect(() => {
+    if (isDeleted) {
+      handleGetTrips();
+    }
+  }, [isDeleted]);
+
+  const handleFilterType = async () => {
+    let res = await api
+      .get("/trips/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+        params: {
+          type: type,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrips(res.data);
+      setIsDeleted(false);
+    }
+  };
+
+  const handleFilterScope = async () => {
+    let res = await api
+      .get("/trips/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+        params: {
+          scope: scope,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrips(res.data);
+      setIsDeleted(false);
+    }
+  };
+
+  useEffect(() => {
+    handleFilterType();
+  }, [type]);
+
+  useEffect(() => {
+    handleFilterScope();
+  }, [scope]);
+
+  const handleChooseType = () => {
+    setDisplay(!display);
+  };
+
+  const handleChooseScope = () => {
+    setDisplayArea(!displayArea);
+  };
+
+  const handleType = (e) => {
+    if (e.target.textContent === "Single") {
+      setType("single");
+      setDisplay(false);
+    } else if (e.target.textContent === "Around") {
+      setType("around");
+      setDisplay(false);
+    } else {
+      setType(null);
+      setScope(null);
+      setDisplay(false);
+    }
+  };
+
+  const handleScope = (e) => {
+    if (e.target.textContent === "Local") {
+      setScope("local");
+      setDisplayArea(false);
+    } else if (e.target.textContent === "Global") {
+      setScope("global");
+      setDisplayArea(false);
+    } else {
+      setType(null);
+      setScope(null);
+      setDisplayArea(false);
+    }
+  };
+  const [nexttrips, setNextTrips] = useState([]);
+  const [pasttrips, setPastTrips] = useState([]);
+
+  useEffect(() => {
+    setNextTrips([]);
+    setPastTrips([]);
+    const currentdate = moment().format("YYYY-MM-DD");
+    trips.map((trip) => {
+      if (new Date(trip.startAt) > new Date()) {
+        setNextTrips((prev) => [...prev, trip]);
+      } else {
+        setPastTrips((prev) => [...prev, trip]);
+      }
+    });
+  }, [trips]);
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 
   return (
     <>
       <Navbar />
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setIsDeleted={setIsDeleted}
+        delId={delId}
+      />
       <div style={{ backgroundColor: "#F1F5FF" }} className="pb-10">
         <div className="profile">
           <div className="profileRight">
@@ -105,10 +249,8 @@ const UserHomePage = () => {
 
                 <div className="profileInfo">
                   <h4 className="profileInfoName">{userName}</h4>
-                  {/* <h3>/tungtung</h3> */}
-                  {/* <p className="profileInfoDesc">Hế nhô các bạn!</p> */}
                 </div>
-                <button className="editProfile">Edit Profile</button>
+                <Link to="/Profile" className="editProfile">Edit Profile</Link>
                 <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />
@@ -135,12 +277,64 @@ const UserHomePage = () => {
             <br />
             <hr style={{ width: "90%", marginLeft: "5%" }} />
             <div className="smallFilter">
-              <div className="f1">All trip</div>
-              <div className="f2">
-                <BiFilter /> Filter area{" "}
+              <div className="f1 cursor-pointer" onClick={(e) => handleType(e)}>
+                All trip
               </div>
-              <div className="f3">
-                <BiFilter display={""} /> Filter type
+
+              <div className="f2 flex flex-col">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={handleChooseScope}
+                >
+                  <BiFilter display={""} />
+                  <span>{scope || "Area"}</span>
+                </div>
+                <div
+                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
+                    displayArea ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleScope(e)}
+                  >
+                    Local
+                  </div>
+                  <div
+                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handleScope(e)}
+                  >
+                    Global
+                  </div>
+                </div>
+              </div>
+
+              <div className="f3 flex flex-col">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={handleChooseType}
+                >
+                  <BiFilter display={""} />
+                  <span>{type || "Type"}</span>
+                </div>
+                <div
+                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
+                    display ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handleType(e)}
+                  >
+                    Single
+                  </div>
+                  <div
+                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handleType(e)}
+                  >
+                    Around
+                  </div>
+                </div>
               </div>
               <div className="f4">
                 <BiFilter display={""} /> Filter countries
@@ -163,6 +357,7 @@ const UserHomePage = () => {
             >
               {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
+<<<<<<< HEAD
                   <SwiperSlide>
                     
                     <div key={uuidv4()}>
@@ -188,6 +383,42 @@ const UserHomePage = () => {
                           <h2 className="tripName">{trip.name}  </h2>
                           
                         </div>
+=======
+                  <SwiperSlide key={trip.id} className="z-0">
+                    <div className="swiperNextTrip">
+                      <img
+                        className="imgNextTrip object-cover"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      />
+
+                      <div className="CountryNextTrip">
+                        <img
+                          className="CountryCircle"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        />
+                      </div>
+
+                      <div className="swiperImgIcon">
+                        <Link
+                          to={`/edit/trip/${trip.id}`}
+                          className="text-3xl text-gray hover:opacity-80"
+                        >
+                          <FaEdit />
+                        </Link>
+                      </div>
+                      <div className="swiperDelete">
+                        <MdDelete
+                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                          // onClick={() => handleDeleteTrip(trip.id)}
+                          onClick={() => openModal(trip.id)}
+                        />
+                      </div>
+                      <div className="swiperNextTripText">
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
                       </div>
                     </div>
                   </SwiperSlide>
@@ -197,15 +428,21 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
+
           <div className="NextTripTitle_1">
             My next trips
           </div>
           <div className="UserNextTripHr">
-            <hr/>
+            <hr />
           </div>
           <div className="NextTripButton">
+<<<<<<< HEAD
           <Link to="/nexttrip">
             <button className="buttonShow">Show all</button>
+=======
+            <Link to="/nexttrip">
+              <button className="buttonShow">Show all</button>
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
             </Link>
           </div>
           <div className="NextTripCreate">
@@ -217,8 +454,14 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripTitle">
+<<<<<<< HEAD
             <h1>My past trips</h1>
             
+=======
+            <Link to="/pasttrip">
+              <h1>My past trips</h1>
+            </Link>
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
           </div>
 
           <div className="PastTripSwiper">
@@ -234,6 +477,7 @@ const UserHomePage = () => {
             >
               {pasttrips.length > 0 ? (
                 pasttrips.map((trip) => (
+<<<<<<< HEAD
                   <SwiperSlide>
                     
                     <div key={uuidv4()}>
@@ -259,6 +503,42 @@ const UserHomePage = () => {
                           <h2 className="tripName">{trip.name}  </h2>
                           
                         </div>
+=======
+                  <SwiperSlide key={trip.id} className="z-0">
+                    <div className="swiperNextTrip">
+                      <img
+                        className="imgNextTrip object-cover"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      />
+
+                      <div className="CountryNextTrip">
+                        <img
+                          className="CountryCircle"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        />
+                      </div>
+
+                      <div className="PastswiperImgIcon">
+                        <Link
+                          to={`/edit/trip/${trip.id}`}
+                          className="text-3xl text-gray hover:opacity-80"
+                        >
+                          <FaEdit />
+                        </Link>
+                      </div>
+                      <div className="PastswiperDelete">
+                        <MdDelete
+                          className="text-3xl text-gray hover:opacity-80 cursor-pointer"
+                          // onClick={() => handleDeleteTrip(trip.id)}
+                          onClick={() => openModal(trip.id)}
+                        />
+                      </div>
+                      <div className="swiperNextTripText">
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
                       </div>
                     </div>
                   </SwiperSlide>
@@ -269,10 +549,23 @@ const UserHomePage = () => {
             </Swiper>
           </div>
           <div className="PastTripButton">
+<<<<<<< HEAD
           <Link to="/pasttrip">
 
             <button className="buttonShow">Show all</button>
           </Link>
+=======
+            <Link to="/pasttrip">
+              <button className="buttonShow">Show all</button>
+            </Link>
+          </div>
+          <div className="PastTripCreate">
+            <Link to="/create">
+              <button>
+                <AiFillPlusCircle size={"35px"} />
+              </button>
+            </Link>
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
           </div>
         </div>
       </div>

@@ -1,174 +1,172 @@
-.profile{
-    display: flex;
-
+.profile {
+  display: flex;
 }
 
-.profileRight{
-    flex: 9;
+.profileRight {
+  flex: 9;
 }
 
 .profileCover {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    height: 450px;
-    margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 450px;
+  margin-top: 30px;
 }
 
 .profileCoverImg {
-    border-radius: 5px;
-    margin-left: 5%;
-    object-fit: cover;
-    grid-area: 1 / 1 / 4 /6;
-    height: 300px;
-    width: 90%;
+  border-radius: 5px;
+  margin-left: 5%;
+  object-fit: cover;
+  grid-area: 1 / 1 / 4 /6;
+  height: 300px;
+  width: 90%;
 }
 
 .profileUserImg {
-
-    height: 170px;
-    width: 170px;
-    object-fit: cover;
-    grid-area: 3 / 2 / 5 /3;
-    border-radius: 50%;
-    border: 3px solid white;
-
-}
-.profileInfo{
-    grid-area: 4 / 2 / 5 / 4;
-    object-fit: cover;
-    top: 280px;
-    margin-left: 180px;
-    margin-bottom: 20px;
+  height: 170px;
+  width: 170px;
+  object-fit: cover;
+  grid-area: 3 / 2 / 5 /3;
+  border-radius: 50%;
+  border: 3px solid white;
 }
 
-.profileInfoName{
-    font-size: 24px;
+.profileInfo {
+  grid-area: 4 / 2 / 5 / 4;
+  object-fit: cover;
+  top: 280px;
+  margin-left: 180px;
+  margin-bottom: 20px;
 }
 
-
-.profileInfoDesc{
-    font-weight: 300;
+.profileInfoName {
+  font-size: 24px;
 }
 
-.profileBottom{
-    display: flex;
+.profileInfoDesc {
+  font-weight: 300;
 }
 
-.share{
-    margin-top: 50px;
-    width: 90%;
-    height: 170px;
-    border-radius: 5px;
-    background-color: white;
-    margin-left: 5%;
-    font-size: 20px;
-    text-align: center;
-    padding-left: 15px;
-    padding-top: 8px;
+.profileBottom {
+  display: flex;
 }
 
-.shareOptionText{
-    text-decoration-line: underline;
-    size: 50x;
-    
+.share {
+  margin-top: 50px;
+  width: 90%;
+  height: 170px;
+  border-radius: 5px;
+  background-color: white;
+  margin-left: 5%;
+  font-size: 20px;
+  text-align: center;
+  padding-left: 15px;
+  padding-top: 8px;
 }
 
-.shareInput{
-    border-color: white;
-    width: 100%;
-    background-color: white;
-    height: 30px;
+.shareOptionText {
+  text-decoration-line: underline;
+  size: 50x;
 }
 
-.shareInput:focus{
-    outline: none;
+.shareInput {
+  border-color: white;
+  width: 100%;
+  background-color: white;
+  height: 30px;
 }
 
-.editProfile{
-    grid-area: 4 / 5 / 5 / 6; 
-    border: 3px solid white;
-    background-color: #CCD2E3;
-    font-size: 20px;
-    border-radius: 15px;
-    height: 40px;
-    width: 225px;
-    margin-left: 90px;
-}
-.iconcamera{
-    grid-area: 3 / 5 / 4 / 6;
-    margin-top: 40px;
-    margin-left: 220px;
+.shareInput:focus {
+  outline: none;
 }
 
-.iconcamera1{
-    grid-area: 4 / 2 / 5 / 3;
-    margin-top: 52px;
-    margin-left: 200px;
+.editProfile {
+  grid-area: 4 / 5 / 5 / 6;
+  border: 3px solid white;
+  background-color: #ccd2e3;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 15px;
+  height: 40px;
+  width: 225px;
+  margin-left: 90px;
+}
+.iconcamera {
+  grid-area: 3 / 5 / 4 / 6;
+  margin-top: 20px;
+  margin-left: 290px;
 }
 
-.smallFilter{
-    margin-top: 10px;
-    display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(5, 1fr);
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
-        
+.iconcamera1 {
+  grid-area: 4 / 2 / 5 / 3;
+  margin-top: 52px;
+  margin-left: 200px;
 }
 
-.uploadFile1{
-    grid-area: 3 / 5 / 4 / 6;
-    margin-top: 42px;
-    margin-right: 0px;
-    font-size: 20px;
-    opacity: 0;
+.smallFilter {
+  max-height: 40px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-.uploadFile2{
-    grid-area: 4 / 2 / 5 / 3;
-    margin-top: 55px;
-    font-size: 20px;
-    opacity: 0;
-    width: 110px;
+.uploadFile1 {
+  grid-area: 3 / 5 / 4 / 6;
+  margin-top: 42px;
+  margin-left: 50px;
+  font-size: 20px;
+  opacity: 0;
 }
 
-.f1{
-    width: 25%;
-    margin-left: 40%;
-    grid-area: 1 / 1 / 2 / 2;
-}
-.f2{
-    display:flex;
-    margin-left: 40%;
-    grid-area: 1 / 2 / 2 / 3;
-}
-.f3{
-    display: flex;
-    margin-left: 40%;
-    grid-area: 1 / 3 / 2 / 4;
+.uploadFile2 {
+  grid-area: 4 / 2 / 5 / 3;
+  margin-top: 55px;
+  font-size: 20px;
+  opacity: 0;
+  width: 110px;
 }
 
-.f4{
-    display: flex;
-    margin-left: 40%;
-    grid-area: 1 / 4 / 2 / 5;
+.f1 {
+  width: 25%;
+  margin-left: 40%;
+  grid-area: 1 / 1 / 2 / 2;
 }
-.smallNavbar{
-    margin-top: 30px;
-    padding-left: 80px;
-    width: 80%;
-    margin-left: 10%;
-    font-size: 20px;
+.f2 {
+  display: flex;
+  margin-left: 40%;
+  grid-area: 1 / 2 / 2 / 3;
+}
+.f3 {
+  display: flex;
+  margin-left: 40%;
+  grid-area: 1 / 3 / 2 / 4;
 }
 
-.trip{
-    position: relative;
+.f4 {
+  display: flex;
+  margin-left: 40%;
+  grid-area: 1 / 4 / 2 / 5;
+}
+.smallNavbar {
+  margin-top: 30px;
+  padding-left: 80px;
+  width: 80%;
+  margin-left: 10%;
+  font-size: 20px;
+}
+
+.trip {
+  position: relative;
 }
 
 .tripgogo {
+<<<<<<< HEAD
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 80px 1fr 1fr 70px 1fr 1fr;
@@ -178,262 +176,306 @@
     width: 90%;
     border-radius: 20px;
     margin-left: 5%;
+=======
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 80px 1fr 1fr 70px 1fr 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  background-color: white;
+  width: 90%;
+  border-radius: 20px;
+  margin-left: 5%;
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 }
 
-.NextTripSwiper{
-    grid-area: 2 / 1 / 4 / 6; 
+.NextTripSwiper {
+  grid-area: 2 / 1 / 4 / 6;
 }
-.trip2{
-    grid-area: 4 / 1 / 7 / 6;
+.trip2 {
+  grid-area: 4 / 1 / 7 / 6;
 }
-.NextTripTitle{
-    margin-top: 25px;
-    grid-area: 1 / 1 / 2 / 2;
-    font-size: 25px;
-    margin-left: 61.55px;
+.NextTripTitle {
+  margin-top: 25px;
+  grid-area: 1 / 1 / 2 / 2;
+  font-size: 25px;
+  margin-left: 61.55px;
 }
 
-.NextTripTitle_1{
-    margin-top: 15px;
-    grid-area: 1 / 1 / 2 / 2;
-    font-size: 25px;
-    margin-left: 61.55px;
+.NextTripTitle_1 {
+  margin-top: 15px;
+  grid-area: 1 / 1 / 2 / 2;
+  font-size: 25px;
+  margin-left: 61.55px;
 }
-.NextTripButton{
-    grid-area: 1 / 5 / 2 / 6;   
+.NextTripButton {
+  grid-area: 1 / 5 / 2 / 6;
 }
-.trip5{
-    
-    grid-area: 2 / 1 / 4 / 3;
+.trip5 {
+  grid-area: 2 / 1 / 4 / 3;
 }
-.NextTripCreate{
-    grid-area: 1 / 4 / 2 / 5;
-    margin-top: 20px;
-    margin-left: 190px;
+.NextTripCreate {
+  grid-area: 1 / 4 / 2 / 5;
+  margin-top: 20px;
+  margin-left: 190px;
 }
+<<<<<<< HEAD
 .PastTripTitle{
     font-size: 25px;
     margin-left: 61.55px;
     grid-area: 4 / 1 / 5 / 2;
     margin-top: 15px;
+=======
+.PastTripCreate{
+  grid-area: 4 / 4 / 5 / 5;
+  margin-top: 20px;
+  margin-left: 190px;
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 }
-.trip8{
-    grid-area: 1 / 1 / 2 / 6;
-    margin-top: 60px;
-    width: 95%;
-    margin-left: 2.5%;
+.PastTripTitle {
+  font-size: 25px;
+  margin-left: 61.55px;
+  grid-area: 4 / 1 / 5 / 2;
+  margin-top: 30px;
 }
-.trip9{
-    grid-area: 5 / 1 / 7 / 3;
+.trip8 {
+  grid-area: 1 / 1 / 2 / 6;
+  margin-top: 60px;
+  width: 95%;
+  margin-left: 2.5%;
 }
-.trip10{
-    grid-area: 1 / 3 / 4 / 4;
-    margin-top: 50px;
+.trip9 {
+  grid-area: 5 / 1 / 7 / 3;
 }
-.trip10_1{
-    grid-area: 1 / 3 / 4 / 4;
-    margin-top: 50px;
-    margin-left: 50px;
-    font-size: 25px;
+.trip10 {
+  grid-area: 1 / 3 / 4 / 4;
+  margin-top: 50px;
 }
-.trip11{
-    grid-area: 1 / 3 / 4 / 4;
-    font-size: 30px;
-    margin-left: 5px;
-    margin-top: 130px;
+.trip10_1 {
+  grid-area: 1 / 3 / 4 / 4;
+  margin-top: 50px;
+  margin-left: 50px;
+  font-size: 25px;
 }
-.trip11_1{
-    grid-area: 1 / 3 / 4 / 4;
-    font-size: 25px;
-    margin-left: 50px;
-    margin-top: 125px;
+.trip11 {
+  grid-area: 1 / 3 / 4 / 4;
+  font-size: 30px;
+  margin-left: 5px;
+  margin-top: 130px;
 }
-.buttonShow{
-    border: 3px solid white;
-    background-color: #CCD2E3;
-    font-size: 20px;
-    border-radius: 10px;
-    width: 150px;
-    margin-top: 20px;
+.trip11_1 {
+  grid-area: 1 / 3 / 4 / 4;
+  font-size: 25px;
+  margin-left: 50px;
+  margin-top: 125px;
+}
+.buttonShow {
+  border: 3px solid white;
+  background-color: #ccd2e3;
+  font-size: 20px;
+  border-radius: 10px;
+  width: 150px;
+  margin-top: 20px;
 }
 
 .imgTrip {
-    height: 200px;
-    width: 350px;
-    margin-left: 61.55px;
-    border-radius: 10px;
-
+  height: 200px;
+  width: 350px;
+  margin-left: 61.55px;
+  border-radius: 10px;
 }
 
-.trip12{
-    grid-area: 2 / 1 / 3 / 2;
-    font-size: 40px;
-    margin-left: 350px;    
-    margin-top: 7px;
-    
+.trip12 {
+  grid-area: 2 / 1 / 3 / 2;
+  font-size: 40px;
+  margin-left: 350px;
+  margin-top: 7px;
 }
-.trip13{
-    grid-area: 2 / 1 / 3 / 2;
-    font-size: 40px;
-    margin-left: 70px;    
-    margin-top: 15px;
-}
-
-.CountryCircle{
-    object-fit: cover;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-}
-.trip14{
-    grid-area: 3 / 1 / 4 / 2;
-}
-.tripName{
-    color: White;
-    font-weight:bold;
-    margin-left: 80px;
-    margin-top: 40px;
-    font-size: 18px;
-}
-.tripName:hover{
-    text-decoration: underline;
-}
-.NextTripHr{
-    grid-area: 1 / 1 / 2 / 6;
-    font-size: 30px;
-    margin-left: 5px;
-    margin-top: 80px;
+.trip13 {
+  grid-area: 2 / 1 / 3 / 2;
+  font-size: 40px;
+  margin-left: 70px;
+  margin-top: 15px;
 }
 
-
-
-.trip16{
-    grid-area: 5 / 1 / 6 / 2;
-    font-size: 40px;
-    margin-left: 350px;    
-    margin-top: 7px;
+.CountryCircle {
+  object-fit: cover;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
 }
+.trip14 {
+  grid-area: 3 / 1 / 4 / 2;
+}
+.tripName {
+  color: White;
+  font-weight: bold;
+  margin-left: 80px;
+  margin-top: 40px;
+  font-size: 18px;
+}
+.tripName:hover {
+  text-decoration: underline;
+}
+.NextTripHr {
+  grid-area: 1 / 1 / 2 / 6;
+  font-size: 30px;
+  margin-left: 5px;
+  margin-top: 80px;
+}
+
+.trip16 {
+  grid-area: 5 / 1 / 6 / 2;
+  font-size: 40px;
+  margin-left: 350px;
+  margin-top: 7px;
+}
+<<<<<<< HEAD
 .PastTripSwiper{
     grid-area: 5 / 1 / 7 / 6;
     margin-top: 15px;
+=======
+.PastTripSwiper {
+  grid-area: 5 / 1 / 7 / 6;
+  margin-top: 15px;
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 }
-.PastTripButton{
-    grid-area: 4 / 5 / 5 / 6;
+.PastTripButton {
+  grid-area: 4 / 5 / 5 / 6;
 }
 
 .swiperTrip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-
-
-.swiperTrip1{
-    grid-area: 1 / 1 / 3 / 4;
+.swiperTrip1 {
+  grid-area: 1 / 1 / 3 / 4;
 }
-.swiperTrip2{
-    grid-area: 1 / 3 / 2 / 4;
+.swiperTrip2 {
+  grid-area: 1 / 3 / 2 / 4;
 }
-.swiperTrip3{
-    grid-area: 2 / 1 / 3 / 4;
-    margin-top: 10px;
+.swiperTrip3 {
+  grid-area: 2 / 1 / 3 / 4;
+  margin-top: 10px;
 }
 
-.trip12_1{
-    grid-area: 2 / 1 / 3 / 2;
-    font-size: 40px;
-    margin-left: 70px;    
-    margin-top: 7px;
+.trip12_1 {
+  grid-area: 2 / 1 / 3 / 2;
+  font-size: 40px;
+  margin-left: 70px;
+  margin-top: 7px;
 }
 
-.swiperImgIcon{
-    grid-area: 1 / 3 / 2 / 4;
-    font-size: 40px;
-    margin-left: 70px;    
-    margin-top: 7px;
+.swiperImgIcon {
+  grid-area: 1 / 3 / 2 / 4;
+  font-size: 40px;
+  margin-left: 80px;
+  margin-top: 10px;
 }
 
-.swiperNextTrip{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+.swiperDelete {
+  grid-area: 1 / 3 / 2 / 4;
+  font-size: 40px;
+  margin-left: 80px;
+  margin-top: 40px;
+}
+
+.swiperNextTrip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 .imgNextTrip {
-    height: 200px;
-    width: 350px;
-    margin-left: 61.55px;
-    border-radius: 10px;
-    grid-area: 1 / 1 / 3 / 4; 
+  height: 200px;
+  width: 350px;
+  margin-left: 61.55px;
+  border-radius: 10px;
+  grid-area: 1 / 1 / 3 / 4;
 }
 
-.CountryNextTrip{
-    grid-area: 1 / 1 / 2 / 2;
-    font-size: 40px;
-    margin-left: 70px;    
-    margin-top: 15px;
+.CountryNextTrip {
+  grid-area: 1 / 1 / 2 / 2;
+  font-size: 40px;
+  margin-left: 70px;
+  margin-top: 15px;
 }
 
-.swiperNextTripText{
-    grid-area: 2 / 1 / 3 / 4;
-    margin-bottom: 50px;
+.swiperNextTripText {
+  grid-area: 2 / 1 / 3 / 4;
+  margin-bottom: 50px;
 }
 
-.NextTripContent{
-    grid-area: 2 / 1 / 6 / 6;
+.NextTripContent {
+  grid-area: 2 / 1 / 6 / 6;
 }
 
-.DetailTripLocation{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 50px;
-    margin-left: 150px;
-    margin-top: 30px;
+.DetailTripLocation {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 50px;
+  margin-left: 150px;
+  margin-top: 30px;
 }
 
-.DeatailTripDate{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 40px;
-    margin-left: 155px;
-    margin-top: 85px;
+.DeatailTripDate {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 40px;
+  margin-left: 155px;
+  margin-top: 85px;
 }
-.DetailTripType{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 40px;
-    margin-left: 155px;
-    margin-top: 130px;
+.DetailTripType {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 40px;
+  margin-left: 155px;
+  margin-top: 130px;
 }
-.TripLocationText{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 25px;
-    margin-left: 200px;
-    margin-top: 35px;
+.TripLocationText {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 35px;
 }
-.TripDateText{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 25px;
-    margin-left: 200px;
-    margin-top: 85px;
+.TripDateText {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 85px;
 }
-.TripTypeText{
-    grid-area: 1 / 2 / 3 / 4;
-    font-size: 25px;
-    margin-left: 200px;
-    margin-top: 130px;
+.TripTypeText {
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 25px;
+  margin-left: 200px;
+  margin-top: 130px;
 }
-.NextTripHr{
-    grid-area: 2 / 1 / 3 / 4;
-    margin-top: 100px;
-    width: 90%;
-    margin-left: 5%;
-    opacity: 50%;
+.NextTripHr {
+  grid-area: 2 / 1 / 3 / 4;
+  margin-top: 100px;
+  width: 90%;
+  margin-left: 5%;
+  opacity: 50%;
 }
-.UserNextTripHr{
+.UserNextTripHr {
   grid-area: 3 / 1 / 4 / 6;
   margin-top: 120px;
   width: 90%;
   margin-left: 5%;
 }
+<<<<<<< HEAD
+=======
+
+.PastswiperImgIcon{
+  grid-area: 1 / 1 / 2 / 3; 
+  margin-left: 365px;
+  margin-top: 10px;
+}
+.PastswiperDelete{
+  grid-area: 1 / 1 / 2 / 3; 
+  margin-left: 365px;
+  margin-top: 40px;
+}
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d

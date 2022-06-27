@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .footer {
     flex: 20%;
     display: flex;
@@ -13,3 +14,20 @@
     border-radius: 8px;
     font-size: 20px;
   }
+=======
+.footer {
+  flex: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer button {
+  width: 150px;
+  height: 45px;
+  margin-left: 10px;
+  background-color: cornflowerblue;
+  border-radius: 8px;
+  font-size: 20px;
+}
+>>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d

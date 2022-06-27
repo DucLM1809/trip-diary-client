@@ -15,47 +15,57 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTrip } from "../../redux/actions";
 import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BsThreeDots } from "react-icons/bs";
 
 const Overview = () => {
-  const [display, setDisplay] = useState(false);
-  const [disable, setDisable] = useState(true);
-  const [type, setType] = useState("Single Trip");
-  const [selected1, setSelected1] = useState(null);
-  const [selected2, setSelected2] = useState(null);
-  const [coordinate1, setCoordinate1] = useState({});
-  const [coordinate2, setCoordinate2] = useState({});
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
-  const [urlImg, setUrlImg] = useState();
-  const [edit, setEdit] = useState(false);
-
-  const dispatch = useDispatch();
+  const sasToken = useSelector((state) => state.user.sasToken);
+  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDAlsOlLHsgwjxpE-Vy3kylucbFURIPH5g",
+    googleMapsApiKey: ApiKey,
     libraries: "places",
   });
 
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
   const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (location.pathname.split("/")[1] === "edit") {
       setEdit(true);
+      setTripId(location.pathname.split("/")[3]);
     } else {
       setEdit(false);
     }
   }, [location]);
 
-  useEffect(() => {
-    setSuccess("");
-    setErr("");
-  }, []);
+  const [display, setDisplay] = useState(false);
+  const [displayPublic, setDisplayPublic] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [type, setType] = useState("Single Trip");
+  const [selected1, setSelected1] = useState(null);
+  const [selected2, setSelected2] = useState(null);
+  const [coordinate1, setCoordinate1] = useState({ ...center });
+  const [coordinate2, setCoordinate2] = useState({});
+  const [departure, setDeparture] = useState();
+  const [destination, setDestination] = useState();
+  const [dep, setDep] = useState();
+  const [dest, setDest] = useState();
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
+  const [urlImg, setUrlImg] = useState();
+  const [edit, setEdit] = useState(false);
+  const [trip, setTrip] = useState();
+  const [tripId, setTripId] = useState();
+  const [tripPublic, setTripPublic] = useState();
+
+  const dispatch = useDispatch();
+  const tripInfo = useSelector((state) => state.trip);
 
   const containerStyle = {
     width: "100%",
@@ -66,9 +76,18 @@ const Overview = () => {
     setDisplay(!display);
   };
 
+  const handleChoosePublic = () => {
+    setDisplayPublic(!displayPublic);
+  };
+
   const handleType = (e) => {
     setDisplay(false);
     setType(e.target.textContent);
+  };
+
+  const handlePublic = (e) => {
+    setDisplayPublic(false);
+    setTripPublic(e.target.textContent);
   };
 
   useEffect(() => {
@@ -86,6 +105,7 @@ const Overview = () => {
     resetField,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -94,6 +114,7 @@ const Overview = () => {
     data.from_lng = coordinate1.lng;
     data.to_lat = coordinate2.lat;
     data.to_lng = coordinate2.lng;
+    data.tripPublic = tripPublic;
     if (edit) {
       handleEditTrip(data);
     } else {
@@ -103,7 +124,7 @@ const Overview = () => {
 
   const accessToken = localStorage
     .getItem("accessToken")
-    .toString()
+    ?.toString()
     .split('"')[1];
 
   const config = {
@@ -111,6 +132,7 @@ const Overview = () => {
       "Content-Type": "application/json",
     },
   };
+
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
@@ -127,21 +149,24 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
+          scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
       .catch((error) => {
         setErr(error.response.data.detail);
         setSuccess("");
+        setEdit(false);
         console.log(error);
       });
     if (res) {
       setSuccess("Create Trip Successfully!");
       setErr("");
-      console.log("res: ", res.data);
+      setEdit(true);
       dispatch(createTrip(res.data));
     }
   };
@@ -149,7 +174,7 @@ const Overview = () => {
   const handleEditTrip = async (data) => {
     let res = await api
       .put(
-        `/trips/${113}`,
+        `/trips/${tripId || tripInfo.tripID}`,
         {
           name: data.tripname,
           type: data.type,
@@ -158,9 +183,11 @@ const Overview = () => {
           toLat: data.to_lat,
           toLng: data.to_lng,
           startAt: data.from,
-          finishAt: data.to,
+          backTripAt: data.to,
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
+          scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
@@ -172,24 +199,98 @@ const Overview = () => {
     if (res) {
       setSuccess("Edit Trip Successfully!");
       setErr("");
-      console.log("res: ", res.data);
       dispatch(createTrip(res.data));
     }
   };
 
   useEffect(() => {
-    // console.log(selected1);
     setCoordinate1({ ...selected1 });
   }, [selected1]);
 
   useEffect(() => {
-    // console.log(selected2);
     setCoordinate2({ ...selected2 });
   }, [selected2]);
 
   const handleUploadImg = (e) => {
-    uploadFileToBlob(e.target.files[0]).then((result) => setUrlImg(result));
+    uploadFileToBlob(e.target.files[0], sasToken).then((result) =>
+      setUrlImg(result)
+    );
   };
+
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${tripId || tripInfo.tripID}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+    }
+  };
+
+  useEffect(() => {
+    if (edit) {
+      handleGetTrip();
+    }
+  }, [edit]);
+
+  const handleGetDeparture = async () => {
+    if (coordinate1?.lat && coordinate1?.lng) {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDep).catch((error) => console.log(error));
+      if (res) {
+        setDeparture(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
+    }
+  };
+
+  const handleGetDestination = async () => {
+    if (coordinate2?.lat && coordinate2?.lng) {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDes).catch((error) => console.log(error));
+      if (res) {
+        setDestination(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log("TRIP: ", trip);
+    if (edit && trip) {
+      setValue("tripname", trip.name);
+      if (trip.backTripAt) {
+        setType("Around Trip");
+        setValue("to", trip.backTripAt);
+      } else {
+        setType("Single Trip");
+      }
+      setValue("from", trip.startAt);
+      setValue("description", trip.description);
+      setCoordinate1({ lat: trip.fromLat, lng: trip.fromLng });
+      setCoordinate2({ lat: trip.toLat, lng: trip.toLng });
+      setUrlImg(trip.coverImgUrl);
+    } else {
+      resetField("tripname");
+      setType("Single Trip");
+      resetField("from");
+      resetField("to");
+      resetField("description");
+    }
+  }, [edit, trip]);
+
+  useEffect(() => {
+    if (edit && coordinate1) {
+      handleGetDeparture();
+    }
+  }, [edit, coordinate1]);
+
+  useEffect(() => {
+    if (edit && coordinate2) {
+      handleGetDestination();
+    }
+  }, [edit, coordinate2]);
 
   return (
     <div className="flex flex-col justify-center mx-auto mt-10 min-w-[1100px]">
@@ -217,7 +318,7 @@ const Overview = () => {
         </form>
         <AiFillCamera className="text-5xl text-gray absolute bottom-8 right-10 z-10 cursor-pointer" />
       </div>
-      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10">
+      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10 relative">
         <form
           className="flex flex-col justify-around items-center w-8/12"
           onSubmit={handleSubmit(onSubmit)}
@@ -278,7 +379,7 @@ const Overview = () => {
                     Single Trip
                   </div>
                   <div
-                    className="w-full px-2 py-1 h-full hover:bg-gray rounded-br-3 rounded-bl-3"
+                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
                     onClick={(e) => handleType(e)}
                   >
                     Around Trip
@@ -286,6 +387,33 @@ const Overview = () => {
                 </div>
               </div>
             </div>
+              <div className="cursor-pointer w-[100px]  absolute right-10">
+                <div
+                  
+                  onClick={handleChoosePublic}
+                >
+                  <BsThreeDots />
+                </div>
+
+                <div
+                  className={`border-2 border-gray rounded-5 mb-1 ${
+                    displayPublic ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Public
+                  </div>
+                  <div
+                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Private
+                  </div>
+                </div>
+              </div>
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
@@ -294,7 +422,8 @@ const Overview = () => {
               </label>
               <PlacesAutocomplete1
                 setSelected1={setSelected1}
-                setLocation1={setLocation1}
+                departure={departure}
+                setDep={setDep}
               />
             </div>
             <div className="flex flex-col">
@@ -303,7 +432,8 @@ const Overview = () => {
               </label>
               <PlacesAutocomplete2
                 setSelected2={setSelected2}
-                setLocation2={setLocation2}
+                destination={destination}
+                setDest={setDest}
               />
             </div>
           </div>
@@ -387,12 +517,11 @@ const Overview = () => {
           <></>
         )}
       </div>
-      <Link to={`/edit/trip/${113}`}>Edit</Link>
     </div>
   );
 };
 
-const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
+const PlacesAutocomplete1 = ({ setSelected1, departure, setDep }) => {
   const {
     ready,
     value,
@@ -403,13 +532,22 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation1(address);
     clearSuggestions();
-
     const results = await getGeocode({ address });
+    let temp = results[0].formatted_address.split(",");
+    setDep(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected1({ lat, lng });
   };
+
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
+
+  useEffect(() => {
+    // setValue(departure);
+    handleSelect(departure);
+  }, [departure]);
 
   return (
     <Combobox onSelect={handleSelect}>
@@ -433,7 +571,7 @@ const PlacesAutocomplete1 = ({ setSelected1, setLocation1 }) => {
   );
 };
 
-const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
+const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
   const {
     ready,
     value,
@@ -444,12 +582,22 @@ const PlacesAutocomplete2 = ({ setSelected2, setLocation2 }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
-    setLocation2(address);
     clearSuggestions();
     const results = await getGeocode({ address });
+    let temp = results[0].formatted_address.split(",");
+    setDest(temp[temp.length - 1]);
     const { lat, lng } = getLatLng(results[0]);
     setSelected2({ lat, lng });
   };
+
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
+
+  useEffect(() => {
+    // setValue(destination);
+    handleSelect(destination)
+  }, [destination]);
 
   return (
     <Combobox onSelect={handleSelect}>

@@ -33,12 +33,9 @@ const Signin = () => {
   }, [userInfo]);
 
   const onSuccess = (response) => {
+    console.log(response);
     dispatch(loadingPage(true));
     handleLoginGoogle(response);
-    dispatch(loginGoogle(response));
-    localStorage.setItem("username", response.profileObj.name);
-
-    navigate(from, { replace: true });
   };
 
   const { signIn } = useGoogleLogin({
@@ -47,20 +44,35 @@ const Signin = () => {
   });
 
   const handleLoginGoogle = async (response) => {
-    let res = await api.post("/login/google", {
-      tokenId: response.tokenId,
-    });
+    let res = await api
+      .post("/login/google", {
+        tokenId: response.tokenId,
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.response.data.detail);
+        setSuccess(null);
+        setLoading(false);
+      });
 
-    localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${res.data.accessToken}`,
-      },
-    };
+    if (res) {
+      console.log(res);
+      localStorage.setItem("username", response.profileObj.name);
+      localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+      localStorage.setItem("auth", true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${res.data.accessToken}`,
+        },
+      };
 
-    res = await api.get("/users", config);
-    dispatch(getUserInfo(res.data[0]));
+      dispatch(loginGoogle(response));
+      navigate(from, { replace: true });
+
+      res = await api.get("/users", config);
+      dispatch(getUserInfo(res.data[0]));
+    }
   };
 
   const {
@@ -98,6 +110,8 @@ const Signin = () => {
       dispatch(loginAccount(data));
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
       localStorage.setItem("username", data.account.split("@")[0]);
+      localStorage.setItem("auth", true);
+      navigate(from, { replace: true });
     }
   };
 
@@ -135,7 +149,7 @@ const Signin = () => {
               )}
               {error ? (
                 <>
-                  <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center">
+                  <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mt-3 rounded-3 relative text-center max-w-[306px]">
                     <span className="block sm:inline">{error}</span>
                   </div>
                 </>

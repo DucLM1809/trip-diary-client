@@ -30,6 +30,7 @@ module.exports = {
       "10": "10px",
       "20": "20px",
       "30": "30px",
+      "1/2": "50%"
     },
     fontFamily: {
       'logo': 'Dancing Script',
