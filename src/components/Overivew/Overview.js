@@ -341,7 +341,7 @@ const Overview = () => {
           ) : (
             <></>
           )}
-          <div className="w-full flex justify-between mb-10">
+          <div className="w-full flex justify-start mb-10">
             <div className="flex flex-col">
               <label htmlFor="name" className="mb-2">
                 Trip name
@@ -351,16 +351,16 @@ const Overview = () => {
                 type="text"
                 {...register("tripname")}
                 placeholder="Enter trip name"
-                className="border-2 border-gray pl-3 py-3 w-[560px] pr-10 rounded-5"
+                className="border-2 border-gray pl-3 py-3 w-[416px] pr-10 rounded-5"
               ></input>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="type" className="mb-2">
+              <label htmlFor="type" className="mb-2 ml-[10px]">
                 Type
               </label>
               <div className="cursor-pointer w-[148px]">
                 <div
-                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center"
+                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center ml-[10px]"
                   onClick={handleChooseType}
                 >
                   <span className="mr-2">{type ? type : "Choose Type"}</span>
@@ -387,12 +387,17 @@ const Overview = () => {
                 </div>
               </div>
             </div>
-              <div className="cursor-pointer w-[100px]  absolute right-10">
+            <div className="flex flex-col">
+            <label htmlFor="ispublic" className="mb-2 ml-[20px]">
+                Type
+              </label>
+              <div className="cursor-pointer w-[148px] ml-[10px]">
                 <div
-                  
+                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center ml-[10px]"
                   onClick={handleChoosePublic}
                 >
-                  <BsThreeDots />
+                  <span className="mr-2">{tripPublic ? tripPublic : "Public"}</span>
+                  <FiChevronDown />
                 </div>
 
                 <div
@@ -413,6 +418,7 @@ const Overview = () => {
                     Private
                   </div>
                 </div>
+              </div>
               </div>
           </div>
           <div className="w-full flex justify-between mb-10">

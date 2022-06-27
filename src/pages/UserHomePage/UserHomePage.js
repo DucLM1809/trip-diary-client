@@ -19,17 +19,11 @@ import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
-<<<<<<< HEAD
-=======
 import { Modal } from "../../components";
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 import moment from "moment";
 
 const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
-<<<<<<< HEAD
-  
-=======
   const [isDeleted, setIsDeleted] = useState(false);
   const [type, setType] = useState(null);
   const [scope, setScope] = useState(null);
@@ -38,7 +32,6 @@ const UserHomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [delId, setDelId] = useState();
 
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
   const userName = localStorage.getItem("username");
 
   const accessToken = localStorage
@@ -73,53 +66,14 @@ const UserHomePage = () => {
     let res = await api.get("/trips/me", config);
     if (res) {
       setTrips(res.data);
-<<<<<<< HEAD
-
-    }
-  };
-
-  
-  const currentdate = moment().format("YYYY-MM-DD");
-
-=======
       setIsDeleted(false);
     }
   };
 
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
   useEffect(() => {
     handleGetTrips();
   }, []);
 
-<<<<<<< HEAD
-  const nexttrips = [];
-  const pasttrips = [];
-
-  for(let x of trips){
-    if(x.startAt>currentdate){
-      nexttrips.push(x);
-    }
-    else if(x.startAt<currentdate){
-      pasttrips.push(x);
-    }
-  }
-
- 
-  
-
-  // const handleGetTrip = async () => {
-  //   let res = await api
-  //     .get(`/trips/${tripInfo.tripID}`, config)
-  //     .catch((error) => console.log(error));
-  //   if (res) {
-  //     setTrip(res.data);
-  //     // console.log("Trip: ", res);
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleGetTrip();
-  // }, []);
-=======
   useEffect(() => {
     if (isDeleted) {
       handleGetTrips();
@@ -224,7 +178,6 @@ const UserHomePage = () => {
       }
     });
   }, [trips]);
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
 
   return (
     <>
@@ -357,33 +310,6 @@ const UserHomePage = () => {
             >
               {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
-<<<<<<< HEAD
-                  <SwiperSlide>
-                    
-                    <div key={uuidv4()}>
-                      <div className="swiperNextTrip">
-                        <img
-                          className="imgNextTrip"
-                          alt=""
-                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                        />
-
-                        <div className="CountryNextTrip">
-                          <img
-                            className="CountryCircle"
-                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                          />
-                        </div>
-                        <div className="swiperImgIcon">
-                          <Link to="/">
-                            <IoPersonCircleOutline />
-                          </Link>
-                        </div>
-                        <div className="swiperNextTripText">
-                          <h2 className="tripName">{trip.name}  </h2>
-                          
-                        </div>
-=======
                   <SwiperSlide key={trip.id} className="z-0">
                     <div className="swiperNextTrip">
                       <img
@@ -418,7 +344,6 @@ const UserHomePage = () => {
                         <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
                           <h2 className="tripName">{trip.name} </h2>
                         </Link>
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
                       </div>
                     </div>
                   </SwiperSlide>
@@ -436,13 +361,8 @@ const UserHomePage = () => {
             <hr />
           </div>
           <div className="NextTripButton">
-<<<<<<< HEAD
-          <Link to="/nexttrip">
-            <button className="buttonShow">Show all</button>
-=======
             <Link to="/nexttrip">
               <button className="buttonShow">Show all</button>
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
             </Link>
           </div>
           <div className="NextTripCreate">
@@ -454,14 +374,9 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripTitle">
-<<<<<<< HEAD
-            <h1>My past trips</h1>
-            
-=======
             <Link to="/pasttrip">
               <h1>My past trips</h1>
             </Link>
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
           </div>
 
           <div className="PastTripSwiper">
@@ -477,33 +392,6 @@ const UserHomePage = () => {
             >
               {pasttrips.length > 0 ? (
                 pasttrips.map((trip) => (
-<<<<<<< HEAD
-                  <SwiperSlide>
-                    
-                    <div key={uuidv4()}>
-                      <div className="swiperNextTrip">
-                        <img
-                          className="imgNextTrip"
-                          alt=""
-                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                        />
-
-                        <div className="CountryNextTrip">
-                          <img
-                            className="CountryCircle"
-                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                          />
-                        </div>
-                        <div className="swiperImgIcon">
-                          <Link to="/">
-                            <IoPersonCircleOutline />
-                          </Link>
-                        </div>
-                        <div className="swiperNextTripText">
-                          <h2 className="tripName">{trip.name}  </h2>
-                          
-                        </div>
-=======
                   <SwiperSlide key={trip.id} className="z-0">
                     <div className="swiperNextTrip">
                       <img
@@ -538,7 +426,6 @@ const UserHomePage = () => {
                         <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
                           <h2 className="tripName">{trip.name} </h2>
                         </Link>
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
                       </div>
                     </div>
                   </SwiperSlide>
@@ -549,12 +436,6 @@ const UserHomePage = () => {
             </Swiper>
           </div>
           <div className="PastTripButton">
-<<<<<<< HEAD
-          <Link to="/pasttrip">
-
-            <button className="buttonShow">Show all</button>
-          </Link>
-=======
             <Link to="/pasttrip">
               <button className="buttonShow">Show all</button>
             </Link>
@@ -565,7 +446,6 @@ const UserHomePage = () => {
                 <AiFillPlusCircle size={"35px"} />
               </button>
             </Link>
->>>>>>> 146f64a7f921ee7387453da31559b95f1a62546d
           </div>
         </div>
       </div>
