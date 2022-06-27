@@ -21,6 +21,7 @@ import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BsThreeDots } from "react-icons/bs";
 
 const Overview = () => {
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -152,10 +153,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
-<<<<<<< HEAD
           isPublic: tripPublic === "Public" ? true : false,
-=======
->>>>>>> 0349c5834b1916c52fe3c9d8f364a8eaa3c50c19
         },
         config
       )
@@ -189,10 +187,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
-<<<<<<< HEAD
           isPublic: tripPublic === "Public" ? true : false,
-=======
->>>>>>> 0349c5834b1916c52fe3c9d8f364a8eaa3c50c19
         },
         config
       )
@@ -323,7 +318,7 @@ const Overview = () => {
         </form>
         <AiFillCamera className="text-5xl text-gray absolute bottom-8 right-10 z-10 cursor-pointer" />
       </div>
-      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10">
+      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10 relative">
         <form
           className="flex flex-col justify-around items-center w-8/12"
           onSubmit={handleSubmit(onSubmit)}
@@ -392,19 +387,12 @@ const Overview = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="tripPublic" className="mb-2">
-                Type
-              </label>
-              <div className="cursor-pointer w-[148px]">
+              <div className="cursor-pointer w-[100px]  absolute right-10">
                 <div
-                  className="border-2 border-gray w-full px-2 py-3 rounded-5 mb-[1px] flex justify-between items-center"
+                  
                   onClick={handleChoosePublic}
                 >
-                  <span className="mr-2">
-                    {tripPublic ? tripPublic : "Public"}
-                  </span>
-                  <FiChevronDown />
+                  <BsThreeDots />
                 </div>
 
                 <div
@@ -426,7 +414,6 @@ const Overview = () => {
                   </div>
                 </div>
               </div>
-            </div>
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">
