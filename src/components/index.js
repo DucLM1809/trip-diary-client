@@ -7,6 +7,7 @@ export { default as DestinationsSection } from "./DestinationsSection/Destinatio
 export { default as Footer } from "./Footer/Footer";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as Sidebar } from "./Sidebar/Sidebar";
+export { default as ProfileSidebar } from "./Sidebar/ProfileSidebar";
 export { default as AddDetailBody } from "./AddDetailBody/AddDetailBody";
 export { default as Overview } from "./Overivew/Overview";
 export { default as Itinerary } from "./Itinerary/Itinerary";
@@ -19,3 +20,5 @@ export { default as CreatedItinerary } from "./CreatedItinerary/CreatedItinerary
 export { default as CreatedChecklist } from "./CreatedChecklist/CreatedChecklist";
 export { default as TripSearch } from "./TripSearch/TripSearch";
 export { default as Modal } from "./Modal/Modal"
+export { default as MyProfile } from "./Profile/MyProfile"
+export { default as EditProfile } from "./Profile/EditProfile"

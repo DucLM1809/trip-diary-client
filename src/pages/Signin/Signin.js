@@ -22,7 +22,7 @@ const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  // const from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || "/home";
   const clientId =
     "518727150893-4c80ip0io9lbbnmbrujki5l8cn4vrvvv.apps.googleusercontent.com";
 
@@ -68,7 +68,7 @@ const Signin = () => {
       };
 
       dispatch(loginGoogle(response));
-      // navigate(from, { replace: true });
+      navigate(from, { replace: true });
 
       res = await api.get("/users", config);
       dispatch(getUserInfo(res.data[0]));
@@ -111,6 +111,7 @@ const Signin = () => {
       localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
       localStorage.setItem("username", data.account.split("@")[0]);
       localStorage.setItem("auth", true);
+      navigate(from, { replace: true });
     }
   };
 

@@ -566,7 +566,8 @@ const PlacesAutocomplete = ({
 
   useEffect(() => {
     if (departure) {
-      setValue(departure);
+      // setValue(departure);
+      handleSelect(departure)
     }
   }, [departure]);
 

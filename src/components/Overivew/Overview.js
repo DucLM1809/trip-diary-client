@@ -152,7 +152,10 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
+<<<<<<< HEAD
           isPublic: tripPublic === "Public" ? true : false,
+=======
+>>>>>>> 0349c5834b1916c52fe3c9d8f364a8eaa3c50c19
         },
         config
       )
@@ -186,7 +189,10 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
+<<<<<<< HEAD
           isPublic: tripPublic === "Public" ? true : false,
+=======
+>>>>>>> 0349c5834b1916c52fe3c9d8f364a8eaa3c50c19
         },
         config
       )
@@ -232,22 +238,26 @@ const Overview = () => {
   }, [edit]);
 
   const handleGetDeparture = async () => {
-    let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
-    let res = await axios.get(urlDep).catch((error) => console.log(error));
-    if (res) {
-      setDeparture(
-        res.data.results[res.data.results.length - 2].formatted_address
-      );
+    if (coordinate1?.lat && coordinate1?.lng) {
+      let urlDep = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate1.lat},${coordinate1.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDep).catch((error) => console.log(error));
+      if (res) {
+        setDeparture(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
     }
   };
 
   const handleGetDestination = async () => {
-    let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
-    let res = await axios.get(urlDes).catch((error) => console.log(error));
-    if (res) {
-      setDestination(
-        res.data.results[res.data.results.length - 2].formatted_address
-      );
+    if (coordinate2?.lat && coordinate2?.lng) {
+      let urlDes = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate2.lat},${coordinate2.lng}&key=${ApiKey}`;
+      let res = await axios.get(urlDes).catch((error) => console.log(error));
+      if (res) {
+        setDestination(
+          res.data.results[res.data.results.length - 2].formatted_address
+        );
+      }
     }
   };
 
@@ -543,12 +553,13 @@ const PlacesAutocomplete1 = ({ setSelected1, departure, setDep }) => {
     setSelected1({ lat, lng });
   };
 
-  useEffect(() => {
-    setValue();
-  }, []);
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
 
   useEffect(() => {
-    setValue(departure);
+    // setValue(departure);
+    handleSelect(departure);
   }, [departure]);
 
   return (
@@ -592,12 +603,13 @@ const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
     setSelected2({ lat, lng });
   };
 
-  useEffect(() => {
-    setValue();
-  }, []);
+  // useEffect(() => {
+  //   setValue();
+  // }, []);
 
   useEffect(() => {
-    setValue(destination);
+    // setValue(destination);
+    handleSelect(destination)
   }, [destination]);
 
   return (

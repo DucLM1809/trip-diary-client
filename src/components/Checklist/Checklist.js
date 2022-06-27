@@ -100,7 +100,7 @@ const Checklist = () => {
       setSuccess("Add Checklist Successfully!");
       setErr("");
       setEdit(Math.random() * 1 + 1);
-      console.log(res);
+      handleGetChecklist();
     }
   };
 
@@ -109,16 +109,17 @@ const Checklist = () => {
       .put(
         `/trips/${tripId || tripInfo.tripID}/checklist/${item.id}`,
         {
-          name: item.name,
-          hasPrepared: item.check,
-          notes: item.note,
+          name: item.value || item.name,
+          hasPrepared: item.check || item.hasPrepared,
+          notes: item.note || item.notes,
         },
         config
       )
       .catch((error) => console.log(error));
     if (res) {
-      console.log("RES: ", res.data);
+      console.log(res.data);
       setSuccess("Edit Checklist Successfully");
+      handleGetChecklist();
     }
     setItems(checklist);
   };
@@ -137,7 +138,7 @@ const Checklist = () => {
     if (edit) {
       handleGetChecklist();
     }
-  }, [edit]);
+  }, [edit, location]);
 
   const onSubmitItem = (data) => {
     console.log(data);
@@ -166,9 +167,14 @@ const Checklist = () => {
   };
 
   const handleCheck = (id) => {
+    console.log(id);
     let temp = [...items];
-    let item = temp.find((item) => item.id === id);
-    temp.find((item) => item.id === id).check = !item.check;
+    temp.map((item) => {
+      if (item.id === id) {
+        item.hasPrepared = !item.hasPrepared;
+      }
+    });
+    console.log("TEMP: ", temp);
     setItems(temp);
   };
 
@@ -182,6 +188,7 @@ const Checklist = () => {
       .catch((error) => console.log(error));
     if (res) {
       setSuccess("DELETE SUCCESSFULLY!");
+      handleGetChecklist();
     }
   };
 
@@ -194,6 +201,10 @@ const Checklist = () => {
   const handleDisplayNote = () => {
     setNote(!note);
   };
+
+  useEffect(() => {
+    console.log("ITEMS: ", items);
+  }, [items]);
 
   return (
     <div className="flex flex-col justify-start h-[80vh] w-1/2 mx-auto">
@@ -244,7 +255,7 @@ const Checklist = () => {
                       key={item.id}
                       type="checkbox"
                       defaultValue={item.value}
-                      defaultChecked={item.check || item.hasPrepared}
+                      checked={item.hasPrepared || item.check}
                       {...register("checklist")}
                       className="scale-[1.8]"
                       onClick={() => handleCheck(item.id)}
