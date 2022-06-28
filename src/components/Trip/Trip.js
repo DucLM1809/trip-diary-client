@@ -24,6 +24,7 @@ const Trip = () => {
     setNumOfShow((prevValue) => prevValue + 6);
     handleUpdateLimit(searchI);
     console.log(numOfShow);
+    console.log("tung", searchI);
   };
 
   const accessToken = localStorage
@@ -51,14 +52,11 @@ const Trip = () => {
       // console.log(res.data);
       setSearchResult(res.data);
       dispatch(getSearchI(res.data));
-      console.log("searchI", searchI);
-
   };}
 
-
   useEffect(()=>{
-    handleUpdateLimit(searchI);
-  },[searchRes],[numOfShow])
+    console.log("result",searchResult)
+  },[searchResult])
 
 
   return (
