@@ -98,6 +98,7 @@ const Navbar = () => {
         },
         params: {
           search: info,
+          limit: 6,
         },
       })
       .catch((error) => console.log(error));

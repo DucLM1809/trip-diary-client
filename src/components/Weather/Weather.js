@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import { useOpenWeather } from "react-open-weather";
+import { FaTemperatureHigh } from "react-icons/fa";
+import { WiHumidity } from "react-icons/wi";
+import {RiCloudWindyFill} from "react-icons/ri"
 
 const Weather = ({ lat, lng }) => {
   const { data, isLoading, errorMessage } = useOpenWeather({
@@ -39,15 +42,21 @@ const Weather = ({ lat, lng }) => {
             <p className="inline max-w-[200px] min-h-[50px] text-center mt-3">
               {weather.description}
             </p>
-            <span className="">
-              Temperature: {weather.temperature.max}/{weather.temperature.min}°C
-            </span>
-            <span className="mt-4">
-              Humidity: {weather.humidity}%
-            </span>
-            <span className="mt-4 mb-4">
-              Wind: {weather.wind}km/h
-            </span>
+            <div className="flex items-center">
+              <FaTemperatureHigh className="text-lg" />
+              <span>
+                : {weather.temperature.max}/{weather.temperature.min}
+                °C
+              </span>
+            </div>
+            <div className="flex items-center mt-4">
+              <WiHumidity className="text-2xl" />
+              <span>: {weather.humidity}%</span>
+            </div>
+            <div className="flex items-center mt-4 mb-4">
+              <RiCloudWindyFill className="text-lg" />
+              <span>: {weather.wind}km/h</span>
+            </div>
           </div>
         );
       })}
