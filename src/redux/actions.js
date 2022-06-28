@@ -120,3 +120,11 @@ export const getComments = (data) => {
     payload: data,
   };
 };
+
+
+export const getSearchI = (data) => {
+  return {
+    type: "GET_SEARCHI",
+    payload: data,
+  };
+};

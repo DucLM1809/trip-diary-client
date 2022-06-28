@@ -5,23 +5,67 @@ import des6 from "../../assests/images/Destination6.jpg";
 import city from "../../assests/images/city.jpg";
 import api from "../../api/axios";
 import unknown from "../../assests/images/unknown.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import pnf from "../../assests/images/pnf.png";
 import { v4 as uuidv4 } from "uuid";
+import { getSearchI } from "../../redux/actions";
 
 const Trip = () => {
   const searchRes = useSelector((state) => state.searchRes);
+  const [searchResult, setSearchResult] = useState(searchRes);
+  const searchI = useSelector((state) => state.searchI);
   const [numOfShow, setNumOfShow] = useState(6);
 
+  const dispatch = useDispatch();
+
+
   const showMoreTrips = () => {
+    
     setNumOfShow((prevValue) => prevValue + 6);
+    handleUpdateLimit(searchI);
+    console.log(numOfShow);
   };
+
+  const accessToken = localStorage
+    .getItem("accessToken")
+    ?.toString()
+    .split('"')[1];
+
+
+  const handleUpdateLimit = async (searchI) => {
+    let res = await api
+      .get("/trips", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Authorization": `bearer ${accessToken}`
+        },
+        params: {
+          search: searchI,
+          limit: numOfShow
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      // console.log(res.data);
+      setSearchResult(res.data);
+      dispatch(getSearchI(res.data));
+      console.log("searchI", searchI);
+
+  };}
+
+
+  useEffect(()=>{
+    handleUpdateLimit(searchI);
+  },[searchRes],[numOfShow])
+
 
   return (
     <>
       <div className="pt-8 flex gap-4 px-3 flex-wrap justify-center">
-        {searchRes.length > 0 ? (
-          searchRes.map((res, index) => {
+        {searchResult.length > 0 ? (
+          searchResult.map((res, index) => {
             return index < numOfShow ? (
               <div
                 key={index}
@@ -59,7 +103,7 @@ const Trip = () => {
       </div>
       <button
         className={`block bg-light-blue text-white rounded-5 py-2 px-10 hover:bg-medium-blue shadow-lg mx-auto mb-10 ${
-          searchRes.length > 0 ? "block" : "hidden"
+          searchResult.length > 0 ? "block" : "hidden"
         }`}
         onClick={showMoreTrips}
       >

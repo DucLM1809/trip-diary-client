@@ -8,7 +8,7 @@ import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FiChevronDown } from "react-icons/fi";
 import { AiFillSetting } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { getSearchResponse, logOut } from "../../redux/actions";
+import { getSearchResponse, logOut,getSearchI } from "../../redux/actions";
 import { useForm } from "react-hook-form";
 import api from "../../api/axios";
 
@@ -24,6 +24,7 @@ const Navbar = () => {
   const [displayOut, setDisplayOut] = useState(false);
   const [searchInfo, setSearchInfo] = useState("");
   const [searchRes, setSearchRes] = useState([]);
+  const [searchI, setSearchI] = useState("");
   const userName = localStorage.getItem("username");
 
   const clickColor = "text-medium-blue";
@@ -81,11 +82,15 @@ const Navbar = () => {
     setSearchInfo("");
   }, []);
 
+
   const onSubmit = (data) => {
     console.log(data);
     // setSearchInfo(data.search);
     handleSearch(data.search);
+    setSearchI(data.search);
+    dispatch(getSearchI(data.search));
   };
+
 
   const handleSearch = async (info) => {
     let res = await api
@@ -98,6 +103,7 @@ const Navbar = () => {
         },
         params: {
           search: info,
+          limit: 6
         },
       })
       .catch((error) => console.log(error));
