@@ -189,10 +189,11 @@ const Navbar = () => {
                 displayOut ? "block" : "hidden"
               } absolute top-[30px] right-0 bg-white shadow-md border-1 border-gray rounded-5`}
             >
-              <div className="flex pl-4 pr-16 pt-4 pb-2 font-normal">
+              <Link to="/Profile" className="flex pl-4 pr-16 pt-4 pb-2 font-normal">
+              
                 <AiFillSetting className="text-2xl mr-4" />
                 Settings
-              </div>
+              </Link>
               <div
                 className="flex pl-4 pr-16 pt-2 pb-4 font-normal"
                 onClick={handleLogout}

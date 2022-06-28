@@ -21,6 +21,7 @@ import api from "../../api/axios";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BsThreeDots } from "react-icons/bs";
 
 const Overview = () => {
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -44,6 +45,7 @@ const Overview = () => {
   }, [location]);
 
   const [display, setDisplay] = useState(false);
+  const [displayPublic, setDisplayPublic] = useState(false);
   const [disable, setDisable] = useState(true);
   const [type, setType] = useState("Single Trip");
   const [selected1, setSelected1] = useState(null);
@@ -60,6 +62,7 @@ const Overview = () => {
   const [edit, setEdit] = useState(false);
   const [trip, setTrip] = useState();
   const [tripId, setTripId] = useState();
+  const [tripPublic, setTripPublic] = useState();
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
@@ -73,9 +76,18 @@ const Overview = () => {
     setDisplay(!display);
   };
 
+  const handleChoosePublic = () => {
+    setDisplayPublic(!displayPublic);
+  };
+
   const handleType = (e) => {
     setDisplay(false);
     setType(e.target.textContent);
+  };
+
+  const handlePublic = (e) => {
+    setDisplayPublic(false);
+    setTripPublic(e.target.textContent);
   };
 
   useEffect(() => {
@@ -102,6 +114,7 @@ const Overview = () => {
     data.from_lng = coordinate1.lng;
     data.to_lat = coordinate2.lat;
     data.to_lng = coordinate2.lng;
+    data.tripPublic = tripPublic;
     if (edit) {
       handleEditTrip(data);
     } else {
@@ -140,6 +153,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
@@ -173,6 +187,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
+          isPublic: tripPublic === "Public" ? true : false,
         },
         config
       )
@@ -302,7 +317,7 @@ const Overview = () => {
         </form>
         <AiFillCamera className="text-5xl text-gray absolute bottom-8 right-10 z-10 cursor-pointer" />
       </div>
-      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10">
+      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex justify-center rounded-10 relative">
         <form
           className="flex flex-col justify-around items-center w-8/12"
           onSubmit={handleSubmit(onSubmit)}
@@ -371,6 +386,33 @@ const Overview = () => {
                 </div>
               </div>
             </div>
+              <div className="cursor-pointer w-[100px]  absolute right-10">
+                <div
+                  
+                  onClick={handleChoosePublic}
+                >
+                  <BsThreeDots />
+                </div>
+
+                <div
+                  className={`border-2 border-gray rounded-5 mb-1 ${
+                    displayPublic ? "block" : "hidden"
+                  }`}
+                >
+                  <div
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Public
+                  </div>
+                  <div
+                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
+                    onClick={(e) => handlePublic(e)}
+                  >
+                    Private
+                  </div>
+                </div>
+              </div>
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">

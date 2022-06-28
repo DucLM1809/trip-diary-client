@@ -1,5 +1,5 @@
 .containner{
-    z-index: -1;
+    
     position: relative;
     background:
     linear-gradient(-45deg, transparent 3em, #DCD7C9 0) ;
@@ -28,4 +28,34 @@
 .avatar{
     border-radius: 50%;
    border: 3px solid white;
+   transition: .5s ease;
+   backface-visibility: hidden;
+}
+
+.cover{
+    transition: .5s ease;
+   backface-visibility: hidden;
+}
+
+.editImg{
+    opacity: 0;
+}
+
+.avatarContainner:hover .avatar{
+opacity: 50%;
+}
+.avatarContainner:hover .editImg{
+    opacity: 100%;
+ }
+
+.coverContainner:hover .cover{
+    opacity: 50%;
+    }
+
+.coverContainner:hover .editImg{
+        opacity: 100%;
+     }
+
+input{
+    border-radius: 5px;
 }
