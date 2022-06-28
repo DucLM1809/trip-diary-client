@@ -15,7 +15,6 @@ const Trip = () => {
   const [searchResult, setSearchResult] = useState(searchRes);
   const searchI = useSelector((state) => state.searchI);
   const [numOfShow, setNumOfShow] = useState(6);
-
   const dispatch = useDispatch();
 
 
@@ -23,8 +22,7 @@ const Trip = () => {
     
     setNumOfShow((prevValue) => prevValue + 6);
     handleUpdateLimit(searchI);
-    console.log(numOfShow);
-    console.log("tung", searchI);
+
   };
 
   const accessToken = localStorage
@@ -57,6 +55,10 @@ const Trip = () => {
   useEffect(()=>{
     console.log("result",searchResult)
   },[searchResult])
+
+  useEffect(()=>{
+    handleUpdateLimit(searchI);
+  },[searchRes],[numOfShow])
 
 
   return (
