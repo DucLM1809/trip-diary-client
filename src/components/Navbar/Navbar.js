@@ -97,8 +97,7 @@ const Navbar = () => {
           "Authorization": `bearer ${accessToken}`
         },
         params: {
-          search: info,
-          limit: 6,
+          search: info
         },
       })
       .catch((error) => console.log(error));

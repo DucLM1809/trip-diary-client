@@ -474,7 +474,8 @@ const CreatedOverview = () => {
           <div className="flex flex-wrap gap-8">
             {trips ? (
               trips.map((trip) => {
-                return trip?.author?.id === userId ? (
+                return trip?.author?.id === userId &&
+                  (trip?.author?.id !== meId ? trip?.isPublic : true) ? (
                   <div key={trip.id} className="relative">
                     <img
                       src={trip?.coverImgUrl || banner}
