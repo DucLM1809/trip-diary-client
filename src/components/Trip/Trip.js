@@ -58,7 +58,7 @@ const Trip = () => {
 
   useEffect(()=>{
     handleUpdateLimit(searchI);
-  },[searchRes],[numOfShow])
+  },[searchRes, numOfShow])
 
 
   return (
