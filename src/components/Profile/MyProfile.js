@@ -109,8 +109,8 @@ const MyProfile = () => {
                 {infor.isFemale === null
                   ? "N/A"
                   : infor.isFemale
-                  ? "FeMale"
-                  : "Male"}
+                  ? " Female"
+                  : " Male"}
               </span>
             ) : (
               <></>
