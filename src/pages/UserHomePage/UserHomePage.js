@@ -31,6 +31,7 @@ const UserHomePage = () => {
   const [displayArea, setDisplayArea] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [delId, setDelId] = useState();
+  const [infor, setInfor] = useState();
 
   const userName = localStorage.getItem("username");
 
@@ -55,6 +56,23 @@ const UserHomePage = () => {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
 
+
+  const handleGetInfor = async () => {
+    let res = await api
+      .get("/users/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      setInfor(res.data);
+    }
+  };
+
   const openModal = (tripId) => {
     setShowModal((prev) => !prev);
     setDelId(tripId);
@@ -72,6 +90,7 @@ const UserHomePage = () => {
 
   useEffect(() => {
     handleGetTrips();
+    handleGetInfor();
   }, []);
 
   useEffect(() => {
@@ -194,14 +213,22 @@ const UserHomePage = () => {
             <div>
               <div className="profileCover">
                 <img
-                  src="https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"
+                  src={infor? (infor.coverImgUrl? infor.coverImgUrl : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"):("https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg")}
                   alt=""
                   className="profileCoverImg"
                 />
-                <img src={unknown} alt="" className="profileUserImg" />
+                <img src={infor
+                    ? infor.avatarUrl
+                      ? infor.avatarUrl
+                      : unknown
+                    : unknown} alt="" className="profileUserImg" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{userName}</h4>
+                  <h4 className="profileInfoName">{infor
+                    ? infor.username
+                      ? infor.username
+                      : userName
+                    : userName}</h4>
                 </div>
                 <Link to="/Profile" className="editProfile">Edit Profile</Link>
                 <div className="iconcamera cursor-pointer">
@@ -219,11 +246,14 @@ const UserHomePage = () => {
                 <div className="shareTop">
                   <span className="shareOptionText">Description</span>
                   <br />
-                  <input
-                    type="text"
-                    className="shareInput"
-                    placeholder="Add something about you!"
-                  />
+                  {infor ? (
+              <div className="text-md ml-2 font-medium">
+                {" "}
+                {infor.description ? infor.description : "N/A"}
+              </div>
+            ) : (
+              <></>
+            )}
                 </div>
               </div>
             </div>
