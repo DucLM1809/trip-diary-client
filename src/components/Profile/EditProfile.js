@@ -289,7 +289,7 @@ const EditProfile = () => {
             <p className="font-medium  text-lg">Country: </p>
             {/* <CountryAutocomplete/> */}
             {/* <input type="text" className="text-lg ml-4 w-[250px] border-2 border-black" value={country}  onChange={e=> setCountry(e.target.value)} ></input> */}
-            <select className="text-lg ml-4 w-[250px] border-2 border-black" onChange={e=> setCountry(e.target.value)}>
+            <select className="text-lg ml-4 w-[250px] border-2 border-black" value={country} onChange={e=> setCountry(e.target.value)}>
               {COUNTRYDATA.map((data) => {
                 return(
                   <option >{data.name}</option>
