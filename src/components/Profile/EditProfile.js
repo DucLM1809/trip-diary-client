@@ -3,13 +3,13 @@ import "./Profile.css";
 import unknown from "../../assests/images/unknown.png";
 import api from "../../api/axios";
 import { AiOutlineUser } from "react-icons/ai";
-import { BsGenderAmbiguous, BsEnvelope, BsInfoCircle,  } from "react-icons/bs";
+import { BsGenderAmbiguous, BsEnvelope, BsInfoCircle } from "react-icons/bs";
 import { BiWorld } from "react-icons/bi";
 import { RiCake2Line} from "react-icons/ri";
 import COUNTRYDATA from '../../data/countries.json';
 import { useForm } from "react-hook-form";
-import { MdOutlineFemale,MdOutlineMale} from "react-icons/md"
-import { ImPencil2 } from "react-icons/im"
+import { MdOutlineFemale, MdOutlineMale } from "react-icons/md";
+import { ImPencil2 } from "react-icons/im";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -21,23 +21,21 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 
-
-
 const EditProfile = () => {
   const sasToken = useSelector((state) => state.user.sasToken);
   const [infor, setInfor] = useState({
-    id : "",
-    username : "",
-    firstName : "",
-    lastName : "",
-    isFemale : null,
-    dateOfBirth : null,
-    country : "",
-    description : "",
-    avatarUrl : "",
-    coverImgUrl : "",
-    isAdmin : "",
-    numOfTrips : 0,
+    id: "",
+    username: "",
+    firstName: "",
+    lastName: "",
+    isFemale: null,
+    dateOfBirth: null,
+    country: "",
+    description: "",
+    avatarUrl: "",
+    coverImgUrl: "",
+    isAdmin: "",
+    numOfTrips: 0,
   });
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
@@ -53,8 +51,8 @@ const EditProfile = () => {
     const [avatarUrl,setAvatarUrl] = useState();
     const [coverUrl,setCoverUrl] = useState();
 
-    const [cities,setCities] = useState();
-    const [suggestions,setSuggestions] = useState();
+  const [cities, setCities] = useState();
+  const [suggestions, setSuggestions] = useState();
 
   const userName = localStorage.getItem("username");
   const config = {
@@ -96,22 +94,26 @@ const EditProfile = () => {
 
   const handleEditProfile = async (data) => {
     let res = await api
-      .put(`/users/${infor.id}`, {
-        id: infor.id,
-        email: mail,
-        username : nickname,
-        firstName : fname,
-        lastName : lname,
-        isFemale : gender,
-        country : country,
-        dateOfBirth : DOB,
-        avatarUrl : avatarUrl,
-        coverImgUrl : coverUrl,
-        description : description,
-        createdAt : infor.createdAt,
-        isAdmin : infor.isAdmin,
-        numOfTrips: infor.numOfTrips,
-      },config)
+      .put(
+        `/users/${infor.id}`,
+        {
+          id: infor.id,
+          email: mail,
+          username: nickname,
+          firstName: fname,
+          lastName: lname,
+          isFemale: gender,
+          country: country,
+          dateOfBirth: DOB,
+          avatarUrl: avatarUrl,
+          coverImgUrl: coverUrl,
+          description: description,
+          createdAt: infor.createdAt,
+          isAdmin: infor.isAdmin,
+          numOfTrips: infor.numOfTrips,
+        },
+        config
+      )
       .catch((error) => {
         setErr(error.response.data.detail);
         setSuccess("");
@@ -131,8 +133,9 @@ const EditProfile = () => {
 
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0], sasToken).then((result) => {
-      e.target.name === "avatarUrl"?
-      setAvatarUrl(result) : setCoverUrl(result)
+      e.target.name === "avatarUrl"
+        ? setAvatarUrl(result)
+        : setCoverUrl(result);
     });
   };
 
@@ -190,52 +193,61 @@ const EditProfile = () => {
     
       <div className="flex items-end absolute left-[410px] boder-1 border-gray w-[950px] h-[80px]  bg-[#2C3639] mt-4 z-10">
         <p className="font-black text-5xl text-white pb-2 pl-8 cursor-default">
-         Edit My Profile
+          Edit My Profile
         </p>
       </div>
       <div className="flex flex-col justify-center mx-auto mt-14 w-[1100px] ">
-        <div className="containner bg-[#DCD7C9] flex flex-col justify-between w-full  mb-10 pb-32 rounded-10  overflow-y-auto pb-10 ">
+        <div className="containner bg-[#DCD7C9] flex flex-col justify-between w-full mb-10 rounded-10  overflow-y-auto pb-10 ">
           <div className="flex justify-around items-center w-full h-[250px] mt-12  ">
             <div className="avatarContainner flex relative justify-center items-center h-[150px] w-[250px]">
-            <input
-                     
-                      type="file"
-                      {...register(`avatarUrl`)}
-                      onChange={(e) => handleUploadImg(e)}
-                      className="absolute h-[120px] w-[120px] z-20 opacity-0"
-                    />
-              <ImPencil2 className="absolute h-[75px] w-[75px]  editImg  transition delay-150 "/>
+              <input
+                type="file"
+                {...register(`avatarUrl`)}
+                onChange={(e) => handleUploadImg(e)}
+                className="absolute h-[120px] w-[120px] z-20 opacity-0"
+              />
+              <ImPencil2 className="absolute h-[75px] w-[75px]  editImg  transition delay-150 " />
               <img
-                src={infor ? (avatarUrl? avatarUrl : unknown) : unknown}
+                src={infor ? (avatarUrl ? avatarUrl : unknown) : unknown}
                 alt="avatar"
                 className="mx-auto flex avatar h-[150px] w-[150px]  "
               ></img>
             </div>
             <div className="flex h-[150px] w-[650px] coverContainner relative justify-center items-center ">
-            <input
-                     
-                      type="file"
-                      {...register(`coverUrl`)}
-                      onChange={(e) => handleUploadImg(e)}
-                      className="absolute h-[120px] w-[120px] z-20 opacity-0"
-                    />
-            <ImPencil2 className="absolute h-[75px] w-[75px]  editImg  transition delay-150  "/>
+              <input
+                type="file"
+                {...register(`coverUrl`)}
+                onChange={(e) => handleUploadImg(e)}
+                className="absolute h-[120px] w-[120px] z-20 opacity-0"
+              />
+              <ImPencil2 className="absolute h-[75px] w-[75px]  editImg  transition delay-150  " />
               <img
-                src={infor ? (coverUrl ? coverUrl : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg") : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg" }
+                src={
+                  infor
+                    ? coverUrl
+                      ? coverUrl
+                      : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"
+                    : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"
+                }
                 alt="cover"
                 className="cover object-cover h-[150px] w-[650px]  "
               ></img>
             </div>
           </div>
-        <form className="flex flex-col" onSubmit={handleSubmit()}></form>
+          <form className="flex flex-col" onSubmit={handleSubmit()}></form>
           <div className="flex justify-left w-full pl-36 mt-8">
-          <div className="text-3xl mr-6">
+            <div className="text-3xl mr-6">
               <BsInfoCircle />
             </div>
             <span className="font-medium  text-lg">Nick Name: </span>
-                {nickname !=null ? <></>: setNickname(userName)}
-                <input type="text" className="text-lg ml-4 w-[300px] border-2 border-black" value={nickname}  onChange={e=> setNickname(e.target.value)} ></input>
-              </div>
+            {nickname != null ? <></> : setNickname(userName)}
+            <input
+              type="text"
+              className="text-lg ml-4 w-[300px] border-2 border-black"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            ></input>
+          </div>
 
           <div className="flex justify-left w-full pl-36 mt-8">
             <div className="text-3xl mr-6">
@@ -243,11 +255,21 @@ const EditProfile = () => {
             </div>
             <div className="mr-[50px]">
               <span className="font-medium  text-lg">First Name: </span>
-              <input type="text" className="text-lg ml-4 w-[250px] border-2 border-black" value={fname}  onChange={e=> setFname(e.target.value)} ></input>
+              <input
+                type="text"
+                className="text-lg ml-4 w-[250px] border-2 border-black"
+                value={fname}
+                onChange={(e) => setFname(e.target.value)}
+              ></input>
             </div>
             <div className="">
               <span className="font-medium text-lg">Last Name: </span>
-              <input type="text" className="text-lg ml-4 w-[250px] border-2 border-black" value={lname}  onChange={e=> setLname(e.target.value)} ></input>
+              <input
+                type="text"
+                className="text-lg ml-4 w-[250px] border-2 border-black"
+                value={lname}
+                onChange={(e) => setLname(e.target.value)}
+              ></input>
             </div>
           </div>
 
@@ -256,10 +278,20 @@ const EditProfile = () => {
               <BsGenderAmbiguous />
             </span>
             <span className="font-medium  text-lg">Gender: </span>
-            <MdOutlineFemale className="text-3xl ml-20"/>
-            <input type="Checkbox" className="text-lg  w-[50px] border-2 border-black" checked={gender}  onChange={handleChecked} ></input>
-            <MdOutlineMale className="text-3xl ml-32"/>
-            <input type="Checkbox" className="text-lg  w-[50px] border-2 border-black" checked={!gender}  onChange={handleChecked} ></input>
+            <MdOutlineFemale className="text-3xl ml-20" />
+            <input
+              type="Checkbox"
+              className="text-lg  w-[50px] border-2 border-black"
+              checked={gender}
+              onChange={handleChecked}
+            ></input>
+            <MdOutlineMale className="text-3xl ml-32" />
+            <input
+              type="Checkbox"
+              className="text-lg  w-[50px] border-2 border-black"
+              checked={!gender}
+              onChange={handleChecked}
+            ></input>
             {/* {console.log(gender)} */}
           </div>
 
@@ -308,9 +340,14 @@ const EditProfile = () => {
           </div>
 
           <div className="flex justify-center flex-col items-center w-full  mt-8">
-           
             <p className=" underline text-lg">About me </p>
-            <textarea rows="5" cols="60" className="text-lg ml-4 font-medium border-2 border-black" value={description}  onChange={e=> setDescriptrion(e.target.value)} ></textarea>
+            <textarea
+              rows="5"
+              cols="60"
+              className="text-lg ml-4 font-medium border-2 border-black"
+              value={description}
+              onChange={(e) => setDescriptrion(e.target.value)}
+            ></textarea>
           </div>
 
           <button

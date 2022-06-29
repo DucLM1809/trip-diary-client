@@ -12,17 +12,50 @@ import { v4 as uuidv4 } from "uuid";
 const Trip = () => {
   const searchRes = useSelector((state) => state.searchRes);
   const [numOfShow, setNumOfShow] = useState(6);
+  const [meId, setMeId] = useState();
 
   const showMoreTrips = () => {
     setNumOfShow((prevValue) => prevValue + 6);
   };
+
+  console.log(searchRes);
+  console.log("id: ", meId);
+
+  const accessToken = localStorage
+    .getItem("accessToken")
+    .toString()
+    .split('"')[1];
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const handleGetMe = async () => {
+    let res = await api
+      .get(`/users/me`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setMeId(res.data.id);
+    }
+  };
+
+  useEffect(() => {
+    handleGetMe();
+  }, []);
 
   return (
     <>
       <div className="pt-8 flex gap-4 px-3 flex-wrap justify-center">
         {searchRes.length > 0 ? (
           searchRes.map((res, index) => {
-            return index < numOfShow ? (
+            return index < numOfShow &&
+              (res?.author?.id !== meId ? res?.isPublic : true) ? (
               <div
                 key={index}
                 className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "

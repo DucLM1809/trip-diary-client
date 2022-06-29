@@ -150,7 +150,7 @@ const Overview = () => {
           toLng: data.to_lng,
           startAt: data.from,
           backTripAt: data.to,
-          coverImgUrl: urlImg ? urlImg : "",
+          coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
           isPublic: tripPublic === "Public" ? true : false,
@@ -184,7 +184,7 @@ const Overview = () => {
           toLng: data.to_lng,
           startAt: data.from,
           backTripAt: data.to,
-          coverImgUrl: urlImg ? urlImg : "",
+          coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
           isPublic: tripPublic === "Public" ? true : false,
@@ -213,7 +213,7 @@ const Overview = () => {
 
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0], sasToken).then((result) =>
-      setUrlImg(result)
+      setUrlImg({ url: result, type: e.target.files[0].type.split("/")[0] })
     );
   };
 
@@ -257,7 +257,6 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    console.log("TRIP: ", trip);
     if (edit && trip) {
       setValue("tripname", trip.name);
       if (trip.backTripAt) {
@@ -301,7 +300,7 @@ const Overview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={urlImg ? urlImg : ""}
+          src={trip?.coverImgUrl || urlImg ? trip?.coverImgUrl || urlImg.url : ""}
           className={`min-w-full h-full object-cover rounded-10 relative ${
             urlImg ? "block" : "hidden"
           }`}
@@ -596,7 +595,7 @@ const PlacesAutocomplete2 = ({ setSelected2, destination, setDest }) => {
 
   useEffect(() => {
     // setValue(destination);
-    handleSelect(destination)
+    handleSelect(destination);
   }, [destination]);
 
   return (
