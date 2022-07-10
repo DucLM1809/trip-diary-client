@@ -57,18 +57,21 @@ const NextTrip = () => {
   useEffect(() => {
     handleGetTrips();
   }, []);
-  const currentdate = moment().format("YYYY-MM-DD");
-  const nexttrips = [];
-  const pasttrips = [];
+  const [nexttrips, setNextTrips] = useState([]);
+  const [pasttrips, setPastTrips] = useState([]);
 
-  for(let x of trips){
-    if(x.startAt>currentdate){
-      nexttrips.push(x);
-    }
-    else if(x.startAt<currentdate){
-      pasttrips.push(x);
-    }
-  }
+  useEffect(() => {
+    setNextTrips([]);
+    setPastTrips([]);
+    const currentdate = moment().format("YYYY-MM-DD");
+    trips.map((trip) => {
+      if (new Date(trip.startAt) > new Date()) {
+        setNextTrips((prev) => [...prev, trip]);
+      } else {
+        setPastTrips((prev) => [...prev, trip]);
+      }
+    });
+  }, [trips]);
 
   return (
     <>
