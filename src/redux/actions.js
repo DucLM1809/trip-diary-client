@@ -120,3 +120,10 @@ export const getComments = (data) => {
     payload: data,
   };
 };
+
+export const getMyProfile = (data) => {
+  return {
+    type: "GET_MY_PROFILE",
+    payload: data,
+  };
+};

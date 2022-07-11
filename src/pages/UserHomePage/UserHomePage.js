@@ -15,6 +15,7 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
+import hero from "../../assests/images/hero.png"
 import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
@@ -32,6 +33,7 @@ const UserHomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [delId, setDelId] = useState();
   const [infor, setInfor] = useState();
+  const myprofile = useSelector((state) => state.profile);
 
   const userName = localStorage.getItem("username");
 
@@ -90,7 +92,7 @@ const UserHomePage = () => {
 
   useEffect(() => {
     handleGetTrips();
-    handleGetInfor();
+    console.log("redux",myprofile)
   }, []);
 
   useEffect(() => {
@@ -213,22 +215,14 @@ const UserHomePage = () => {
             <div>
               <div className="profileCover">
                 <img
-                  src={infor? (infor.coverImgUrl? infor.coverImgUrl : "https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"):("https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg")}
+                  src={myprofile ? (myprofile.coverImgUrl ? myprofile.coverImgUrl : hero) :  hero}
                   alt=""
                   className="profileCoverImg"
                 />
-                <img src={infor
-                    ? infor.avatarUrl
-                      ? infor.avatarUrl
-                      : unknown
-                    : unknown} alt="" className="profileUserImg" />
+                <img src={ myprofile ? (myprofile.avatarUrl ? myprofile.avatarUrl : unknown): unknown} alt="" className="profileUserImg object-cover" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{infor
-                    ? infor.username
-                      ? infor.username
-                      : userName
-                    : userName}</h4>
+                  <h4 className="profileInfoName">{myprofile ? (myprofile.username ? myprofile.username : userName):userName}</h4>
                 </div>
                 <Link to="/Profile" className="editProfile">Edit Profile</Link>
                 <div className="iconcamera cursor-pointer">
@@ -246,14 +240,7 @@ const UserHomePage = () => {
                 <div className="shareTop">
                   <span className="shareOptionText">Description</span>
                   <br />
-                  {infor ? (
-              <div className="text-md ml-2 font-medium">
-                {" "}
-                {infor.description ? infor.description : "N/A"}
-              </div>
-            ) : (
-              <></>
-            )}
+                  <div className="text-md">{myprofile? (myprofile.description ? myprofile.description : <p>Welcome to TriPari</p>) : <></>}</div>
                 </div>
               </div>
             </div>

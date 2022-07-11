@@ -62,7 +62,7 @@ const MyProfile = () => {
                     : unknown
                 }
                 alt="avatar"
-                className="mx-auto flex avatar  h-[150px] w-[150px] aspect-square "
+                className="mx-auto flex avatar  h-[150px] w-[150px] aspect-square object-cover"
               ></img>
               <div className="flex mx-auto mt-4 text-xl text-center font-black ">
                 <h1>
