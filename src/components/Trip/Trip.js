@@ -41,7 +41,7 @@ const Trip = () => {
                     {res?.numOfLikes} {res?.numOfLikes > 1 ? "likes" : "like"}
                   </div>
                   <img
-                    src={unknown}
+                    src={res?.author?.avatarUrl? res?.author?.avatarUrl : unknown}
                     alt=""
                     className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
                   />
