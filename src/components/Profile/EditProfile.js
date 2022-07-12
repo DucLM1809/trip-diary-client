@@ -210,7 +210,7 @@ const EditProfile = () => {
               <img
                 src={infor ? (avatarUrl ? avatarUrl : unknown) : unknown}
                 alt="avatar"
-                className="mx-auto flex avatar h-[150px] w-[150px]  "
+                className="mx-auto flex avatar h-[150px] w-[150px] object-cover  "
               ></img>
             </div>
             <div className="flex h-[150px] w-[650px] coverContainner relative justify-center items-center ">

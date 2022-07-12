@@ -31,6 +31,9 @@ const initState = {
   },
   searchRes: [],
   comments: [],
+  profile: {
+
+  }
 };
 
 const rootReducer = (state = initState, action) => {
@@ -228,6 +231,12 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         comments: action.payload,
+      };
+    }
+    case "GET_MY_PROFILE": {
+      return {
+        ...state,
+        profile: action.payload,
       };
     }
     default:
