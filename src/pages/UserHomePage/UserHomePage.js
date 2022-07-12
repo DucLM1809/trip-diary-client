@@ -203,7 +203,9 @@ const UserHomePage = () => {
                 <div className="profileInfo">
                   <h4 className="profileInfoName">{userName}</h4>
                 </div>
-                <Link to="/Profile" className="editProfile">Edit Profile</Link>
+                <Link to="/Profile" className="editProfile">
+                  Edit Profile
+                </Link>
                 <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />
@@ -354,9 +356,7 @@ const UserHomePage = () => {
             </Swiper>
           </div>
 
-          <div className="NextTripTitle_1">
-            My next trips
-          </div>
+          <div className="NextTripTitle_1">My next trips</div>
           <div className="UserNextTripHr">
             <hr />
           </div>
@@ -380,7 +380,7 @@ const UserHomePage = () => {
           </div>
 
           <div className="PastTripSwiper">
-                        <Swiper
+            <Swiper
               slidesPerView={3}
               spaceBetween={30}
               freeMode={true}
