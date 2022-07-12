@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
-  const [searchInfo, setSearchInfo] = useState("");
+  const [searchInfo, setSearchInfo] = useState(" ");
   const [searchRes, setSearchRes] = useState([]);
   const userName = localStorage.getItem("username");
 

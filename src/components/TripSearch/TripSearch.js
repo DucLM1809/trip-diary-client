@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import des5 from "../../assests/images/Destination5.png";
-import des3 from "../../assests/images/Destination3.png";
-import unknown from "../../assests/images/unknown.png";
+import city1 from "../../assests/images/city1.jpg";
+import city2 from "../../assests/images/city2.jpg";
+import city3 from "../../assests/images/city3.jpg";
+import city4 from "../../assests/images/city4.jpg";
 
 const destinations = (img) => {
   return (
@@ -39,36 +41,27 @@ const TripSearch = () => {
             </p>
           </div>
           <div className="w-2/3 flex flex-wrap justify-center">
-            <div className="w-[450px] relative mb-8  hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
+            <div className="w-[450px] h-[450px] relative mb-8  hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
-                <img src={des5} alt="" className="opacity-100" />
+                <img src={city1} alt="" className="opacity-100 w-[450px] h-[400px] rounded-10" />
               </Link>
             </div>
-            <div className="w-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
+            <div className="w-[450px] h-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
-                <img src={des5} alt="" className="opacity-100" />
+                <img src={city2} alt="" className="opacity-100 w-[450px] h-[400px] rounded-10" />
               </Link>
             </div>
-            <div className="w-[450px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
+            <div className="w-[450px] h-[450px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
-                <img src={des5} alt="" className="opacity-100" />
+                <img src={city3} alt="" className="opacity-100 w-[450px] h-[400px] rounded-10" />
               </Link>
             </div>
-            <div className="w-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
+            <div className="w-[450px] h-[450px] relative ml-16 mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in">
               <Link to="/home">
-                <img src={des5} alt="" className="opacity-100" />
+                <img src={city4} alt="" className="opacity-100 w-[450px] h-[400px] rounded-10" />
               </Link>
             </div>
           </div>
-        </div>
-        <h1 className="ml-4 mt-20 mb-12 text-3xl font-extrabold">
-          Can’t decide where? Get inspired
-        </h1>
-        <div className="pt-8 flex px-3 flex-between bg-[#f2f4f5]">
-          {destinations(des3)}
-          {destinations(des5)}
-          {destinations(des3)}
-          {destinations(des5)}
         </div>
       </div>
     </div>

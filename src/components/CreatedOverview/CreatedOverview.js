@@ -40,6 +40,7 @@ const CreatedOverview = () => {
   const [displayUtility, setDisplayUtility] = useState(false);
   const [meId, setMeId] = useState();
   const [shareURL, setShareUrl] = useState();
+  const [likeInfo, setLikeInfo] = useState();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -237,12 +238,14 @@ const CreatedOverview = () => {
     let res = await api
       .post(`/trips/${location.pathname.split("/")[3]}/likes`, {}, config)
       .catch((error) => console.log(error));
+    handleGetLikes();
   };
 
   const handleDelLike = async () => {
     let res = await api
       .delete(`/trips/${location.pathname.split("/")[3]}/likes`, config)
       .catch((error) => console.log(error));
+    handleGetLikes();
   };
 
   const handleGetLikes = async () => {
@@ -256,6 +259,7 @@ const CreatedOverview = () => {
       } else {
         setLike(false);
       }
+      setLikeInfo(res.data);
     }
   };
 
@@ -513,7 +517,7 @@ const CreatedOverview = () => {
           <div className="w-full border-1 border-gray rounded-5">
             <div className="w-full flex border-b-1 border-b-gray">
               <div className="flex items-center m-2 ">
-                {like ? (
+                {likeInfo?.find((like) => like?.userId === meId) ? (
                   <AiFillHeart
                     className="text-3xl text-[#ff274b] cursor-pointer hover:opacity-80"
                     onClick={() => handleDisLike()}

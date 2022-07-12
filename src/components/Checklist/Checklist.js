@@ -84,7 +84,7 @@ const Checklist = () => {
         `/trips/${tripId || tripInfo.tripID}/checklist`,
         {
           name: item.value,
-          hasPrepared: item.check,
+          hasPrepared: item?.hasPrepared || item.check,
           notes: item.note,
         },
         config

@@ -5,11 +5,8 @@ import TripSearch from "../../components/TripSearch/TripSearch";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../../api/axios";
 import { addSasToken } from "../../redux/actions";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const TripBeforeSearch = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
   const accessToken = localStorage
