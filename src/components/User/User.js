@@ -48,7 +48,7 @@ const User = () => {
                   <h1 className="text-xl mt-3">
                     {user?.author?.email.split("@")[0]}
                   </h1>
-                  <h2 className="opacity-40">{user?.author?.country}</h2>
+                  <h2 className="opacity-40">{user?.author?.country || "United States"}</h2>
                   <div className="mt-3 flex justify-center items-center gap-2">
                     <FaSuitcaseRolling className="text-2xl" />
                     <div className="flex flex-col justify-center">

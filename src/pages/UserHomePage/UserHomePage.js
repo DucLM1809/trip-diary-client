@@ -306,9 +306,6 @@ const UserHomePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="f4">
-                <BiFilter display={""} /> Filter countries
-              </div>
             </div>
           </div>
         </div>
