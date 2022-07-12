@@ -22,3 +22,5 @@ export { default as TripSearch } from "./TripSearch/TripSearch";
 export { default as Modal } from "./Modal/Modal"
 export { default as MyProfile } from "./Profile/MyProfile"
 export { default as EditProfile } from "./Profile/EditProfile"
+export { default as Weather } from "./Weather/Weather"
+

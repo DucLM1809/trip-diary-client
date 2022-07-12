@@ -31,7 +31,9 @@ const initState = {
   },
   searchRes: [],
   comments: [],
-  searchI: ""
+  profile: {
+
+  }
 };
 
 const rootReducer = (state = initState, action) => {
@@ -231,14 +233,12 @@ const rootReducer = (state = initState, action) => {
         comments: action.payload,
       };
     }
-
-    case "GET_SEARCHI": {
+    case "GET_MY_PROFILE": {
       return {
         ...state,
-        searchI: action.payload,
+        profile: action.payload,
       };
     }
-
     default:
       return state;
   }

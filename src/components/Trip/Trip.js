@@ -15,8 +15,7 @@ const Trip = () => {
   const [searchResult, setSearchResult] = useState(searchRes);
   const searchI = useSelector((state) => state.searchI);
   const [numOfShow, setNumOfShow] = useState(6);
-  const dispatch = useDispatch();
-
+  const [meId, setMeId] = useState();
 
   const showMoreTrips = () => {
     
@@ -25,48 +24,44 @@ const Trip = () => {
 
   };
 
+  console.log(searchRes);
+  console.log("id: ", meId);
+
   const accessToken = localStorage
     .getItem("accessToken")
-    ?.toString()
+    .toString()
     .split('"')[1];
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-  const handleUpdateLimit = async (searchI) => {
+  if (accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
+
+  const handleGetMe = async () => {
     let res = await api
-      .get("/trips", {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Authorization": `bearer ${accessToken}`
-        },
-        params: {
-          search: searchI,
-          limit: numOfShow
-        },
-      })
+      .get(`/users/me`, config)
       .catch((error) => console.log(error));
     if (res) {
-      // console.log(res.data);
-      setSearchResult(res.data);
-      dispatch(getSearchI(res.data));
-  };}
+      setMeId(res.data.id);
+    }
+  };
 
-  useEffect(()=>{
-    console.log("result",searchResult)
-  },[searchResult])
-
-  useEffect(()=>{
-    handleUpdateLimit(searchI);
-  },[searchRes, numOfShow])
-
+  useEffect(() => {
+    handleGetMe();
+  }, []);
 
   return (
     <>
       <div className="pt-8 flex gap-4 px-3 flex-wrap justify-center">
-        {searchResult.length > 0 ? (
-          searchResult.map((res, index) => {
-            return index < numOfShow ? (
+        {searchRes.length > 0 ? (
+          searchRes.map((res, index) => {
+            return index < numOfShow &&
+              (res?.author?.id !== meId ? res?.isPublic : true) ? (
               <div
                 key={index}
                 className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "
@@ -85,7 +80,7 @@ const Trip = () => {
                     {res?.numOfLikes} {res?.numOfLikes > 1 ? "likes" : "like"}
                   </div>
                   <img
-                    src={unknown}
+                    src={res?.author?.avatarUrl? res?.author?.avatarUrl : unknown}
                     alt=""
                     className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
                   />

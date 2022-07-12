@@ -121,10 +121,9 @@ export const getComments = (data) => {
   };
 };
 
-
-export const getSearchI = (data) => {
+export const getMyProfile = (data) => {
   return {
-    type: "GET_SEARCHI",
+    type: "GET_MY_PROFILE",
     payload: data,
   };
 };

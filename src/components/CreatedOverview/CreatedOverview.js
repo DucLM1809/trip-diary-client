@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import banner from "../../assests/images/hero.png";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoAirplane } from "react-icons/io5";
@@ -7,14 +7,15 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaMapMarkerAlt, FaMapPin, FaRegComment } from "react-icons/fa";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import { FacebookShareButton } from "react-share";
 import { RiShareForwardLine } from "react-icons/ri";
 import unknown from "../../assests/images/unknown.png";
-import { v4 as uuidv4 } from "uuid";
 import api from "../../api/axios";
 import { createComment, getComments } from "../../redux/actions";
+import { useOpenWeather } from "react-open-weather";
+import Weather from "../Weather/Weather";
 
 const CreatedOverview = () => {
   const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
@@ -41,6 +42,14 @@ const CreatedOverview = () => {
   const [shareURL, setShareUrl] = useState();
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const { data, isLoading, errorMessage } = useOpenWeather({
+    key: "aec7705e01a74a11f8c6a6a5a43393c2",
+    lat: "48.137154",
+    lon: "11.576124",
+    lang: "en",
+    unit: "metric",
+  });
 
   const accessToken = localStorage
     .getItem("accessToken")
@@ -73,13 +82,13 @@ const CreatedOverview = () => {
       .get(`/users/me`, config)
       .catch((error) => console.log(error));
     if (res) {
-      setMeId(res.data.id)
+      setMeId(res.data.id);
     }
   };
 
   useEffect(() => {
     handleGetTrip();
-    handleGetMe()
+    handleGetMe();
   }, [location]);
 
   const handleGetTrips = async () => {
@@ -199,6 +208,10 @@ const CreatedOverview = () => {
       }
     }
   };
+
+  useEffect(() => {
+    handleGetComments();
+  }, [location]);
 
   useEffect(() => {
     handleGetComments();
@@ -383,7 +396,6 @@ const CreatedOverview = () => {
 
   const handleLikeComment = (e) => {
     comments.map((comment) => {
-      console.log();
       if (comment.id === e.target.id - 0 && !comment.hasLiked) {
         handlePostLikeComment(e.target.id);
       } else if (comment.id === e.target.id - 0 && comment.hasLiked) {
@@ -462,26 +474,36 @@ const CreatedOverview = () => {
           <div className="flex flex-wrap gap-8">
             {trips ? (
               trips.map((trip) => {
-                return (
+                return trip?.author?.id === userId &&
+                  (trip?.author?.id !== meId ? trip?.isPublic : true) ? (
                   <div key={trip.id} className="relative">
                     <img
                       src={trip?.coverImgUrl || banner}
                       alt=""
-                      className="w-[250px] h-[250px] object-cover rounded-5"
+                      className="w-[250px] h-[250px] object-cover rounded-5 shadow-md"
                     />
                     <div className="flex justify-center items-center absolute bottom-5 left-5 text-xl">
                       <FaMapMarkerAlt className="text-green" />
-                      <span className="text-xl text-white ml-1">
-                        {trip?.name}
-                      </span>
+                      <Link to={`/trips/trip/${trip.id}`}>
+                        <span className="text-xl text-white ml-1 hover:underline">
+                          {trip?.name}
+                        </span>
+                      </Link>
                     </div>
                   </div>
+                ) : (
+                  <></>
                 );
               })
             ) : (
               <></>
             )}
           </div>
+        </div>
+
+        <div className="flex flex-col items-start mx-10 mb-10 relative">
+          <h1 className="text-xl">Weather</h1>
+          <Weather lat={trip?.toLat} lng={trip?.toLng} />
         </div>
         <div className="flex flex-col items-start mx-10 relative">
           <h1 className="mb-2 text-xl">Description</h1>

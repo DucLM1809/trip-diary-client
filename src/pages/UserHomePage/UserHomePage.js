@@ -15,6 +15,7 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
+import hero from "../../assests/images/hero.png"
 import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
@@ -31,6 +32,8 @@ const UserHomePage = () => {
   const [displayArea, setDisplayArea] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [delId, setDelId] = useState();
+  const [infor, setInfor] = useState();
+  const myprofile = useSelector((state) => state.profile);
 
   const userName = localStorage.getItem("username");
 
@@ -55,6 +58,23 @@ const UserHomePage = () => {
     config.headers.Authorization = `bearer ${accessToken}`;
   }
 
+
+  const handleGetInfor = async () => {
+    let res = await api
+      .get("/users/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          Authorization: `bearer ${accessToken}`,
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      setInfor(res.data);
+    }
+  };
+
   const openModal = (tripId) => {
     setShowModal((prev) => !prev);
     setDelId(tripId);
@@ -72,6 +92,7 @@ const UserHomePage = () => {
 
   useEffect(() => {
     handleGetTrips();
+    console.log("redux",myprofile)
   }, []);
 
   useEffect(() => {
@@ -194,14 +215,14 @@ const UserHomePage = () => {
             <div>
               <div className="profileCover">
                 <img
-                  src="https://thuthuatnhanh.com/wp-content/uploads/2020/01/background-powerpoint-dep.jpg"
+                  src={myprofile ? (myprofile.coverImgUrl ? myprofile.coverImgUrl : hero) :  hero}
                   alt=""
                   className="profileCoverImg"
                 />
-                <img src={unknown} alt="" className="profileUserImg" />
+                <img src={ myprofile ? (myprofile.avatarUrl ? myprofile.avatarUrl : unknown): unknown} alt="" className="profileUserImg object-cover" />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{userName}</h4>
+                  <h4 className="profileInfoName">{myprofile ? (myprofile.username ? myprofile.username : userName):userName}</h4>
                 </div>
                 <Link to="/Profile" className="editProfile">
                   Edit Profile
@@ -221,11 +242,7 @@ const UserHomePage = () => {
                 <div className="shareTop">
                   <span className="shareOptionText">Description</span>
                   <br />
-                  <input
-                    type="text"
-                    className="shareInput"
-                    placeholder="Add something about you!"
-                  />
+                  <div className="text-md">{myprofile? (myprofile.description ? myprofile.description : <p>Welcome to TriPari</p>) : <></>}</div>
                 </div>
               </div>
             </div>

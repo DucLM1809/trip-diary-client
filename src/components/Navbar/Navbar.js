@@ -8,11 +8,14 @@ import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FiChevronDown } from "react-icons/fi";
 import { AiFillSetting } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { getSearchResponse, logOut,getSearchI } from "../../redux/actions";
+import { getSearchResponse, logOut, getMyProfile } from "../../redux/actions";
 import { useForm } from "react-hook-form";
 import api from "../../api/axios";
 
+
+
 const Navbar = () => {
+  
   const homeRef = useRef();
   const tripRef = useRef();
   const createRef = useRef();
@@ -20,12 +23,15 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const myprofile = useSelector((state) => state.profile);
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
   const [searchInfo, setSearchInfo] = useState("");
   const [searchRes, setSearchRes] = useState([]);
   const [searchI, setSearchI] = useState("");
   const userName = localStorage.getItem("username");
+
+  const [profile,setProfile]=useState()
 
   const clickColor = "text-medium-blue";
 
@@ -78,8 +84,28 @@ const Navbar = () => {
     formState: { errors },
   } = useForm();
 
+  const handleGetProfile = async (info) => {
+    let res = await api
+      .get("/users/me", {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Authorization": `bearer ${accessToken}`
+        },
+      })
+      .catch((error) => console.log(error));
+    if (res) {
+      
+      setProfile(res.data);
+      dispatch(getMyProfile(res.data))
+      
+    }
+  }
+
   useEffect(() => {
     setSearchInfo("");
+    handleGetProfile();
   }, []);
 
 
@@ -102,8 +128,7 @@ const Navbar = () => {
           "Authorization": `bearer ${accessToken}`
         },
         params: {
-          search: info,
-          limit: 6
+          search: info
         },
       })
       .catch((error) => console.log(error));
@@ -180,10 +205,10 @@ const Navbar = () => {
             <span className="font-normal">Create</span>
           </Link>
         </div>
-        <div className="flex flex-1 justify-end items-center">
-          <img src={unknown} alt="unknown" className="w-10 h-10" />
+        <div className="flex flex-1 justify-end items-center ">
+          <img src={profile? (profile.avatarUrl ? profile.avatarUrl : unknown) : unknown} alt="unknown" className="w-10 h-10 rounded-[50%] aspect-square object-cover" />
           <Link to="/user" className="ml-5">
-            {userName}
+            {profile? (profile.username? profile.username : userName) : userName}
           </Link>
           <button
             className="ml-5 translate-y-[1px] relative"

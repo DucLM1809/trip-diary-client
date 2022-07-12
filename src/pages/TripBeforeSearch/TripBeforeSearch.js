@@ -15,13 +15,15 @@ const TripBeforeSearch = () => {
   const accessToken = localStorage
     .getItem("accessToken")
     ?.toString()
-    .split('"')[1];
+    .split('"')[1]
 
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
+
+  
 
   if (accessToken) {
     config.headers.Authorization = `bearer ${accessToken}`;
