@@ -18,9 +18,6 @@ const Trip = () => {
     setNumOfShow((prevValue) => prevValue + 6);
   };
 
-  console.log(searchRes);
-  console.log("id: ", meId);
-
   const accessToken = localStorage
     .getItem("accessToken")
     .toString()
@@ -55,7 +52,7 @@ const Trip = () => {
         {searchRes.length > 0 ? (
           searchRes.map((res, index) => {
             return index < numOfShow &&
-              (res?.author?.id !== meId ? res?.isPublic : true) ? (
+              (res?.author?.id !== meId ? res?.isPublic : true) && (
               <div
                 key={index}
                 className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "
@@ -80,9 +77,7 @@ const Trip = () => {
                   />
                 </Link>
               </div>
-            ) : (
-              <></>
-            );
+            )
           })
         ) : (
           <>

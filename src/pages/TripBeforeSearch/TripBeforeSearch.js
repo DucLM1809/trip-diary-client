@@ -31,7 +31,6 @@ const TripBeforeSearch = () => {
       .catch((error) => console.log(error));
     if (res) {
       const sasToken = res.data.sasToken;
-      console.log(sasToken);
       dispatch(addSasToken(sasToken));
     }
   };

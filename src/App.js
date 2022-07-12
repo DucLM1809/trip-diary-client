@@ -10,6 +10,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import UnAuth from "./components/UnAuth/UnAuth";
 import Create from "./pages/Create/Create";
 import UserHomePage from "./pages/UserHomePage/UserHomePage";
+import OtherUserHomePage from "./pages/UserHomePage/OtherUserHomePage";
 import Trips from "./pages/Trips/Trips";
 import NextTrip from "./pages/UserHomePage/NextTrip";
 import PastTrip from "./pages/UserHomePage/PastTrip";
@@ -71,6 +72,7 @@ function App() {
         <Route exact path="/trips" element={<Home />}></Route>
         <Route exact path="/trips/search" element={<AfterSearch />}></Route>
         <Route exact path="/user" element={<UserHomePage />}></Route>
+        <Route exact path="/user/:email/:id" element={<OtherUserHomePage />}></Route>
         <Route exact path="/tripbeforesearch" element={<TripBeforeSearch />}></Route>
         <Route exact path="/nexttrip" element={<NextTrip />}></Route>
         <Route exact path="/pasttrip" element={<PastTrip />}></Route>

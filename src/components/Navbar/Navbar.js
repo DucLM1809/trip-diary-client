@@ -12,10 +12,7 @@ import { getSearchResponse, logOut, getMyProfile } from "../../redux/actions";
 import { useForm } from "react-hook-form";
 import api from "../../api/axios";
 
-
-
 const Navbar = () => {
-  
   const homeRef = useRef();
   const tripRef = useRef();
   const createRef = useRef();
@@ -28,10 +25,9 @@ const Navbar = () => {
   const [displayOut, setDisplayOut] = useState(false);
   const [searchInfo, setSearchInfo] = useState(" ");
   const [searchRes, setSearchRes] = useState([]);
+  const [profile, setProfile] = useState(myprofile);
+
   const userName = localStorage.getItem("username");
-
-  const [profile,setProfile]=useState()
-
   const clickColor = "text-medium-blue";
 
   const handleClick = useEffect(() => {
@@ -83,32 +79,33 @@ const Navbar = () => {
     formState: { errors },
   } = useForm();
 
-  const handleGetProfile = async (info) => {
+  const handleGetProfile = async () => {
     let res = await api
       .get("/users/me", {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Authorization": `bearer ${accessToken}`
+          Authorization: `bearer ${accessToken}`,
         },
       })
       .catch((error) => console.log(error));
     if (res) {
-      
       setProfile(res.data);
-      dispatch(getMyProfile(res.data))
-      
+      dispatch(getMyProfile(res.data));
     }
-  }
+  };
 
   useEffect(() => {
     setSearchInfo("");
     handleGetProfile();
   }, []);
 
+  useEffect(() => {
+    handleGetProfile();
+  }, [myprofile]);
+
   const onSubmit = (data) => {
-    console.log(data);
     // setSearchInfo(data.search);
     handleSearch(data.search);
   };
@@ -120,15 +117,14 @@ const Navbar = () => {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Authorization": `bearer ${accessToken}`
+          Authorization: `bearer ${accessToken}`,
         },
         params: {
-          search: info
+          search: info,
         },
       })
       .catch((error) => console.log(error));
     if (res) {
-      console.log(res.data);
       setSearchRes(res.data);
       dispatch(getSearchResponse(res.data));
       navigate("/trips/search");
@@ -138,7 +134,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
-    localStorage.removeItem("auth")
+    localStorage.removeItem("auth");
     dispatch(logOut());
     navigate("/sign-in");
   };
@@ -201,10 +197,30 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex flex-1 justify-end items-center ">
-          <img src={profile? (profile.avatarUrl ? profile.avatarUrl : unknown) : unknown} alt="unknown" className="w-10 h-10 rounded-[50%] aspect-square object-cover" />
-          <Link to="/user" className="ml-5">
-            {profile? (profile.username? profile.username : userName) : userName}
-          </Link>
+          {profile ? (
+            <>
+              <img
+                src={profile?.avatarUrl}
+                alt="unknown"
+                className="w-10 h-10 rounded-[50%] aspect-square object-cover"
+              />
+              <Link to="/user" className="ml-5">
+                {profile?.username}
+              </Link>
+            </>
+          ) : (
+            <>
+              <img
+                src={unknown}
+                alt="unknown"
+                className="w-10 h-10 rounded-[50%] aspect-square object-cover"
+              />
+              <Link to="/user" className="ml-5">
+                {userName}
+              </Link>
+            </>
+          )}
+
           <button
             className="ml-5 translate-y-[1px] relative"
             onClick={handleDisplayOut}
@@ -215,8 +231,10 @@ const Navbar = () => {
                 displayOut ? "block" : "hidden"
               } absolute top-[30px] right-0 bg-white shadow-md border-1 border-gray rounded-5`}
             >
-              <Link to="/Profile" className="flex pl-4 pr-16 pt-4 pb-2 font-normal">
-              
+              <Link
+                to="/Profile"
+                className="flex pl-4 pr-16 pt-4 pb-2 font-normal"
+              >
                 <AiFillSetting className="text-2xl mr-4" />
                 Settings
               </Link>
