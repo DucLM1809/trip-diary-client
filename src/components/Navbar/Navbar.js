@@ -200,7 +200,7 @@ const Navbar = () => {
           {profile ? (
             <>
               <img
-                src={profile?.avatarUrl}
+                src={profile?.avatarUrl || unknown}
                 alt="unknown"
                 className="w-10 h-10 rounded-[50%] aspect-square object-cover"
               />
