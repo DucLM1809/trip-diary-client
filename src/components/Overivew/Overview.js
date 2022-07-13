@@ -25,7 +25,7 @@ import { BsThreeDots } from "react-icons/bs";
 
 const Overview = () => {
   const sasToken = useSelector((state) => state.user.sasToken);
-  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
+  const ApiKey = "AIzaSyBmpN2XP7Y3Iu9JWljpse6fd6b0e7q70Pc";
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: ApiKey,
     libraries: "places",
