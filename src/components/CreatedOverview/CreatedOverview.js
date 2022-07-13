@@ -18,7 +18,7 @@ import { useOpenWeather } from "react-open-weather";
 import Weather from "../Weather/Weather";
 
 const CreatedOverview = () => {
-  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
+  const ApiKey = "AIzaSyBmpN2XP7Y3Iu9JWljpse6fd6b0e7q70Pc";
 
   const [like, setLike] = useState(false);
   const [numLike, setNumLike] = useState(0);
@@ -627,7 +627,11 @@ const CreatedOverview = () => {
                         </div>
                         <p className="text-sm font-normal">{comment.content}</p>
                       </div>
-                      {comment?.author?.id === meId ? (
+                      {(
+                        trip?.author?.id !== meId
+                          ? comment?.author?.id === meId
+                          : true
+                      ) ? (
                         <div className="relative">
                           <div
                             className="flex justify-center items-center cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
