@@ -101,9 +101,9 @@ const Navbar = () => {
     handleGetProfile();
   }, []);
 
-  useEffect(() => {
-    handleGetProfile();
-  }, [myprofile]);
+  // useEffect(() => {
+  //   handleGetProfile();
+  // }, [myprofile]);
 
   const onSubmit = (data) => {
     // setSearchInfo(data.search);
