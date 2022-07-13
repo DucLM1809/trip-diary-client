@@ -54,10 +54,6 @@ const User = () => {
     handleGetMe();
   }, []);
 
-  useEffect(() => {
-    console.log(users);
-  }, [users])
-
   return (
     <div className="pt-8 flex px-3 flex-wrap ">
       {users.length > 0 ? (
