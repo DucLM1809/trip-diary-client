@@ -23,7 +23,7 @@ const Navbar = () => {
   const myprofile = useSelector((state) => state.profile);
   const userInfo = useSelector((state) => state.user);
   const [displayOut, setDisplayOut] = useState(false);
-  const [searchInfo, setSearchInfo] = useState(" ");
+  const [searchInfo, setSearchInfo] = useState("");
   const [searchRes, setSearchRes] = useState([]);
   const [profile, setProfile] = useState(myprofile);
 
@@ -64,9 +64,6 @@ const Navbar = () => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     },
-    params: {
-      search: searchInfo,
-    },
   };
 
   if (accessToken) {
@@ -78,6 +75,23 @@ const Navbar = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const handleGetTrips = async () => {
+    let res = await api.get("/trips", config);
+    if (res) {
+      dispatch(getSearchResponse(res.data));
+      setSearchRes(res.data);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      location.pathname.split("/")[1] === "trips" &&
+      location.pathname.split("/")[2] !== "search"
+    ) {
+      handleGetTrips();
+    }
+  }, [location]);
 
   const handleGetProfile = async () => {
     let res = await api
@@ -101,10 +115,6 @@ const Navbar = () => {
     handleGetProfile();
   }, []);
 
-  // useEffect(() => {
-  //   handleGetProfile();
-  // }, [myprofile]);
-
   const onSubmit = (data) => {
     // setSearchInfo(data.search);
     handleSearch(data.search);
@@ -120,7 +130,7 @@ const Navbar = () => {
           Authorization: `bearer ${accessToken}`,
         },
         params: {
-          search: info || "",
+          search: info,
         },
       })
       .catch((error) => console.log(error));

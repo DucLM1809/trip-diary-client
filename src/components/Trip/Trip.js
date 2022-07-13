@@ -44,7 +44,7 @@ const Trip = () => {
   };
 
   const handleGetPublicTrips = () => {
-    setPublicTrips(searchRes.filter((res) => res.isPublic));
+    setPublicTrips(searchRes.filter((res) => res.author.id !== meId ? res.isPublic : true));
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Trip = () => {
 
   useEffect(() => {
     handleGetPublicTrips();
-  }, [searchRes]);
+  }, [searchRes, meId]);
   
   return (
     <>
