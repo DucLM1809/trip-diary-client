@@ -5,13 +5,14 @@ import api from "../../api/axios";
 import { AiOutlineUser } from "react-icons/ai";
 import { BsGenderAmbiguous, BsEnvelope, BsInfoCircle } from "react-icons/bs";
 import { BiWorld } from "react-icons/bi";
-import { RiCake2Line} from "react-icons/ri";
-import COUNTRYDATA from '../../data/countries.json';
+import { RiCake2Line } from "react-icons/ri";
+import COUNTRYDATA from "../../data/countries.json";
 import { useForm } from "react-hook-form";
 import { MdOutlineFemale, MdOutlineMale } from "react-icons/md";
 import { ImPencil2 } from "react-icons/im";
 import { uploadFileToBlob } from "../../utils/uploadFileToBlob";
 import { useDispatch, useSelector } from "react-redux";
+import { getMyProfile } from "../../redux/actions";
 import axios from "axios";
 import {
   Combobox,
@@ -22,6 +23,9 @@ import {
 } from "@reach/combobox";
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
+  const myprofile = useSelector((state) => state.profile);
+
   const sasToken = useSelector((state) => state.user.sasToken);
   const [infor, setInfor] = useState({
     id: "",
@@ -40,16 +44,16 @@ const EditProfile = () => {
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
 
-    const [nickname,setNickname] = useState(null);
-    const [fname,setFname] = useState();
-    const [lname,setLname] = useState();
-    const [gender,setGender] = useState();
-    const [mail,setMail] = useState();
-    const [ country,setCountry] = useState();
-    const [DOB,setDOB] = useState();
-    const [description,setDescriptrion] = useState();
-    const [avatarUrl,setAvatarUrl] = useState();
-    const [coverUrl,setCoverUrl] = useState();
+  const [nickname, setNickname] = useState(null);
+  const [fname, setFname] = useState();
+  const [lname, setLname] = useState();
+  const [gender, setGender] = useState();
+  const [mail, setMail] = useState();
+  const [country, setCountry] = useState();
+  const [DOB, setDOB] = useState();
+  const [description, setDescriptrion] = useState();
+  const [avatarUrl, setAvatarUrl] = useState();
+  const [coverUrl, setCoverUrl] = useState();
 
   const [cities, setCities] = useState();
   const [suggestions, setSuggestions] = useState();
@@ -88,7 +92,7 @@ const EditProfile = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    mail ? <></> : setMail(infor.Email)
+    mail ? <></> : setMail(infor.Email);
     handleEditProfile(data);
   };
 
@@ -117,10 +121,11 @@ const EditProfile = () => {
       .catch((error) => {
         setErr(error.response.data.detail);
         setSuccess("");
-        
       });
-      (res) ? setSuccess("Saved") : setSuccess("")
-      console.log(res);
+    res
+      ? setSuccess("Saved") && dispatch(getMyProfile(res.data))
+      : setSuccess("");
+    console.log(res);
   };
 
   useEffect(() => {
@@ -128,8 +133,6 @@ const EditProfile = () => {
     setErr("");
     setSuccess("");
   }, []);
-
-  
 
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0], sasToken).then((result) => {
@@ -153,44 +156,43 @@ const EditProfile = () => {
   }, [infor]);
 
   const handleChecked = () => {
-    setGender(!gender)
-  }
+    setGender(!gender);
+  };
 
-//   const CountryAutocomplete = ({
-//   }) => {
-//     const handleSelect = async (data) => {
-//     };
+  //   const CountryAutocomplete = ({
+  //   }) => {
+  //     const handleSelect = async (data) => {
+  //     };
 
-//     return (
-//       <Combobox aria-labelledby="demo">
-//         <ComboboxInput value={country} onChange={e=> setCountry(e.target.value)}/>
-//         <ComboboxPopover>
-//           <ComboboxList>
-//           {COUNTRYDATA.map((data) => {
-//                 return(
+  //     return (
+  //       <Combobox aria-labelledby="demo">
+  //         <ComboboxInput value={country} onChange={e=> setCountry(e.target.value)}/>
+  //         <ComboboxPopover>
+  //           <ComboboxList>
+  //           {COUNTRYDATA.map((data) => {
+  //                 return(
 
-//           <ComboboxOption value={data.name} />)})}
-       
-//             {/* {COUNTRYDATA.filter((val)=>{
-//                 if(country==""){
-//                   return val
-//                 } else if (val.name.toLocaleLowerCase().includes(country.toLocaleLowerCase())){
-//                   return val
-//                 }
-//               }).map((data) => {
-//                 return(
+  //           <ComboboxOption value={data.name} />)})}
 
-// <ComboboxOption value={data.name} />
-//                 )
-//               })} */}
-//           </ComboboxList>
-//         </ComboboxPopover>
-//       </Combobox>
-//     );
-//   };
+  //             {/* {COUNTRYDATA.filter((val)=>{
+  //                 if(country==""){
+  //                   return val
+  //                 } else if (val.name.toLocaleLowerCase().includes(country.toLocaleLowerCase())){
+  //                   return val
+  //                 }
+  //               }).map((data) => {
+  //                 return(
+
+  // <ComboboxOption value={data.name} />
+  //                 )
+  //               })} */}
+  //           </ComboboxList>
+  //         </ComboboxPopover>
+  //       </Combobox>
+  //     );
+  //   };
   return (
     <>
-    
       <div className="flex items-end absolute left-[410px] boder-1 border-gray w-[950px] h-[80px]  bg-[#2C3639] mt-4 z-10">
         <p className="font-black text-5xl text-white pb-2 pl-8 cursor-default">
           Edit My Profile
@@ -321,11 +323,13 @@ const EditProfile = () => {
             <p className="font-medium  text-lg">Country: </p>
             {/* <CountryAutocomplete/> */}
             {/* <input type="text" className="text-lg ml-4 w-[250px] border-2 border-black" value={country}  onChange={e=> setCountry(e.target.value)} ></input> */}
-            <select className="text-lg ml-4 w-[250px] border-2 border-black" value={country} onChange={e=> setCountry(e.target.value)}>
+            <select
+              className="text-lg ml-4 w-[250px] border-2 border-black"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
               {COUNTRYDATA.map((data) => {
-                return(
-                  <option >{data.name}</option>
-                )
+                return <option>{data.name}</option>;
               })}
             </select>
           </div>
@@ -335,7 +339,13 @@ const EditProfile = () => {
               <RiCake2Line />
             </span>
             <p className="font-medium  text-lg">Day of birth: </p>
-            <input type="date" {...register(`DoB`)}className="text-lg ml-4  border-2 border-black" value={DOB}  onChange={e=> setDOB(e.target.value)} ></input>
+            <input
+              type="date"
+              {...register(`DoB`)}
+              className="text-lg ml-4  border-2 border-black"
+              value={DOB}
+              onChange={(e) => setDOB(e.target.value)}
+            ></input>
             {/* {console.log(DOB)} */}
           </div>
 
@@ -351,32 +361,29 @@ const EditProfile = () => {
           </div>
 
           <button
-                  className="block py-2 px-6 text-lg bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mt-10 w-[130px] mx-auto"
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  SAVE
-                </button>
-                {success ? (
-              <>
-                <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-[200px]">
-                  <span className="block sm:inline">{success}</span>
-                  
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
-            {err ? (
-                <>
-                  <div className="bg-light-pink border-1 border-red text-red py-2 px-3 mt-3 rounded-3 relative text-center">
-                    <span className="block sm:inline">{err}</span>
-                  </div>
-
-                </>
-              ) : (
-                <></>
-              )}
-          
+            className="block py-2 px-6 text-lg bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mt-10 w-[130px] mx-auto"
+            onClick={handleSubmit(onSubmit)}
+          >
+            SAVE
+          </button>
+          {success ? (
+            <>
+              <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-[200px]">
+                <span className="block sm:inline">{success}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          {err ? (
+            <>
+              <div className="bg-light-pink border-1 border-red text-red py-2 px-3 mt-3 rounded-3 relative text-center">
+                <span className="block sm:inline">{err}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </>

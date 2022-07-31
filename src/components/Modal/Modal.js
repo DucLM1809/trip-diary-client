@@ -121,8 +121,8 @@ export const Modal = ({ showModal, setShowModal, setIsDeleted, delId }) => {
           <animated.div style={animation}>
             <ModalWrapper showModal={showModal}>
               <ModalContent>
-                <h1 className="mt-8">Are you sure</h1>
-                <h1>you want to delete this trip?</h1>
+                <h1 className="mt-8 max-w-sm text-center">Are you sure you want to delete this trip?</h1>
+                {/* <h1>you want to delete this trip?</h1> */}
                 <div className="footer">
                   <button onClick={() => setShowModal((prev) => !prev)}>
                     Cancel

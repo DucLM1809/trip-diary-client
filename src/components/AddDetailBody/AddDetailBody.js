@@ -49,7 +49,7 @@ function AddDetailBody() {
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
 
-  const ApiKey = "AIzaSyBmpN2XP7Y3Iu9JWljpse6fd6b0e7q70Pc";
+  const ApiKey = "AIzaSyCegXjc_zJxyKztste0CKrsy_883NB8tvA";
 
   const accessToken = localStorage
     .getItem("accessToken")

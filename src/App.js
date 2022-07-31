@@ -73,6 +73,7 @@ function App() {
       <Route element={<RequireAuth />}>
         <Route exact path="/home" element={<TripBeforeSearch />}></Route>
         <Route exact path="/create" element={<Create />}></Route>
+        <Route exact path="/create/past" element={<Create />}></Route>
         <Route exact path="/edit/trip/:id" element={<Create />}></Route>
         <Route exact path="/trips/trip/:id" element={<Trips />}></Route>
         <Route exact path="/trips" element={<Home />}></Route>

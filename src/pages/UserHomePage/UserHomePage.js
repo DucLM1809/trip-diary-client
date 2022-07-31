@@ -15,7 +15,7 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { FreeMode, Pagination } from "swiper";
 import unknown from "../../assests/images/unknown.png";
-import hero from "../../assests/images/hero.png"
+import hero from "../../assests/images/hero.png";
 import api from "../../api/axios";
 import { useSelector } from "react-redux";
 import banner from "../../assests/images/hero.png";
@@ -91,7 +91,7 @@ const UserHomePage = () => {
 
   useEffect(() => {
     handleGetTrips();
-    console.log("redux",myprofile)
+    console.log("redux", myprofile);
   }, []);
 
   useEffect(() => {
@@ -191,7 +191,9 @@ const UserHomePage = () => {
     setPastTrips([]);
     const currentdate = moment().format("YYYY-MM-DD");
     trips.map((trip) => {
-      if (new Date(trip.startAt) > new Date()) {
+      if (trip.isFinished) {
+        setPastTrips((prev) => [...prev, trip]);
+      } else if (new Date(trip.startAt) > new Date()) {
         setNextTrips((prev) => [...prev, trip]);
       } else {
         setPastTrips((prev) => [...prev, trip]);
@@ -214,16 +216,40 @@ const UserHomePage = () => {
             <div>
               <div className="profileCover">
                 <img
-                  src={myprofile ? (myprofile.coverImgUrl ? myprofile.coverImgUrl : hero) :  hero}
+                  src={
+                    myprofile
+                      ? myprofile.coverImgUrl
+                        ? myprofile.coverImgUrl
+                        : hero
+                      : hero
+                  }
                   alt=""
                   className="profileCoverImg"
                 />
-                <img src={ myprofile ? (myprofile.avatarUrl ? myprofile.avatarUrl : unknown): unknown} alt="" className="profileUserImg object-cover" />
+                <img
+                  src={
+                    myprofile
+                      ? myprofile.avatarUrl
+                        ? myprofile.avatarUrl
+                        : unknown
+                      : unknown
+                  }
+                  alt=""
+                  className="profileUserImg object-cover"
+                />
 
                 <div className="profileInfo">
-                  <h4 className="profileInfoName">{myprofile ? (myprofile.username ? myprofile.username : userName):userName}</h4>
+                  <h4 className="profileInfoName">
+                    {myprofile
+                      ? myprofile.username
+                        ? myprofile.username
+                        : userName
+                      : userName}
+                  </h4>
                 </div>
-                <Link to="/Profile" className="editProfile">Edit Profile</Link>
+                <Link to="/Profile" className="editProfile">
+                  Edit Profile
+                </Link>
                 {/* <div className="iconcamera cursor-pointer">
                   <button>
                     <AiFillCamera size={"50px"} className="text-white" />
@@ -239,7 +265,17 @@ const UserHomePage = () => {
                 <div className="shareTop">
                   <span className="shareOptionText">Description</span>
                   <br />
-                  <div className="text-md">{myprofile? (myprofile.description ? myprofile.description : <p>Welcome to TriPari</p>) : <></>}</div>
+                  <div className="text-md">
+                    {myprofile ? (
+                      myprofile.description ? (
+                        myprofile.description
+                      ) : (
+                        <p>Welcome to TriPari</p>
+                      )
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -454,7 +490,7 @@ const UserHomePage = () => {
             </Link>
           </div>
           <div className="PastTripCreate">
-            <Link to="/create">
+            <Link to="/create/past">
               <button>
                 <AiFillPlusCircle size={"35px"} />
               </button>

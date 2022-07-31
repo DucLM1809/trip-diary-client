@@ -25,7 +25,7 @@ import { BsThreeDots } from "react-icons/bs";
 
 const Overview = () => {
   const sasToken = useSelector((state) => state.user.sasToken);
-  const ApiKey = "AIzaSyBmpN2XP7Y3Iu9JWljpse6fd6b0e7q70Pc";
+  const ApiKey = "AIzaSyCegXjc_zJxyKztste0CKrsy_883NB8tvA";
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: ApiKey,
     libraries: "places",
@@ -63,6 +63,7 @@ const Overview = () => {
   const [trip, setTrip] = useState();
   const [tripId, setTripId] = useState();
   const [tripPublic, setTripPublic] = useState();
+  const [isPast, setIsPast] = useState(false);
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
@@ -71,6 +72,14 @@ const Overview = () => {
     width: "100%",
     height: "100%",
   };
+
+  useEffect(() => {
+    if (location.pathname.includes("past")) {
+      setIsPast(true);
+    } else {
+      setIsPast(false);
+    }
+  }, [location]);
 
   const handleChooseType = () => {
     setDisplay(!display);
@@ -154,6 +163,7 @@ const Overview = () => {
           description: data.description,
           scope: dest === dep ? "local" : "global",
           isPublic: tripPublic === "Public" ? true : false,
+          isFinished: isPast,
         },
         config
       )
@@ -188,6 +198,7 @@ const Overview = () => {
           description: data.description,
           scope: dest === dep ? "local" : "global",
           isPublic: tripPublic === "Public" ? true : false,
+          isFinished: isPast,
         },
         config
       )
@@ -300,7 +311,9 @@ const Overview = () => {
         after:bg-black after:opacity-25 after:rounded-10"
       >
         <img
-          src={trip?.coverImgUrl || urlImg ? trip?.coverImgUrl || urlImg.url : ""}
+          src={
+            trip?.coverImgUrl || urlImg ? trip?.coverImgUrl || urlImg.url : ""
+          }
           className={`min-w-full h-full object-cover rounded-10 relative ${
             urlImg ? "block" : "hidden"
           }`}
@@ -386,33 +399,30 @@ const Overview = () => {
                 </div>
               </div>
             </div>
-              <div className="cursor-pointer w-[100px]  absolute right-10">
-                <div
-                  
-                  onClick={handleChoosePublic}
-                >
-                  <BsThreeDots />
-                </div>
+            <div className="cursor-pointer w-[100px]  absolute right-10">
+              <div onClick={handleChoosePublic}>
+                <BsThreeDots />
+              </div>
 
+              <div
+                className={`border-2 border-gray rounded-5 mb-1 ${
+                  displayPublic ? "block" : "hidden"
+                }`}
+              >
                 <div
-                  className={`border-2 border-gray rounded-5 mb-1 ${
-                    displayPublic ? "block" : "hidden"
-                  }`}
+                  className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                  onClick={(e) => handlePublic(e)}
                 >
-                  <div
-                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
-                    onClick={(e) => handlePublic(e)}
-                  >
-                    Public
-                  </div>
-                  <div
-                    className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
-                    onClick={(e) => handlePublic(e)}
-                  >
-                    Private
-                  </div>
+                  Public
+                </div>
+                <div
+                  className="w-full px-2 py-1 hover:bg-gray rounded-br-3 rounded-bl-3"
+                  onClick={(e) => handlePublic(e)}
+                >
+                  Private
                 </div>
               </div>
+            </div>
           </div>
           <div className="w-full flex justify-between mb-10">
             <div className="flex flex-col">

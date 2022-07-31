@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLocations } from "../../redux/actions";
 
 function CreatedItinerary() {
-  const ApiKey = "AIzaSyDos6imos6382Si_EC5LVBJ5yRNllrZurU";
+  const ApiKey = "AIzaSyCegXjc_zJxyKztste0CKrsy_883NB8tvA";
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -100,8 +100,8 @@ function CreatedItinerary() {
   }, [images])
 
   return (
-    <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px]">
-      <div className="border-1 border-gray flex flex-col justify-between w-full  mb-10 rounded-10 shadow-lg overflow-y-auto pb-10">
+    <div className="flex flex-col justify-center mx-auto mt-10 w-[1100px] min-h-[80vh]">
+      <div className="border-1 border-gray flex flex-col justify-between w-full mb-10 rounded-10 shadow-lg overflow-y-auto pb-10 h-full">
         <div className="flex justify-start w-full ">
           <h1 className="text-2xl text-left justify-start font-bold ml-10 mt-10 mb-5 ">
             Itinerary
