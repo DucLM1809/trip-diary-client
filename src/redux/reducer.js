@@ -119,11 +119,20 @@ const rootReducer = (state = initState, action) => {
         ...state,
         user: {
           ...state.user,
-          status: "Reset Password Successfull!",
+          status: "Reset Password Successfully!",
         },
         page: {
           ...state.page,
           loading: action.payload,
+        },
+      };
+    }
+    case "VERIFY_ACCOUNT": {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          status: action.payload,
         },
       };
     }

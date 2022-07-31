@@ -35,7 +35,11 @@ const Signin = () => {
   const userInfo = useSelector((state) => state.user);
 
   useEffect(() => {
-    setSuccess(userInfo.status);
+    if (userInfo.status?.error) {
+      setError(userInfo.status.msg)
+    } else {
+      setSuccess(userInfo.status);
+    }
   }, [userInfo]);
 
   const onSuccess = (response) => {

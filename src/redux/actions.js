@@ -44,6 +44,13 @@ export const resetPassword = () => {
   };
 };
 
+export const verifyAccount = (data) => {
+  return {
+    type: "VERIFY_ACCOUNT",
+    payload: data,
+  };
+};
+
 export const loadingPage = (data) => {
   return {
     type: "LOADING",
