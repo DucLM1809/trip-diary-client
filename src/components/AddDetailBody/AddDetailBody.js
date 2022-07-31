@@ -87,8 +87,10 @@ function AddDetailBody() {
   };
 
   useEffect(() => {
-    handleGetTrip();
-  }, []);
+    if (tripId) {
+      handleGetTrip();
+    }
+  }, [location, tripId]);
 
   useEffect(() => {
     setErr("");
@@ -119,10 +121,16 @@ function AddDetailBody() {
     });
     data.locations = [...temp];
     data.locations.map((location) => {
-      if (Date.parse(location?.startAt) < Date.parse(trip?.startAt)) {
+      if (
+        Date.parse(location?.startAt) < Date.parse(trip?.startAt) ||
+        Date.parse(location?.startAt) < Date.parse(tripInfo?.startAt)
+      ) {
         setErr("You choose a day before start day");
         setSuccess("");
-      } else if (Date.parse(location?.startAt) > Date.parse(trip?.finishAt)) {
+      } else if (
+        Date.parse(location?.startAt) > Date.parse(trip?.backTripAt) ||
+        Date.parse(location?.startAt) > Date.parse(tripInfo?.finishAt)
+      ) {
         setErr("You choose a day after finish day");
         setSuccess("");
       } else {
@@ -155,7 +163,11 @@ function AddDetailBody() {
           setErr("You must create a trip first");
         } else {
           console.log(error.response.data.detail[0].msg);
-          setErr(error.response.data.detail[0].msg);
+          if (error.response.data.detail[0].msg === "field required") {
+            setErr("You must enter trip or location");
+          } else {
+            setErr(error.response.data.detail[0].msg);
+          }
         }
         setSuccess("");
         setEdit(false);
@@ -383,7 +395,7 @@ function AddDetailBody() {
 
   useEffect(() => {
     console.log("IMAGES: ", listImg);
-  }, [listImg])
+  }, [listImg]);
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">

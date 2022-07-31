@@ -156,7 +156,7 @@ const rootReducer = (state = initState, action) => {
           toLat: action.payload.toLat,
           toLng: action.payload.toLng,
           startAt: action.payload.startAt,
-          finishAt: action.payload.finishAt,
+          finishAt: action.payload?.backTripAt,
           tripID: action.payload.id,
           coverImgUrl: action.payload.coverImgUrl,
           description: action.payload.description,

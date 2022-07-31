@@ -67,6 +67,7 @@ const Overview = () => {
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
+  console.log("Info: ", tripInfo);
 
   const containerStyle = {
     width: "100%",
