@@ -97,7 +97,7 @@ const rootReducer = (state = initState, action) => {
         ...state,
         user: {
           ...state.user,
-          status: "Register Successfully!",
+          status: "Register Successfully! Check your email to verify account",
         },
         page: {
           ...state.page,

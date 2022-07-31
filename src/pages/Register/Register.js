@@ -29,7 +29,7 @@ const FormSignup = () => {
     let res = await api
       .post("/users", {
         email: data.account,
-        username: data.username,
+        // username: data.username,
         password: data.password,
       })
       .catch((error) => {
@@ -93,7 +93,7 @@ const FormSignup = () => {
                   {errors?.account?.message}
                 </p>
               )}
-              <input
+              {/* <input
                 type="text"
                 {...register("username", {
                   required: "You must specify user name",
@@ -105,7 +105,7 @@ const FormSignup = () => {
                 <p className="text-xs my-2 font-normal text-danger before:inline before:content-['⚠'] ">
                   {errors?.username?.message}
                 </p>
-              )}
+              )} */}
               <input
                 type="password"
                 {...register("password", {

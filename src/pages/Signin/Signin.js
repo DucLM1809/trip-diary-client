@@ -3,7 +3,13 @@ import { useGoogleLogin } from "react-google-login";
 import { useForm } from "react-hook-form";
 import logo from "../../assests/images/logo.png";
 import GoogleIcon from "../../assests/images/google.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import api from "../../api/axios";
 import {
   loginAccount,
@@ -140,7 +146,7 @@ const Signin = () => {
             <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
               {success ? (
                 <>
-                  <div className="bg-light-success border-1 border-success text-success py-2 px-2 mt-3 rounded-3 relative text-center">
+                  <div className="bg-light-success border-1 border-success text-success py-2 px-2 mt-3 rounded-3 relative text-center max-w-[306px]">
                     <span className="block sm:inline">{success}</span>
                   </div>
                 </>
