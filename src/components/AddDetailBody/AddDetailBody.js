@@ -45,6 +45,7 @@ function AddDetailBody() {
   const [locations, setLocations] = useState([
     { id: uuidv4(), coordinate: {}, num: 1 },
   ]);
+  const [trip, setTrip] = useState();
 
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -76,6 +77,19 @@ function AddDetailBody() {
     }
   }, [location]);
 
+  const handleGetTrip = async () => {
+    let res = await api
+      .get(`/trips/${tripId}`, config)
+      .catch((error) => console.log(error));
+    if (res) {
+      setTrip(res.data);
+    }
+  };
+
+  useEffect(() => {
+    handleGetTrip();
+  }, []);
+
   useEffect(() => {
     setErr("");
     setSuccess("");
@@ -94,6 +108,7 @@ function AddDetailBody() {
 
   const onSubmit = (data) => {
     let temp = [];
+    console.log(locations);
     locations.map((location, index) => {
       let loc = { ...location };
       loc.startAt = data[`date${index + 1 || location.num}`];
@@ -104,10 +119,10 @@ function AddDetailBody() {
     });
     data.locations = [...temp];
     data.locations.map((location) => {
-      if (Date.parse(location.date) < Date.parse(tripInfo.startAt)) {
+      if (Date.parse(location?.startAt) < Date.parse(trip?.startAt)) {
         setErr("You choose a day before start day");
         setSuccess("");
-      } else if (Date.parse(location.date) > Date.parse(tripInfo.finishAt)) {
+      } else if (Date.parse(location?.startAt) > Date.parse(trip?.finishAt)) {
         setErr("You choose a day after finish day");
         setSuccess("");
       } else {
@@ -138,8 +153,9 @@ function AddDetailBody() {
         console.log(error);
         if (error.response.status === 405) {
           setErr("You must create a trip first");
-        } else if (error.response.status === 422) {
-          setErr("You must enter location & choose date");
+        } else {
+          console.log(error.response.data.detail[0].msg);
+          setErr(error.response.data.detail[0].msg);
         }
         setSuccess("");
         setEdit(false);
@@ -343,13 +359,14 @@ function AddDetailBody() {
 
   useEffect(() => {
     let temp = [...locations];
+    console.log(selected);
     temp.map((item) => {
       if (item.id === selectKey) {
         item.coordinate = { ...selected };
       }
     });
     setLocations(temp);
-  }, [selectKey]);
+  }, [selectKey, selected]);
 
   const handleUploadImg = (e) => {
     uploadFileToBlob(e.target.files[0], sasToken).then((result) => {
@@ -365,9 +382,8 @@ function AddDetailBody() {
   };
 
   useEffect(() => {
-    // console.log("LIST: ", locations);
     console.log("IMAGES: ", listImg);
-  }, [listImg]);
+  }, [listImg])
 
   return (
     <div className="flex flex-col justify-start h-[100vh] w-1/2 m-auto mt-10">
@@ -490,7 +506,7 @@ function AddDetailBody() {
                       <></>
                     )}
                     <input
-                      id={location.num || index + 1}
+                      id={index + 1}
                       type="file"
                       {...register(`${index + 1}`)}
                       onChange={(e) => handleUploadImg(e)}
@@ -567,7 +583,7 @@ const PlacesAutocomplete = ({
   useEffect(() => {
     if (departure) {
       // setValue(departure);
-      handleSelect(departure)
+      handleSelect(departure);
     }
   }, [departure]);
 

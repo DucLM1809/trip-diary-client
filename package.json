@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@azure/storage-blob": "^12.10.0",
+    "@hookform/resolvers": "^2.9.7",
     "@reach/combobox": "^0.17.0",
     "@react-google-maps/api": "^2.11.8",
     "@testing-library/jest-dom": "^5.16.4",
@@ -37,7 +38,8 @@
     "swiper": "^8.1.6",
     "use-places-autocomplete": "^3.0.0",
     "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
