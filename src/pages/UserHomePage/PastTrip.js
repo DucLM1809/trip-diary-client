@@ -214,7 +214,6 @@ const NextTrip = () => {
               <div className="shareWrapper">
                 <div className="shareTop">
                   <span className="shareOptionText">Description</span>
-                  <br />
                   <input
                     type="text"
                     className="shareInput"
