@@ -20,7 +20,6 @@ const Trip = () => {
   const showMoreTrips = () => {
     
     setNumOfShow((prevValue) => prevValue + 6);
-    handleUpdateLimit(searchI);
 
   };
 

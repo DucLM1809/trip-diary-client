@@ -114,7 +114,6 @@ const Navbar = () => {
     // setSearchInfo(data.search);
     handleSearch(data.search);
     setSearchI(data.search);
-    dispatch(getSearchI(data.search));
   };
 
 
