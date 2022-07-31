@@ -452,17 +452,32 @@ const Overview = () => {
               <label htmlFor="from" className="mb-2">
                 From
               </label>
-              <input
-                id="from"
-                type="date"
-                {...register("from", {
-                  required: "You must specify a start date",
-                  validate: (value) =>
-                    Date.parse(value) >= Date.now() ||
-                    " Plan must be over today",
-                })}
-                className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
-              />
+              {isPast ? (
+                <input
+                  id="from"
+                  type="date"
+                  {...register("from", {
+                    required: "You must specify a start date",
+                    validate: (value) =>
+                      Date.parse(value) <= Date.now() ||
+                      " Plan must be not over today",
+                  })}
+                  className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+                />
+              ) : (
+                <input
+                  id="from"
+                  type="date"
+                  {...register("from", {
+                    required: "You must specify a start date",
+                    validate: (value) =>
+                      Date.parse(value) >= Date.now() ||
+                      " Plan must be over today",
+                  })}
+                  className="border-2 border-gray px-2 py-3 w-[360px] rounded-5"
+                />
+              )}
+
               {errors?.from && (
                 <p className="text-xs mt-2 font-normal text-danger before:inline before:content-[''] ">
                   {errors.from.message}
