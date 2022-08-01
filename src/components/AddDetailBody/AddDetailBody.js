@@ -4,6 +4,7 @@ import {
   AiFillPlusCircle,
   AiFillPicture,
   AiFillCloseCircle,
+  AiFillCamera,
 } from "react-icons/ai";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
@@ -519,13 +520,16 @@ function AddDetailBody() {
                     ) : (
                       <></>
                     )}
-                    <input
-                      id={index + 1}
-                      type="file"
-                      {...register(`${index + 1}`)}
-                      onChange={(e) => handleUploadImg(e)}
-                      className="ml-4"
-                    />
+                    <div className="flex relative p-3">
+                      <input
+                        id={index + 1}
+                        type="file"
+                        {...register(`${index + 1}`)}
+                        onChange={(e) => handleUploadImg(e)}
+                        className="ml-4 opacity-0 cursor-pointer"
+                      />
+                      <AiFillCamera className="text-5xl text-green cursor-pointer border-2 border-dashed p-2 border-green rounded-1/2 -z-10 absolute -translate-y-3 translate-x-3" />
+                    </div>
                   </div>
                   <div className="flex justify-between w-4/5 mt-3">
                     <p className="text-black mb-2">Description</p>

@@ -409,12 +409,12 @@ const UserHomePage = () => {
           <div className="UserNextTripHr">
             <hr />
           </div>
-          <div className="NextTripButton">
+          {/* <div className="NextTripButton">
             <Link to="/nexttrip">
               <button className="buttonShow">Show all</button>
             </Link>
-          </div>
-          <div className="NextTripCreate">
+          </div> */}
+          <div className="mt-4 translate-x-28  inline">
             <Link to="/create">
               <button>
                 <AiFillPlusCircle size={"35px"} />
@@ -484,12 +484,12 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
-          <div className="PastTripButton">
+          {/* <div className="PastTripButton">
             <Link to="/pasttrip">
               <button className="buttonShow">Show all</button>
             </Link>
-          </div>
-          <div className="PastTripCreate">
+          </div> */}
+          <div className="mt-[22.7rem] -translate-x-40">
             <Link to="/create/past">
               <button>
                 <AiFillPlusCircle size={"35px"} />
