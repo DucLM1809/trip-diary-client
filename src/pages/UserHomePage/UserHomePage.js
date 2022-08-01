@@ -256,7 +256,7 @@ const UserHomePage = () => {
                     )}
                   </span>
                   <p>
-                    {format(
+                    {myprofile?.dateOfBirth && format(
                       Date.parse(myprofile?.dateOfBirth),
                       "MMMM do, yyyy "
                     )}
