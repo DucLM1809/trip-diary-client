@@ -478,7 +478,7 @@ function AddDetailBody() {
                   </div>
 
                   <div className="flex justify-between w-4/5 mt-3">
-                    <p className="text-black mb-2">Images</p>
+                    <p className="text-black mb-2">Images & Videos</p>
                     <AiFillPicture className="my-auto" />
                   </div>
                   <div className="w-4/5 flex flex-wrap justify-start items-center border-solid border-gray border-2 p-3 mb-2 rounded-3 font-normal text-sm outline-medium-blue">
