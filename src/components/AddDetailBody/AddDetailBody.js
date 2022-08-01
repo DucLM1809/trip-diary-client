@@ -48,6 +48,7 @@ function AddDetailBody() {
   ]);
   const [trip, setTrip] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [showFullScreen, setShowFullScreen] = useState(false);
 
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -492,9 +493,10 @@ function AddDetailBody() {
                             <div key={uuidv4()} className="relative">
                               {img.type === "image" ? (
                                 <img
-                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1"
+                                  className="w-[120px] h-[120px] object-cover mr-1 mb-1 cursor-pointer"
                                   src={img.url}
                                   alt=""
+                                  onClick={() => setShowFullScreen(true)}
                                 />
                               ) : (
                                 <video
@@ -503,7 +505,33 @@ function AddDetailBody() {
                                   controls
                                 />
                               )}
-
+                              {showFullScreen && (
+                                <>
+                                  <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none mt-8">
+                                    <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                      {/*content*/}
+                                      <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-3">
+                                        <button
+                                          className="flex justify-end p-1 ml-autoborder-0 bg-white text-red float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                          onClick={() =>
+                                            setShowFullScreen(false)
+                                          }
+                                        >
+                                          <span className="bg-white text-black h-6 w-6 text-3xl mb-3 block outline-none focus:outline-none hover:opacity-[0.5]">
+                                            ×
+                                          </span>
+                                        </button>
+                                        <img
+                                          className="w-[600px] h-[600px] object-cover mr-1 mb-1 cursor-pointer"
+                                          src={img.url}
+                                          alt=""
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                </>
+                              )}
                               <TiDeleteOutline
                                 className="absolute top-1 right-1 text-dark-gray text-2xl hover:opacity-70 hover:cursor-pointer"
                                 onClick={() =>
