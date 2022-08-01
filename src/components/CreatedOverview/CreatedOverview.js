@@ -41,6 +41,8 @@ const CreatedOverview = () => {
   const [meId, setMeId] = useState();
   const [shareURL, setShareUrl] = useState();
   const [likeInfo, setLikeInfo] = useState();
+  const [openModal, setOpenModal] = useState(false);
+  const [util, setUtil] = useState();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -307,6 +309,7 @@ const CreatedOverview = () => {
   const handleChooseUtil = (e) => {
     setUtility({ id: e.target.id - 0, value: e.target.textContent });
     setDisplayUtility(false);
+    setOpenModal(false);
   };
 
   useEffect(() => {
@@ -644,7 +647,7 @@ const CreatedOverview = () => {
                             />
                           </div>
                           {displayUtility && utility.id === comment.id ? (
-                            <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                            <div className="absolute top-0 left-12 border-1 border-gray rounded-5 cursor-pointer">
                               <p
                                 id={comment.id}
                                 className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
@@ -655,10 +658,63 @@ const CreatedOverview = () => {
                               <p
                                 id={comment.id}
                                 className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                                onClick={(e) => handleChooseUtil(e)}
+                                // onClick={(e) => handleChooseUtil(e)}
+                                onClick={(e) => {
+                                  setUtil(e);
+                                  setOpenModal(true);
+                                }}
+                                // onClick={() => setOpenModal(true)}
                               >
                                 Delete
                               </p>
+                              {/* Modal */}
+                              {openModal && (
+                                <>
+                                  <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                                    <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                      {/*content*/}
+                                      <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-3">
+                                        <button
+                                          className="flex justify-end p-1 ml-autoborder-0 bg-white text-red float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                          onClick={() => setOpenModal(false)}
+                                        >
+                                          <span className="bg-white text-black h-6 w-6 text-3xl block outline-none focus:outline-none hover:opacity-[0.5]">
+                                            ×
+                                          </span>
+                                        </button>
+                                        {/*header*/}
+                                        <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                          <h3 className="text-3xl font-semibold">
+                                            Do you want to delete this comment?
+                                          </h3>
+                                        </div>
+                                        {/*footer*/}
+                                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                          <button
+                                            className="bg-gray text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            type="button"
+                                            onClick={() => setOpenModal(false)}
+                                          >
+                                            Close
+                                          </button>
+                                          <button
+                                            className="bg-danger text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:opacity-[0.8] outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            type="button"
+                                            // onClick={() => setOpenModal(false)}
+                                            onClick={() =>
+                                              handleChooseUtil(util)
+                                            }
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                </>
+                              )}
+                              {/* Modal */}
                             </div>
                           ) : (
                             <></>
@@ -760,7 +816,9 @@ const CreatedOverview = () => {
                                       {reply.content}
                                     </p>
                                   </div>
-                                  {reply?.author?.id === meId ? (
+                                  {trip?.author?.id !== meId ? (
+                                    reply?.author?.id === meId
+                                  ) : true ? (
                                     <div className="relative">
                                       <div
                                         className="cursor-pointer ml-2 p-2 hover:bg-gray rounded-[50%]"
@@ -774,7 +832,7 @@ const CreatedOverview = () => {
                                       </div>
                                       {displayUtility &&
                                       utility.id === reply.id ? (
-                                        <div className="absolute top-0 left-12 border-1 border-gray rounded-5">
+                                        <div className="absolute top-0 left-12 border-1 border-gray rounded-5 cursor-pointer">
                                           <p
                                             id={reply.id}
                                             className="pt-2 pl-2 pr-8 hover:bg-gray rounded-t-5"
@@ -785,10 +843,67 @@ const CreatedOverview = () => {
                                           <p
                                             id={reply.id}
                                             className="pt-2 pl-2 pr-8 pb-2 hover:bg-gray rounded-b-5"
-                                            onClick={(e) => handleChooseUtil(e)}
+                                            // onClick={() => handleChooseUtil(util)}
+                                            onClick={(e) => {
+                                              setUtil(e);
+                                              setOpenModal(true);
+                                            }}
                                           >
                                             Delete
                                           </p>
+                                          {/* Modal */}
+                                          {openModal && (
+                                            <>
+                                              <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                                                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                                  {/*content*/}
+                                                  <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-3">
+                                                    <button
+                                                      className="flex justify-end p-1 ml-autoborder-0 bg-white text-red float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                      onClick={() =>
+                                                        setOpenModal(false)
+                                                      }
+                                                    >
+                                                      <span className="bg-white text-black h-6 w-6 text-3xl block outline-none focus:outline-none hover:opacity-[0.5]">
+                                                        ×
+                                                      </span>
+                                                    </button>
+                                                    {/*header*/}
+                                                    <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                                      <h3 className="text-3xl font-semibold">
+                                                        Do you want to delete
+                                                        this comment?
+                                                      </h3>
+                                                    </div>
+                                                    {/*footer*/}
+                                                    <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                                      <button
+                                                        className="bg-gray text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                        type="button"
+                                                        onClick={() =>
+                                                          setOpenModal(false)
+                                                        }
+                                                      >
+                                                        Close
+                                                      </button>
+                                                      <button
+                                                        className="bg-danger text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:opacity-[0.8] outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                        type="button"
+                                                        // onClick={() => setOpenModal(false)}
+                                                        onClick={() =>
+                                                          handleChooseUtil(util)
+                                                        }
+                                                      >
+                                                        Delete
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                            </>
+                                          )}
+                                          {/* Modal */}
                                         </div>
                                       ) : (
                                         <></>

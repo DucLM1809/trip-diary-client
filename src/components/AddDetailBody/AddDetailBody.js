@@ -46,6 +46,7 @@ function AddDetailBody() {
     { id: uuidv4(), coordinate: {}, num: 1 },
   ]);
   const [trip, setTrip] = useState();
+  const [openModal, setOpenModal] = useState(false);
 
   const dispatch = useDispatch();
   const sasToken = useSelector((state) => state.user.sasToken);
@@ -367,6 +368,7 @@ function AddDetailBody() {
     );
     setLocations(temp);
     handleDelLocation(temp, id);
+    setOpenModal(false);
   };
 
   useEffect(() => {
@@ -547,12 +549,60 @@ function AddDetailBody() {
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
                   <div
                     onClick={() =>
-                      handleDel(location.locationID || location.id)
+                      // handleDel(location.locationID || location.id)
+                      setOpenModal(true)
                     }
                     className="hover:text-medium-blue cursor-pointer"
                   >
                     <AiFillCloseCircle className="flex justify-center py-auto text-4xl" />
                   </div>
+                  {/* Modal */}
+                  {openModal && (
+                    <>
+                      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                          {/*content*/}
+                          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-3">
+                            <button
+                              className="flex justify-end p-1 ml-autoborder-0 bg-white text-red float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                              onClick={() => setOpenModal(false)}
+                            >
+                              <span className="bg-white text-black h-6 w-6 text-3xl block outline-none focus:outline-none hover:opacity-[0.5]">
+                                ×
+                              </span>
+                            </button>
+                            {/*header*/}
+                            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                              <h3 className="text-3xl font-semibold">
+                                Do you want to delete this location?
+                              </h3>
+                            </div>
+                            {/*footer*/}
+                            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                              <button
+                                className="bg-gray text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                type="button"
+                                onClick={() => setOpenModal(false)}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="bg-danger text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:opacity-[0.8] outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                type="button"
+                                onClick={() =>
+                                  handleDel(location.locationID || location.id)
+                                }
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                    </>
+                  )}
+                  {/* Modal */}
                   <div className="flex-grow border-t-[0.7px]  my-auto mx-4"></div>
                 </div>
               </form>

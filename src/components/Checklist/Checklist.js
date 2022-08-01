@@ -36,6 +36,7 @@ const Checklist = () => {
   const [note, setNote] = useState(false);
   const [edit, setEdit] = useState(false);
   const [tripId, setTripId] = useState();
+  const [openModal, setOpenModal] = useState(false);
 
   const location = useLocation();
   useEffect(() => {
@@ -196,6 +197,7 @@ const Checklist = () => {
     let temp = items.filter((item) => !(item.id === id));
     handleDelItem(id);
     setItems(temp);
+    setOpenModal(false);
   };
 
   const handleDisplayNote = () => {
@@ -207,132 +209,181 @@ const Checklist = () => {
   }, [items]);
 
   return (
-    <div className="flex flex-col justify-start h-[80vh] w-1/2 mx-auto">
-      <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative overflow-y-auto">
-        {success ? (
-          <>
-            <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
-              <span className="block sm:inline">{success}</span>
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
-        {err ? (
-          <>
-            <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
-              <span className="block sm:inline">{err}</span>
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
-        <div className="w-full flex items-center justify-between">
-          <div className="flex items-center">
-            <h1 className="text-2xl ml-14">What to arrange</h1>
-            {/* <span className="text-xl ml-5 font-normal">0/8</span> */}
-          </div>
-          <button
-            className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
-            onClick={handleSubmit(onSubmitCheckbox)}
-          >
-            {edit ? "SAVE" : "CREATE"}
-          </button>
-        </div>
-        <form
-          className="flex flex-col mx-16 mt-8"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(onSubmitCheckbox);
-          }}
-        >
-          {items.length > 0 ? (
-            items.map((item, index) => (
-              <div key={item.id}>
-                <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
-                  <div>
-                    <input
-                      key={item.id}
-                      type="checkbox"
-                      defaultValue={item.value}
-                      checked={item.hasPrepared || item.check}
-                      {...register("checklist")}
-                      className="scale-[1.8]"
-                      onClick={() => handleCheck(item.id)}
-                    />
-                    <input
-                      className="ml-4 p-[2px] pl-2"
-                      {...register(`itemVal${item.id}`)}
-                      defaultValue={item.value || item.name}
-                    />
-                  </div>
-                  <div className="flex justify-center items-center">
-                    <div
-                      className="mr-2 cursor-pointer"
-                      onClick={() => handleDisplayNote()}
-                    >
-                      <MdStickyNote2 className="text-2xl" />
-                    </div>
-                    <div
-                      className="hover:cursor-pointer"
-                      onClick={() => handleDeleteItem(item.id)}
-                    >
-                      <FaTrashAlt className="text-2xl" />
-                    </div>
-                  </div>
-                </div>
-                <textarea
-                  id="note"
-                  rows={1}
-                  {...register(`note${item.id}`)}
-                  className={`border-1 border-gray w-full rounded-5 mt-2 py-2 px-2 ${
-                    note ? "block" : "hidden"
-                  }`}
-                  defaultValue={item.notes}
-                />
+    <>
+      <div className="flex flex-col justify-start h-[80vh] w-1/2 mx-auto">
+        <div className="shadow-lg border-1 border-gray h-fit my-10 py-10 flex flex-col rounded-10 relative overflow-y-auto">
+          {success ? (
+            <>
+              <div className="bg-light-success border-1 border-success text-success py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
+                <span className="block sm:inline">{success}</span>
               </div>
-            ))
+            </>
           ) : (
             <></>
           )}
-        </form>
-        <div
-          className={`${
-            displayAdd ? "flex " : "hidden"
-          } mx-16 mt-8 before:absolute pt-3 px-5 border-2 border-t-gray border-l-0 border-r-0 border-b-0`}
-        >
-          <form
-            className="flex w-full items-center justify-between"
-            onSubmit={handleSubmit(onSubmitItem)}
-          >
-            <div className="flex items-center w-full">
-              <input
-                type="checkbox"
-                value={item}
-                {...register("check")}
-                className="scale-[1.8]"
-              />
-              <input
-                {...register("item")}
-                type="text"
-                placeholder="Item name"
-                className="pl-2 py-1 mx-4 flex-1"
-              />
+          {err ? (
+            <>
+              <div className="bg-light-pink border-1 border-red text-red py-2 px-2 mx-auto my-3 rounded-3 relative text-center w-1/2">
+                <span className="block sm:inline">{err}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center">
+              <h1 className="text-2xl ml-14">What to arrange</h1>
+              {/* <span className="text-xl ml-5 font-normal">0/8</span> */}
             </div>
+            <button
+              className="block py-2 px-6 text-sm bg-light-blue text-white rounded-5 hover:bg-medium-blue shadow-lg mr-16"
+              onClick={handleSubmit(onSubmitCheckbox)}
+            >
+              {edit ? "SAVE" : "CREATE"}
+            </button>
+          </div>
+          <form
+            className="flex flex-col mx-16 mt-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(onSubmitCheckbox);
+            }}
+          >
+            {items.length > 0 ? (
+              items.map((item, index) => (
+                <div key={item.id}>
+                  <div className="flex w-full items-center justify-between pt-3 px-5 mt-8 border-2 border-t-gray border-l-0 border-r-0 border-b-0">
+                    <div>
+                      <input
+                        key={item.id}
+                        type="checkbox"
+                        defaultValue={item.value}
+                        checked={item.hasPrepared || item.check}
+                        {...register("checklist")}
+                        className="scale-[1.8]"
+                        onClick={() => handleCheck(item.id)}
+                      />
+                      <input
+                        className="ml-4 p-[2px] pl-2"
+                        {...register(`itemVal${item.id}`)}
+                        defaultValue={item.value || item.name}
+                      />
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <div
+                        className="mr-2 cursor-pointer"
+                        onClick={() => handleDisplayNote()}
+                      >
+                        <MdStickyNote2 className="text-2xl" />
+                      </div>
+                      <button
+                        className="hover:cursor-pointer"
+                        // onClick={() => handleDeleteItem(item.id)}
+                        onClick={() => setOpenModal(true)}
+                        type="button"
+                      >
+                        <FaTrashAlt className="text-2xl" />
+                      </button>
+                      {/* Modal */}
+                      {openModal && (
+                        <>
+                          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                              {/*content*/}
+                              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none p-3">
+                                <button
+                                  className="flex justify-end p-1 ml-autoborder-0 bg-white text-red float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                  onClick={() => setOpenModal(false)}
+                                >
+                                  <span className="bg-white text-black h-6 w-6 text-3xl block outline-none focus:outline-none hover:opacity-[0.5]">
+                                    ×
+                                  </span>
+                                </button>
+                                {/*header*/}
+                                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                  <h3 className="text-3xl font-semibold">
+                                    Do you want to delete this item?
+                                  </h3>
+                                </div>
+                                {/*footer*/}
+                                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                  <button
+                                    className="bg-gray text-black active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                    type="button"
+                                    onClick={() => setOpenModal(false)}
+                                  >
+                                    Close
+                                  </button>
+                                  <button
+                                    className="bg-danger text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:opacity-[0.8] outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                    type="button"
+                                    onClick={() => handleDeleteItem(item.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                        </>
+                      )}
+                      {/* Modal */}
+                    </div>
+                  </div>
+                  <textarea
+                    id="note"
+                    rows={1}
+                    {...register(`note${item.id}`)}
+                    className={`border-1 border-gray w-full rounded-5 mt-2 py-2 px-2 ${
+                      note ? "block" : "hidden"
+                    }`}
+                    defaultValue={item.notes}
+                  />
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
           </form>
-          <button onClick={handleDeleteAdd}>
-            <FaTrashAlt className="text-2xl" />
+          <div
+            className={`${
+              displayAdd ? "flex " : "hidden"
+            } mx-16 mt-8 before:absolute pt-3 px-5 border-2 border-t-gray border-l-0 border-r-0 border-b-0`}
+          >
+            <form
+              className="flex w-full items-center justify-between"
+              onSubmit={handleSubmit(onSubmitItem)}
+            >
+              <div className="flex items-center w-full">
+                <input
+                  type="checkbox"
+                  value={item}
+                  {...register("check")}
+                  className="scale-[1.8]"
+                />
+                <input
+                  {...register("item")}
+                  type="text"
+                  placeholder="Item name"
+                  className="pl-2 py-1 mx-4 flex-1"
+                />
+              </div>
+            </form>
+            <button onClick={handleDeleteAdd}>
+              <FaTrashAlt className="text-2xl" />
+            </button>
+          </div>
+          <button
+            className="flex mx-16 mt-8 before:absolute pt-3 px-3 border-2 border-t-gray border-l-0 border-r-0 border-b-0"
+            onClick={handleAddItem}
+          >
+            <BiPlus className="text-2xl" />
+            <span className="ml-4 text-placeholder">Add Item</span>
           </button>
         </div>
-        <button
-          className="flex mx-16 mt-8 before:absolute pt-3 px-3 border-2 border-t-gray border-l-0 border-r-0 border-b-0"
-          onClick={handleAddItem}
-        >
-          <BiPlus className="text-2xl" />
-          <span className="ml-4 text-placeholder">Add Item</span>
-        </button>
       </div>
-    </div>
+    </>
   );
 };
 
