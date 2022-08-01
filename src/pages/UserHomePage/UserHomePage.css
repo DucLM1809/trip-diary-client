@@ -393,45 +393,50 @@
   grid-area: 1 / 2 / 3 / 4;
   font-size: 50px;
   margin-left: 150px;
-  margin-top: 30px;
 }
 
 .DeatailTripDate {
   grid-area: 1 / 2 / 3 / 4;
   font-size: 40px;
   margin-left: 155px;
-  margin-top: 85px;
+  margin-top: 50px;
 }
 .DetailTripType {
   grid-area: 1 / 2 / 3 / 4;
   font-size: 40px;
   margin-left: 155px;
-  margin-top: 130px;
+  margin-top: 100px;
 }
 .TripLocationText {
   grid-area: 1 / 2 / 3 / 4;
   font-size: 25px;
   margin-left: 200px;
-  margin-top: 35px;
 }
 .TripDateText {
   grid-area: 1 / 2 / 3 / 4;
   font-size: 25px;
   margin-left: 200px;
-  margin-top: 85px;
+  margin-top: 50px;
 }
 .TripTypeText {
   grid-area: 1 / 2 / 3 / 4;
   font-size: 25px;
   margin-left: 200px;
-  margin-top: 130px;
+  margin-top: 100px;
 }
 .NextTripHr {
-  grid-area: 2 / 1 / 3 / 4;
-  margin-top: 100px;
+  margin-bottom: 20px;
   width: 90%;
   margin-left: 5%;
   opacity: 50%;
+}
+.HrHr {
+  margin-bottom: 30px;
+  margin-top: 30px;
+  width: 90%;
+  margin-left: 5%;
+  opacity: 40%;
+
 }
 .UserNextTripHr {
   grid-area: 3 / 1 / 4 / 6;
