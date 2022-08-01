@@ -86,7 +86,7 @@ const OtherUserHomePage = () => {
 
   useEffect(() => {
     handleGetTrips();
-    handleGetMe()
+    handleGetMe();
   }, [location]);
 
   const handleFilterType = async () => {
@@ -172,21 +172,27 @@ const OtherUserHomePage = () => {
       setDisplayArea(false);
     }
   };
-  const [nexttrips, setNextTrips] = useState([]);
-  const [pasttrips, setPastTrips] = useState([]);
+  const [nextTrips, setNextTrips] = useState([]);
+  const [pastTrips, setPastTrips] = useState([]);
 
   useEffect(() => {
     setNextTrips([]);
     setPastTrips([]);
     const currentdate = moment().format("YYYY-MM-DD");
     trips.map((trip) => {
-      if (new Date(trip.startAt) > new Date()) {
+      if (trip.isFinished) {
+        setPastTrips((prev) => [...prev, trip]);
+      } else if (new Date(trip.startAt) > new Date()) {
         setNextTrips((prev) => [...prev, trip]);
       } else {
         setPastTrips((prev) => [...prev, trip]);
       }
     });
   }, [trips]);
+
+  console.log("TRIPS: ", trips);
+  console.log("NEXT TRIPS: ", nextTrips);
+  console.log("PAST TRIPS: ", pastTrips);
 
   return (
     <>
@@ -303,35 +309,32 @@ const OtherUserHomePage = () => {
               modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
-              {nexttrips.length > 0 ? (
-                nexttrips.map(
-                  (trip) =>
-                    trip?.author?.id !== meId ? trip?.isPublic : true && (
-                      <SwiperSlide key={trip.id} className="z-0">
-                        <div className="swiperNextTrip">
-                          <img
-                            className="imgNextTrip object-cover"
-                            alt=""
-                            src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                          />
+              {nextTrips?.map((trip) =>
+                (trip?.author?.id !== meId ? trip?.isPublic : true) ? (
+                  <SwiperSlide key={trip.id} className="z-0">
+                    <div className="swiperNextTrip">
+                      <img
+                        className="imgNextTrip object-cover"
+                        alt=""
+                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
+                      />
 
-                          <div className="CountryNextTrip">
-                            <img
-                              className="CountryCircle"
-                              src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                            />
-                          </div>
-                          <div className="swiperNextTripText">
-                            <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
-                              <h2 className="tripName">{trip.name} </h2>
-                            </Link>
-                          </div>
-                        </div>
-                      </SwiperSlide>
-                    )
+                      <div className="CountryNextTrip">
+                        <img
+                          className="CountryCircle"
+                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                        />
+                      </div>
+                      <div className="swiperNextTripText">
+                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                          <h2 className="tripName">{trip.name} </h2>
+                        </Link>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ) : (
+                  <></>
                 )
-              ) : (
-                <></>
               )}
             </Swiper>
           </div>
@@ -365,30 +368,34 @@ const OtherUserHomePage = () => {
               modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
-              {pasttrips.length > 0 ? (
-                pasttrips.map((trip) => (
-                  <SwiperSlide key={trip.id} className="z-0">
-                    <div className="swiperNextTrip">
-                      <img
-                        className="imgNextTrip object-cover"
-                        alt=""
-                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                      />
-
-                      <div className="CountryNextTrip">
+              {pastTrips.length > 0 ? (
+                pastTrips.map((trip) =>
+                  (trip?.author?.id !== meId ? trip?.isPublic : true) ? (
+                    <SwiperSlide key={trip.id} className="z-0">
+                      <div className="swiperNextTrip">
                         <img
-                          className="CountryCircle"
-                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          className="imgNextTrip object-cover"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                         />
+
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="swiperNextTripText">
+                          <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
+                            <h2 className="tripName">{trip.name} </h2>
+                          </Link>
+                        </div>
                       </div>
-                      <div className="swiperNextTripText">
-                        <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
-                          <h2 className="tripName">{trip.name} </h2>
-                        </Link>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))
+                    </SwiperSlide>
+                  ) : (
+                    <></>
+                  )
+                )
               ) : (
                 <></>
               )}

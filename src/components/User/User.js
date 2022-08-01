@@ -72,7 +72,7 @@ const User = () => {
                 />
                 <div className="bg-white absolute w-full h-[180px] bottom-0 rounded-10 shadow-lg flex flex-col items-center justify-center">
                   <h1 className="text-xl mt-3">
-                    {user?.author?.email.split("@")[0]}
+                    {user?.author?.username || user?.author?.email.split("@")[0]}
                   </h1>
                   <h2 className="opacity-40">
                     {user?.author?.country || "United States"}

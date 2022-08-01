@@ -44,7 +44,9 @@ const Trip = () => {
   };
 
   const handleGetPublicTrips = () => {
-    setPublicTrips(searchRes.filter((res) => res.author.id !== meId ? res.isPublic : true));
+    setPublicTrips(
+      searchRes.filter((res) => (res.author.id !== meId ? res.isPublic : true))
+    );
   };
 
   useEffect(() => {
@@ -54,44 +56,42 @@ const Trip = () => {
   useEffect(() => {
     handleGetPublicTrips();
   }, [searchRes, meId]);
-  
+
   return (
     <>
       <div className="pt-8 flex gap-4 px-3 flex-wrap justify-center">
         {publicTrips.length > 0 ? (
           publicTrips.map((res, index) => {
-            return (
-              index < numOfShow &&
-              (res?.author?.id !== meId ? res?.isPublic : true) && (
-                <div
-                  key={index}
-                  className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "
-                >
-                  <Link to={`/trips/trip/${res.id}`} key={uuidv4()}>
-                    <img
-                      src={res?.coverImgUrl || city}
-                      alt=""
-                      className="w-full h-full rounded-10 object-cover opacity-100"
-                    />
-                    <div className="w-full h-full bg-black absolute top-0 left-0 right-0 bottom-0 opacity-20 rounded-10"></div>
-                    <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
-                      {res?.name}
-                    </div>
-                    <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
-                      {res?.numOfLikes} {res?.numOfLikes > 1 ? "likes" : "like"}
-                    </div>
-                    <img
-                      src={
-                        res?.author?.avatarUrl
-                          ? res?.author?.avatarUrl
-                          : unknown
-                      }
-                      alt=""
-                      className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
-                    />
-                  </Link>
-                </div>
-              )
+            return index < numOfShow &&
+              (res?.author?.id !== meId ? res?.isPublic : true) ? (
+              <div
+                key={index}
+                className="w-[468px] relative mb-8 hover:scale-[1.02] hover:duration-[0.1s] hover:ease-in "
+              >
+                <Link to={`/trips/trip/${res.id}`} key={uuidv4()}>
+                  <img
+                    src={res?.coverImgUrl || city}
+                    alt=""
+                    className="w-full h-[400px] max-h-[400px] rounded-10 object-cover opacity-100"
+                  />
+                  <div className="w-full h-full bg-black absolute top-0 left-0 right-0 bottom-0 opacity-20 rounded-10"></div>
+                  <div className="absolute text-white font-bold bottom-10 left-8 text-2xl">
+                    {res?.name}
+                  </div>
+                  <div className="absolute flex justify-center items-center text-white w-[100px] h-[30px] bg-black opacity-60 bottom-10 right-8 rounded-5">
+                    {res?.numOfLikes} {res?.numOfLikes > 1 ? "likes" : "like"}
+                  </div>
+                  <img
+                    src={
+                      res?.author?.avatarUrl ? res?.author?.avatarUrl : unknown
+                    }
+                    alt=""
+                    className="absolute top-10 right-8 w-[50px] h-[50px] border-2 border-white rounded-[50%]"
+                  />
+                </Link>
+              </div>
+            ) : (
+              <></>
             );
           })
         ) : (

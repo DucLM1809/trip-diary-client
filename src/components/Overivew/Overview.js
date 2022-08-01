@@ -62,12 +62,12 @@ const Overview = () => {
   const [edit, setEdit] = useState(false);
   const [trip, setTrip] = useState();
   const [tripId, setTripId] = useState();
-  const [tripPublic, setTripPublic] = useState();
+  const [tripPublic, setTripPublic] = useState("");
+  const [isPublic, setIsPublic] = useState(true);
   const [isPast, setIsPast] = useState(false);
 
   const dispatch = useDispatch();
   const tripInfo = useSelector((state) => state.trip);
-  console.log("Info: ", tripInfo);
 
   const containerStyle = {
     width: "100%",
@@ -99,6 +99,16 @@ const Overview = () => {
     setDisplayPublic(false);
     setTripPublic(e.target.textContent);
   };
+
+  useEffect(() => {
+    if (tripPublic === "Public") {
+      setIsPublic(true);
+    } else if (tripPublic === "Private") {
+      setIsPublic(false);
+    } else {
+      setIsPublic(true);
+    }
+  }, [tripPublic]);
 
   useEffect(() => {
     if (type === "Single Trip") {
@@ -163,7 +173,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
-          isPublic: tripPublic === "Public" ? true : false,
+          isPublic: isPublic,
           isFinished: isPast,
         },
         config
@@ -198,7 +208,7 @@ const Overview = () => {
           coverImgUrl: urlImg ? urlImg.url : "",
           description: data.description,
           scope: dest === dep ? "local" : "global",
-          isPublic: tripPublic === "Public" ? true : false,
+          isPublic: tripPublic === "Public" || tripPublic === "" ? true : false,
           isFinished: isPast,
         },
         config
@@ -243,6 +253,12 @@ const Overview = () => {
       handleGetTrip();
     }
   }, [edit]);
+
+  useEffect(() => {
+    if (trip?.isFinished) {
+      setIsPast(true);
+    }
+  }, [trip]);
 
   const handleGetDeparture = async () => {
     if (coordinate1?.lat && coordinate1?.lng) {
