@@ -257,7 +257,7 @@ const Checklist = () => {
                       <input
                         key={item.id}
                         type="checkbox"
-                        defaultValue={item.value}
+                        defaultValue={item.value || item.name}
                         checked={item.hasPrepared || item.check}
                         {...register("checklist")}
                         className="scale-[1.8]"
