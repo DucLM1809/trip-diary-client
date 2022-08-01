@@ -22,6 +22,7 @@ import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../../components";
 import moment from "moment";
+import { format } from "date-fns";
 
 const UserHomePage = () => {
   const [trips, setTrips] = useState([]);
@@ -254,6 +255,12 @@ const UserHomePage = () => {
                       <MdOutlineMale className="inline text-xl" />
                     )}
                   </span>
+                  <p>
+                    {format(
+                      Date.parse(myprofile?.dateOfBirth),
+                      "MMMM do, yyyy "
+                    )}
+                  </p>
                 </div>
                 <Link to="/Profile" className="editProfile">
                   Edit Profile
