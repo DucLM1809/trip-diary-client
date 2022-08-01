@@ -7,7 +7,7 @@ import { AiFillCamera } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineFemale, MdOutlineMale } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -246,6 +246,14 @@ const UserHomePage = () => {
                         : userName
                       : userName}
                   </h4>
+                  <span>
+                    {myprofile?.firstName + " " + myprofile?.lastName + " "}
+                    {myprofile?.isFemale ? (
+                      <MdOutlineFemale className="inline text-xl" />
+                    ) : (
+                      <MdOutlineMale className="inline text-xl" />
+                    )}
+                  </span>
                 </div>
                 <Link to="/Profile" className="editProfile">
                   Edit Profile
@@ -409,11 +417,6 @@ const UserHomePage = () => {
           <div className="UserNextTripHr">
             <hr />
           </div>
-          {/* <div className="NextTripButton">
-            <Link to="/nexttrip">
-              <button className="buttonShow">Show all</button>
-            </Link>
-          </div> */}
           <div className="mt-4 translate-x-28  inline">
             <Link to="/create">
               <button>
@@ -484,11 +487,6 @@ const UserHomePage = () => {
               )}
             </Swiper>
           </div>
-          {/* <div className="PastTripButton">
-            <Link to="/pasttrip">
-              <button className="buttonShow">Show all</button>
-            </Link>
-          </div> */}
           <div className="mt-[22.7rem] -translate-x-40">
             <Link to="/create/past">
               <button>
