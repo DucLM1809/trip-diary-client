@@ -179,7 +179,6 @@ const NextTrip = () => {
       }
     });
   }, [trips]);
-
   return (
     <>
       <Navbar />
@@ -242,61 +241,64 @@ const NextTrip = () => {
 
         <div className="tripgogo">
           <div className="NextTripTitle">
-            <h1>My next trips</h1>
-          </div>
-          <div className="trip8">
-            <hr />
+            <h1>My past trips</h1>
           </div>
 
           <div className="NextTripContent">
-            <Scrollbars style={{ height: "500px" }}>
-              {nexttrips.length > 0 ? (
+            <Scrollbars style={{height:"500px"}}>
+            {nexttrips.length > 0 ? (
                 nexttrips.map((trip) => (
-                  <div key={uuidv4()}>
-                    <div className="swiperNextTrip">
-                      <img
-                        className="imgNextTrip"
-                        alt=""
-                        src={trip.coverImgUrl ? trip.coverImgUrl : banner}
-                      />
-
-                      <div className="CountryNextTrip">
+                    <div key={uuidv4()}>
+                      <div className="swiperNextTrip">
                         <img
-                          className="CountryCircle"
-                          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          className="imgNextTrip"
+                          alt=""
+                          src={trip.coverImgUrl ? trip.coverImgUrl : banner}
                         />
+
+                        <div className="CountryNextTrip">
+                          <img
+                            className="CountryCircle"
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                          />
+                        </div>
+                        <div className="DetailTripLocation">
+                          <TiLocationOutline/>
+                        </div>
+                        <div className="DeatailTripDate">
+                          <FiCalendar/>
+                        </div>
+                        <div className="DetailTripType">
+                          <AiOutlineExclamationCircle/>
+                        </div>
+                        <div className="TripLocationText">
+                        {trip.name}
+                        </div>
+                        <div className="TripDateText">
+                        {trip.startAt}
+                        </div>
+                        <div className="TripTypeText">{trip.description}</div>
+                        <div className="swiperNextTripText">
+                          <h2 className="tripName">{trip.name}  </h2>
+                        </div>
                       </div>
-                      <div className="DetailTripLocation">
-                        <TiLocationOutline />
+                      <div className="HrHr">
+                      <hr/>
                       </div>
-                      <div className="DeatailTripDate">
-                        <FiCalendar />
-                      </div>
-                      <div className="DetailTripType">
-                        <AiOutlineExclamationCircle />
-                      </div>
-                      <div className="TripLocationText">{trip.name}</div>
-                      <div className="TripDateText">{trip.startAt}</div>
-                      <div className="TripTypeText">{trip.description}</div>
-                      <div className="swiperNextTripText">
-                        <h2 className="tripName">
-                          <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
-                            {trip.name}
-                          </Link>
-                        </h2>
-                      </div>
-                      <div className="NextTripHr">
-                      </div>
+                          
+
                     </div>
-                  </div>
+                    
                 ))
               ) : (
                 <></>
               )}
+              
+
             </Scrollbars>
           </div>
 
-          
+
         </div>
       </div>
       <Footer />
