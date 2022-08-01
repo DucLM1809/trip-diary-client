@@ -368,10 +368,10 @@ const UserHomePage = () => {
                       />
 
                       <div className="CountryNextTrip">
-                        <img
+                        {/* <img
                           className="CountryCircle"
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
+                        /> */}
                       </div>
 
                       <div className="swiperImgIcon">
@@ -450,10 +450,10 @@ const UserHomePage = () => {
                       />
 
                       <div className="CountryNextTrip">
-                        <img
+                        {/* <img
                           className="CountryCircle"
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
+                        /> */}
                       </div>
 
                       <div className="PastswiperImgIcon">

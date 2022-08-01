@@ -320,10 +320,10 @@ const OtherUserHomePage = () => {
                       />
 
                       <div className="CountryNextTrip">
-                        <img
+                        {/* <img
                           className="CountryCircle"
                           src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                        />
+                        /> */}
                       </div>
                       <div className="swiperNextTripText">
                         <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
@@ -380,10 +380,10 @@ const OtherUserHomePage = () => {
                         />
 
                         <div className="CountryNextTrip">
-                          <img
+                          {/* <img
                             className="CountryCircle"
                             src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                          />
+                          /> */}
                         </div>
                         <div className="swiperNextTripText">
                           <Link to={`/trips/trip/${trip.id}`} key={uuidv4()}>
