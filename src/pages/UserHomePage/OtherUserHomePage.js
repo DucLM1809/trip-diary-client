@@ -7,7 +7,7 @@ import { AiFillCamera } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineFemale, MdOutlineMale } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -22,6 +22,7 @@ import banner from "../../assests/images/hero.png";
 import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../../components";
 import moment from "moment";
+import { format } from "date-fns";
 
 const OtherUserHomePage = () => {
   const [trips, setTrips] = useState([]);
@@ -217,6 +218,26 @@ const OtherUserHomePage = () => {
                   <h4 className="profileInfoName">
                     {trips[0]?.author?.username}
                   </h4>
+                  <span>
+                    {trips[0]?.author?.firstName &&
+                      trips[0]?.author?.lastName &&
+                      trips[0]?.author?.firstName +
+                        " " +
+                        trips[0]?.author?.lastName +
+                        " "}
+                    {trips[0]?.author?.isFemale ? (
+                      <MdOutlineFemale className="inline text-xl" />
+                    ) : (
+                      <MdOutlineMale className="inline text-xl" />
+                    )}
+                  </span>
+                  <p>
+                    {trips[0]?.author?.dateOfBirth &&
+                      format(
+                        Date.parse(trips[0]?.author?.dateOfBirth),
+                        "MMMM do, yyyy "
+                      )}
+                  </p>
                 </div>
               </div>
             </div>
