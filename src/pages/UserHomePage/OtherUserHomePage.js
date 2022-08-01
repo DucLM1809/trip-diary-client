@@ -345,11 +345,6 @@ const OtherUserHomePage = () => {
           <div className="UserNextTripHr">
             <hr />
           </div>
-          <div className="NextTripButton">
-            <Link to="/nexttrip">
-              <button className="buttonShow">Show all</button>
-            </Link>
-          </div>
 
           <div className="PastTripTitle">
             <Link to="/pasttrip">
@@ -400,11 +395,6 @@ const OtherUserHomePage = () => {
                 <></>
               )}
             </Swiper>
-          </div>
-          <div className="PastTripButton">
-            <Link to="/pasttrip">
-              <button className="buttonShow">Show all</button>
-            </Link>
           </div>
         </div>
       </div>

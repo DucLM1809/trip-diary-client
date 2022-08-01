@@ -248,7 +248,9 @@ const UserHomePage = () => {
                       : userName}
                   </h4>
                   <span>
-                    {myprofile?.firstName + " " + myprofile?.lastName + " "}
+                    {myprofile?.firstName &&
+                      myprofile?.lastName &&
+                      myprofile?.firstName + " " + myprofile?.lastName + " "}
                     {myprofile?.isFemale ? (
                       <MdOutlineFemale className="inline text-xl" />
                     ) : (
@@ -256,10 +258,11 @@ const UserHomePage = () => {
                     )}
                   </span>
                   <p>
-                    {myprofile?.dateOfBirth && format(
-                      Date.parse(myprofile?.dateOfBirth),
-                      "MMMM do, yyyy "
-                    )}
+                    {myprofile?.dateOfBirth &&
+                      format(
+                        Date.parse(myprofile?.dateOfBirth),
+                        "MMMM do, yyyy "
+                      )}
                   </p>
                 </div>
                 <Link to="/Profile" className="editProfile">
