@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLocations } from "../../redux/actions";
 
 function CreatedItinerary() {
-  const ApiKey = "AIzaSyCegXjc_zJxyKztste0CKrsy_883NB8tvA";
+  const ApiKey = "AIzaSyBilzB8x_vXhqxeZERsxw4sMVxI2BUgYYU";
   const dispatch = useDispatch();
 
   const location = useLocation();
