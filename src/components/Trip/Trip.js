@@ -43,9 +43,12 @@ const Trip = () => {
     }
   };
 
+
   const handleGetPublicTrips = () => {
     setPublicTrips(
-      searchRes.filter((res) => (res.author.id !== meId ? res.isPublic : true))
+      searchRes
+        .filter((res) => (res.author.id !== meId ? res.isPublic : true))
+        .sort(function(a, b) {return b.numOfLikes - a.numOfLikes})
     );
   };
 
