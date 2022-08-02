@@ -313,18 +313,18 @@ const UserHomePage = () => {
                   <span>{scope || "Area"}</span>
                 </div>
                 <div
-                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer ${
+                  className={`border-1 border-black rounded-5 mt-2 mb-1 max-w-[150px] cursor-pointer z-50 ${
                     displayArea ? "block" : "hidden"
                   }`}
                 >
                   <div
-                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3"
+                    className="w-full border-b-1 border-gray px-2 py-1 hover:bg-gray rounded-tr-3 rounded-tl-3 z-50"
                     onClick={(e) => handleScope(e)}
                   >
                     Local
                   </div>
                   <div
-                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3"
+                    className="w-full px-2 py-1  hover:bg-gray rounded-br-3 rounded-bl-3 z-50"
                     onClick={(e) => handleScope(e)}
                   >
                     Global
