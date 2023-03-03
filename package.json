@@ -34,7 +34,7 @@
     "react-spring": "^9.4.5",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-    "styled-components": "^5.3.5",
+    "styled-components": "^5.3.7",
     "swiper": "^8.1.6",
     "use-places-autocomplete": "^3.0.0",
     "uuid": "^8.3.2",
