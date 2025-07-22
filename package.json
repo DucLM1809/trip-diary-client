@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@azure/storage-blob": "^12.10.0",
+    "@azure/storage-blob": "^12.13.0",
     "@hookform/resolvers": "^2.9.7",
     "@reach/combobox": "^0.17.0",
     "@react-google-maps/api": "^2.11.8",
